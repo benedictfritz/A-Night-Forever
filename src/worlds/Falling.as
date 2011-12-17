@@ -8,15 +8,18 @@ package worlds
     import entities.*;
     import util.Util;
 
-    public class WorldOne extends World
+    public class Falling extends World
     {
-	[Embed(source="../../assets/levels/WorldOne.oel", mimeType="application/octet-stream")]
+	[Embed(source="../../assets/levels/Falling.oel", mimeType="application/octet-stream")]
 	    private static const MAP_DATA:Class;
+
+	private const
+	    FALLING_GRAVITY:Number = 0.1;
 
 	private var
 	    player:Player;
 
-	public function WorldOne():void {
+	public function Falling():void {
 	    Util.addCenteredText("World One", this, 5, 1);
 	}
 
@@ -24,10 +27,6 @@ package worlds
 	    super.begin();
 	    var level:Level = new Level(MAP_DATA);
 	    add(level);
-
-	    FP.console.log(level.grid.columns);
-	    FP.console.log(level.grid.rows);
-	    FP.console.log(level.grid.getTile(0, 0));
 
 	    var levelData:XML;
 	    var dataList:XMLList;
@@ -41,6 +40,24 @@ package worlds
 	    {	    
 		player = new Player(int(dataElement.@x), int(dataElement.@y));
 		add(player);
+	    }
+	    player.setGravity(FALLING_GRAVITY);
+	}
+
+	override public function update():void {
+	    super.update();
+	    updateCamera();
+	}
+
+	private function updateCamera():void {
+	    camera.x = player.x - FP.halfWidth / FP.screen.scale + (player.width / 2);
+	    camera.y = player.y - FP.halfHeight / FP.screen.scale + player.height;
+	    
+	    if (camera.x < 0) {
+		camera.x = 0;
+	    }
+	    if (camera.y < 0) {
+		camera.y = 0;
 	    }
 	}
     }

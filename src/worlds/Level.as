@@ -10,15 +10,12 @@ package worlds
     // level takes care of drawing all the tiles. the worlds' code
     // is responsible for adding objects.
     public class Level extends Entity {
-	// TODO: make private again
-	public var 
+	private var 
 	    tiles:Tilemap,
 	    grid:Grid,
 	    levelData:XML;
 	
 	private static const
-	    WORLD_WIDTH:Number = FP.width,
-	    WORLD_HEIGHT:Number = FP.height,
 	    TILE_WIDTH:Number = 16,
 	    TILE_HEIGHT:Number = 16;
 	
@@ -26,25 +23,28 @@ package worlds
 	    private const TILESET:Class;
 
 	public function Level(xml:Class) {
-	    tiles = new Tilemap(TILESET, WORLD_WIDTH, WORLD_HEIGHT, 
-				 TILE_WIDTH, TILE_HEIGHT);
+	    var rawData:ByteArray = new xml;
+	    var dataString:String = rawData.readUTFBytes(rawData.length);
+	    levelData = new XML(dataString);
+	    
+	    this.width = levelData.width;
+	    this.height = levelData.height;
+
+	    FP.console.log("width " + width);
+	    FP.console.log("height " + height);
+
+	    tiles = new Tilemap(TILESET, this.width, this.height, TILE_WIDTH, TILE_HEIGHT);
 	    graphic = tiles;
 	    layer = 1;
 
-	    grid = new Grid(WORLD_WIDTH, WORLD_HEIGHT, 
-			     TILE_WIDTH, TILE_HEIGHT, 0, 0);
+	    grid = new Grid(this.width, this.height, TILE_WIDTH, TILE_HEIGHT, 0, 0);
 	    mask = grid;
 
 	    type = "level";
-	    loadLevel(xml);
+	    placeTiles();
 	}
 
-	private function loadLevel(xml:Class):void {
-	    var rawData:ByteArray = new xml;
-	    var dataString:String = rawData.readUTFBytes(rawData.length);
-
-	    levelData = new XML(dataString);
-
+	private function placeTiles():void {
 	    var dataList:XMLList = levelData.tiles.tile;
 	    for each(var dataElement:XML in dataList) {
 		tiles.setTile(int(dataElement.@x)/TILE_WIDTH,

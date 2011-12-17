@@ -1,9 +1,0 @@
-VALENTINE
----------------
-
-A game about love. And stuff.
-
-- Get Ogmo integration working
-
-Ideas:
-- Sexual ambiguity -- should be able to be interpreted as love between any two sexes

@@ -8,10 +8,14 @@ package entities
 
     public class Player extends Entity
     {
+	private const
+	    Y_SPEED_MAX:Number = 100,
+	    JUMP_SPEED:Number = 8;
+
 	private var
 	    gravity:Number = 1,
 	    jumping:Boolean = false,
-	    xSpeed:Number = 300,
+	    xSpeed:Number = 200,
 	    ySpeed:Number = 0;
 
 	public function Player(x:int=0, y:int=0) {
@@ -29,8 +33,7 @@ package entities
 	    checkKeyPresses();
 	}
 
-	private function checkKeyPresses():void
-	{
+	private function checkKeyPresses():void {
 	    var moveDistance:Number = xSpeed * FP.elapsed;
 
 	    if (Input.check(Key.D)) {
@@ -49,13 +52,15 @@ package entities
 	    if (Input.pressed(Key.W)) {
 		if (!jumping) {
 		    jumping = true;
-		    ySpeed = 10;
+		    ySpeed = JUMP_SPEED;
 		}
 	    }
 
 	    if (jumping) {
 		y -= ySpeed;
-		ySpeed -= gravity;
+		if (ySpeed < Y_SPEED_MAX) {
+		    ySpeed -= gravity;
+		}
 		if (collide("level", x, y)) {
 		    jumping = false;
 		    while(collide("level", x, y)) {
@@ -68,6 +73,10 @@ package entities
 		jumping = true;
 		ySpeed = 0;
 	    }
+	}
+
+	public function setGravity(gravity:Number):void {
+	    this.gravity = gravity;
 	}
     }
 }

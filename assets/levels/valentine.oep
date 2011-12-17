@@ -2,8 +2,12 @@
   <name>Valentine</name>
 
   <settings>
-    <defaultWidth>800</defaultWidth>
-    <defaultHeight>600</defaultHeight>
+    <defaultWidth>400</defaultWidth>
+    <defaultHeight>300</defaultHeight>
+    <minWidth>400</minWidth>
+    <minHeight>300</minHeight>
+    <maxWidth>3200</maxWidth>
+    <maxHeight>2400</maxHeight>
   </settings>
 
   <tilesets>
@@ -11,7 +15,7 @@
   </tilesets>
 
   <objects>
-    <object name="player" image="images/png/player.png" height="16" width="16"/>
+    <object name="player" image="images/png/player.png" height="16" width="16" limit="1"/>
   </objects>
 
   <layers>
