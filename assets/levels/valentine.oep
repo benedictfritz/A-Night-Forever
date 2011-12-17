@@ -1,0 +1,21 @@
+<project>
+  <name>Valentine</name>
+
+  <settings>
+    <defaultWidth>800</defaultWidth>
+    <defaultHeight>600</defaultHeight>
+  </settings>
+
+  <tilesets>
+    <tileset name="tiles" image="images/png/tiles.png" tileHeight="16" tileWidth="16"/>
+  </tilesets>
+
+  <objects>
+    <object name="player" image="images/png/player.png" height="16" width="16"/>
+  </objects>
+
+  <layers>
+    <tiles name="tiles" gridSize="16"/>
+    <objects name="objects" gridSize="16"/>
+  </layers>
+</project>
