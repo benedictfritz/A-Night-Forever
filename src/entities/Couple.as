@@ -64,7 +64,7 @@ package entities
 		if (ySpeed > Y_SPEED_MAX) {
 		    ySpeed -= gravity;
 		}
-		FP.console.log(ySpeed);
+
 		if (collide("level", x, y)) {
 		    jumping = false;
 		    while(collide("level", x, y)) {
