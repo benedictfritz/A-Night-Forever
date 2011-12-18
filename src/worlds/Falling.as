@@ -17,7 +17,7 @@ package worlds
 	    FALLING_GRAVITY:Number = 0.1;
 
 	private var
-	    player:Player;
+	    couple:Couple;
 
 	public function Falling():void {
 	    Util.addCenteredText("World One", this, 5, 1);
@@ -33,15 +33,14 @@ package worlds
 	    var dataElement:XML;
 
 	    levelData = level.getLevelData();
-	    dataList = levelData.objects.player;
+	    dataList = levelData.objects.couple;
 
-	    // should only have one player, but with this code, only the last one will get added
+	    // should only have one couple, but with this code, only the last one will get added
 	    for each(dataElement in dataList) 
 	    {	    
-		player = new Player(int(dataElement.@x), int(dataElement.@y));
-		add(player);
+		couple = new Couple(int(dataElement.@x), int(dataElement.@y));
+		add(couple);
 	    }
-	    player.setGravity(FALLING_GRAVITY);
 	}
 
 	override public function update():void {
@@ -50,8 +49,8 @@ package worlds
 	}
 
 	private function updateCamera():void {
-	    camera.x = player.x - FP.halfWidth / FP.screen.scale + (player.width / 2);
-	    camera.y = player.y - FP.halfHeight / FP.screen.scale + player.height;
+	    camera.x = couple.x - FP.halfWidth / FP.screen.scale + (couple.width / 2);
+	    camera.y = couple.y - FP.halfHeight / FP.screen.scale + couple.height;
 	    
 	    if (camera.x < 0) {
 		camera.x = 0;

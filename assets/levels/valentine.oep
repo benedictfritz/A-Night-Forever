@@ -2,6 +2,7 @@
   <name>Valentine</name>
 
   <settings>
+    <workingDirectory>images/png</workingDirectory>
     <defaultWidth>400</defaultWidth>
     <defaultHeight>300</defaultHeight>
     <minWidth>400</minWidth>
@@ -11,11 +12,13 @@
   </settings>
 
   <tilesets>
-    <tileset name="tiles" image="images/png/tiles.png" tileHeight="16" tileWidth="16"/>
+    <tileset name="tiles" image="tiles.png" tileHeight="16" tileWidth="16"/>
   </tilesets>
 
   <objects>
-    <object name="player" image="images/png/player.png" height="16" width="16" limit="1"/>
+    <object name="player" image="player.png" height="16" width="16" limit="1"/>
+    <object name="desire" image="desire.png" height="16" width="16" limit="1"/>
+    <object name="couple" image="couple.png" height="16" width="32" limit="1"/>
   </objects>
 
   <layers>
