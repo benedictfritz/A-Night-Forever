@@ -9,13 +9,13 @@ package entities
     public class Couple extends Entity
     {
 	private const
-	    Y_SPEED_MAX:Number = 100,
+	    Y_SPEED_MAX:Number = -5,
 	    JUMP_SPEED:Number = 8;
 
 	private var
-	    gravity:Number = 0.1,
+	    gravity:Number = 0.5,
 	    jumping:Boolean = false,
-	    xSpeed:Number = 200,
+	    xSpeed:Number = 180,
 	    ySpeed:Number = 0;
 
 	[Embed(source="../../assets/images/png/couple.png")]
@@ -61,9 +61,10 @@ package entities
 
 	    if (jumping) {
 		y -= ySpeed;
-		if (ySpeed < Y_SPEED_MAX) {
+		if (ySpeed > Y_SPEED_MAX) {
 		    ySpeed -= gravity;
 		}
+		FP.console.log(ySpeed);
 		if (collide("level", x, y)) {
 		    jumping = false;
 		    while(collide("level", x, y)) {
@@ -80,6 +81,10 @@ package entities
 
 	public function setGravity(gravity:Number):void {
 	    this.gravity = gravity;
+	}
+
+	public function starBoost():void {
+	    ySpeed = 10;
 	}
     }
 }

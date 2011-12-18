@@ -6,8 +6,7 @@ package entities
     import net.flashpunk.utils.Input;
     import net.flashpunk.graphics.Image;
 
-    public class Player extends Entity
-    {
+    public class Player extends Entity {
 	private const
 	    Y_SPEED_MAX:Number = 100,
 	    JUMP_SPEED:Number = 8;

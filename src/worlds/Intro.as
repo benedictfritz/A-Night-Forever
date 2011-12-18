@@ -22,6 +22,7 @@ package worlds
 
 	override public function begin():void {
 	    super.begin();
+
 	    var level:Level = new Level(MAP_DATA);
 	    add(level);
 

@@ -31,15 +31,21 @@ package worlds
 	    var levelData:XML;
 	    var dataList:XMLList;
 	    var dataElement:XML;
-
 	    levelData = level.getLevelData();
-	    dataList = levelData.objects.couple;
 
 	    // should only have one couple, but with this code, only the last one will get added
+	    dataList = levelData.objects.couple;
 	    for each(dataElement in dataList) 
 	    {	    
 		couple = new Couple(int(dataElement.@x), int(dataElement.@y));
 		add(couple);
+	    }
+
+	    dataList = levelData.objects.star;
+	    for each(dataElement in dataList) 
+	    {
+		var star:Star = new Star(int(dataElement.@x), int(dataElement.@y));
+		add(star);
 	    }
 	}
 
