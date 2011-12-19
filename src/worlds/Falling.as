@@ -29,6 +29,8 @@ package worlds
 
 	override public function begin():void {
 	    super.begin();
+	    FP.screen.scale = 2;
+
 	    var level:Level = new Level(MAP_DATA);
 	    add(level);
 
