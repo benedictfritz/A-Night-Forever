@@ -6,7 +6,7 @@ package entities
     import net.flashpunk.graphics.Spritemap;
 
     public class SO extends Actor {
-	[Embed(source = '../../assets/images/png/player_anim_blank.png')]
+	[Embed(source = '../../assets/images/png/player_anim.png')]
 	    private const SO_SPRITE:Class;
 
 	private var

@@ -8,17 +8,16 @@ package entities
     import net.flashpunk.graphics.Spritemap;
 
     public class Player extends Actor {
-	[Embed(source = '../../assets/images/png/player_anim_blank.png')]
+	[Embed(source = '../../assets/images/png/player_anim.png')]
 	    private const PLAYER_SPRITE:Class;
 
-	private const
-	    Y_SPEED_MAX:Number = 100,
-	    JUMP_SPEED:Number = 8;
+	private const JUMP_SPEED:Number = 130;
 
 	private var
 	    sprPlayer:Spritemap = new Spritemap(PLAYER_SPRITE, 32, 32),
-	    gravity:Number = 1,
-	    jumping:Boolean = false;
+	    gravity:Number = 300,
+	    vx:Number = 0,
+	    vy:Number = 0;
 
 	public function Player(x:int=0, y:int=0) {
 	    this.x = x;
@@ -30,7 +29,8 @@ package entities
 
 	    sprPlayer.add("stand", [0], 1, true);
 	    sprPlayer.add("jump", [3], 1, true);
-	    sprPlayer.add("right", [1, 2, 3, 4, 5, 6, 7, 6], 8, true);
+	    sprPlayer.add("fall", [8], 1, true);
+	    sprPlayer.add("run", [1, 2, 3, 4, 5, 6, 7, 6], 8, true);
 	    sprPlayer.color = 0xad2e3c;
 	    this.graphic = sprPlayer;
 	    setHitbox(sprPlayer.width, sprPlayer.height);
@@ -43,54 +43,25 @@ package entities
 	}
 
 	private function checkKeyPresses():void {
-	    var moveDistance:Number = xSpeed * FP.elapsed;
+	    var jumping:Boolean = collide("level", x, y+1) == null;
 
-	    if (Input.check(Key.D)) {
-		jumping ? sprPlayer.play("jumpRight") : sprPlayer.play("right");
-		x += moveDistance;
-		if(collide("level", x, y)) {
-		    x -= moveDistance;
-		}
+	    // left / right movement
+	    if (Input.check(Key.D)) { vx = xSpeed; }
+	    else if (Input.check(Key.A)) { vx = -xSpeed; }
+	    else { vx = 0; }
+	    vx == 0 ? sprPlayer.play("stand") : sprPlayer.play("run");
+	    flip(vx < 0);
+
+	    // jumping movement
+	    if (Input.check(Key.W)) {
+		if (!jumping) { vy = -JUMP_SPEED }
 	    }
-	    else if (Input.check(Key.A)) {
-		jumping ? sprPlayer.play("jumpLeft") : sprPlayer.play("left");
-
-		x -= moveDistance;
-		if(collide("level", x, y)) {
-		    x += moveDistance;
-		}
-	    }
-	    else {
-		jumping ? sprPlayer.play("jumpStraight") : sprPlayer.play("stand");
-	    }
-
-	    if (Input.pressed(Key.W)) {
-		// if (FP.sign(moveDistance)) { sprPlayer.play("jumpRight"); }
-		// else { sprPlayer.play("jumpLeft"); }
-
-		if (!jumping) {
-		    jumping = true;
-		    ySpeed = JUMP_SPEED;
-		}
-	    }
-
 	    if (jumping) {
-		y -= ySpeed;
-		if (ySpeed < Y_SPEED_MAX) {
-		    ySpeed -= gravity;
-		}
-		if (collide("level", x, y)) {
-		    jumping = false;
-		    while(collide("level", x, y)) {
-			y -= 1;
-		    }
-		}
+		vy > 0 ? sprPlayer.play("fall") : sprPlayer.play("jump");
+		vy += gravity * FP.elapsed;
 	    }
-	    // walking off edges case
-	    else if (!collide("level", x, y+1)) {
-		jumping = true;
-		ySpeed = 0;
-	    }
+
+	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
 	}
 
 	public function setGravity(gravity:Number):void {
@@ -98,19 +69,19 @@ package entities
 	}
 
 	override public function playRight():void {
-	    sprPlayer.play("right");
+	    sprPlayer.play("run");
 	}
 
 	override public function playLeft():void {
-	    sprPlayer.play("left");
+	    sprPlayer.play("run");
 	}
 
 	override public function playFaceRight():void {
-	    sprPlayer.play("standRight");
+	    sprPlayer.play("stand");
 	}
 
 	override public function playFaceLeft():void {
-	    sprPlayer.play("standLeft");
+	    sprPlayer.play("stand");
 	}
 
 	// used for flipping sprites
