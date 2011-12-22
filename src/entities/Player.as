@@ -16,8 +16,7 @@ package entities
 	private var
 	    sprPlayer:Spritemap = new Spritemap(PLAYER_SPRITE, 32, 32),
 	    gravity:Number = 300,
-	    vx:Number = 0,
-	    vy:Number = 0;
+	    controllable:Boolean = true;
 
 	public function Player(x:int=0, y:int=0) {
 	    this.x = x;
@@ -39,7 +38,7 @@ package entities
 
 	override public function update():void {
 	    super.update();
-	    checkKeyPresses();
+	    if (controllable) { checkKeyPresses(); }
 	}
 
 	private function checkKeyPresses():void {
@@ -70,24 +69,36 @@ package entities
 
 	override public function playRight():void {
 	    sprPlayer.play("run");
+	    flip(false);
 	}
 
 	override public function playLeft():void {
 	    sprPlayer.play("run");
+	    flip(true);
 	}
 
 	override public function playFaceRight():void {
 	    sprPlayer.play("stand");
+	    flip(false);
 	}
 
 	override public function playFaceLeft():void {
 	    sprPlayer.play("stand");
+	    flip(true);
 	}
 
 	// used for flipping sprites
-	private function flip(f:Boolean = true):void {
-	    if (sprPlayer.flipped == f) return;
-	    sprPlayer.flipped = f;
+	private function flip(val:Boolean=true):void {
+	    if (sprPlayer.flipped == val) return;
+	    sprPlayer.flipped = val;
+	}
+
+	public function setControllable(val:Boolean=true):void {
+	    this.controllable = val;
+	}
+	
+	public function getControllable():Boolean {
+	    return this.controllable;
 	}
     }
 }

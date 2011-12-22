@@ -5,24 +5,29 @@ package entities
 
     public class Actor extends Entity {
 	protected var
-	    xSpeed:Number = 5,
-	    ySpeed:Number = 0;
+	    xSpeed:Number,
+	    ySpeed:Number,
+	    vx:Number = 0,
+	    vy:Number = 0;
 
 	public function moveLeft(xLimit:Number):void {
-	    this.x -= xSpeed * FP.elapsed;
+	    vx = -xSpeed;
+	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
 	    this.playLeft();
-	    if (this.x <= xLimit) {
+	    if (this.centerX <= xLimit) {
 		this.playFaceLeft();
-		this.x = xLimit;
+		this.x = xLimit - this.halfWidth;
 	    }
 	}
 
 	public function moveRight(xLimit:Number):void {
-	    this.x += xSpeed * FP.elapsed;
+	    vx = xSpeed;
+	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
 	    this.playRight();	    
-	    if (this.x >= xLimit) {
+
+	    if (this.centerX >= xLimit) {
 		this.playFaceRight();
-	    	this.x = xLimit;
+		this.x = xLimit - this.halfWidth;
 	    }
 	}
 

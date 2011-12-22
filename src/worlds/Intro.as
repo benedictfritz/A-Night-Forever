@@ -4,6 +4,7 @@ package worlds
     
     import net.flashpunk.FP;
     import net.flashpunk.World;
+    import net.flashpunk.Entity;
     import net.flashpunk.utils.Key;
     import net.flashpunk.masks.Grid;
     import net.flashpunk.utils.Input;
@@ -26,7 +27,7 @@ package worlds
 
 	private var
 	    adjustingPositions:Boolean,
-	    textBubble:Text,
+	    textBubble:Entity,
 	    currSpeech:Object,
 	    player:Player,
 	    sO:SO,
@@ -35,6 +36,9 @@ package worlds
 	public function Intro():void {
 	    conversation = new Array();
 	    adjustingPositions = false;
+	    textBubble = new Entity();
+	    add(textBubble);
+	    textBubble.visible = false;
 	}
 
 	override public function begin():void {
@@ -71,25 +75,23 @@ package worlds
 		if (currSpeech["char"] == PLAYER_VAL) { currActor = player; }
 		else if (currSpeech["char"] == SO_VAL) { currActor = sO; }
 
-		var textBubbleCenterX:Number =
-		    textBubble.originX + textBubble.width/2;
-		if (textBubbleCenterX < currActor.x) {
-		    currActor.moveLeft(textBubbleCenterX);
-		}
-		else if (textBubbleCenterX > currActor.x) {
-		    currActor.moveRight(textBubbleCenterX);
-		}
-		
-		if (currActor.x == textBubbleCenterX) {
-		    adjustingPositions = false;
+		var adjustingX:Number = currActor.centerX;
+		var endX:Number = textBubble.centerX;
+		if (adjustingX < endX) { currActor.moveRight(endX); }
+		else if (adjustingX > endX) { currActor.moveLeft(endX);}
+		if (endX == adjustingX) { 
+		    textBubble.visible = true;
+		    adjustingPositions = false; 
+		    player.setControllable(true);
 		}
 
 		return;
 	    }
 	    
-	    // if (Input.pressed(Key.X)) {
-	    // 	displaySpeech(conversation.pop());
-	    // }
+	    if (Input.pressed(Key.X)) {
+		player.setControllable(false);
+	    	displaySpeech(conversation.pop());
+	    }
 
 	    if (player.x > FP.width / FP.screen.scale) {
 		FP.world = new Falling();
@@ -100,11 +102,14 @@ package worlds
 	    currSpeech = speech;
 	    if (textBubble) { textBubble.visible = false; }
 	    var wordsPoint:Point = speech["location"];
-	    textBubble = new Text(speech["words"], wordsPoint.x, wordsPoint.y);
-	    textBubble.color = 0xFFFFFF;
+	    textBubble.x = wordsPoint.x;
+	    textBubble.y = wordsPoint.y;
+
+	    var newWords:Text = new Text(speech["words"]);
+	    newWords.color = 0xFFFFFF;
+	    textBubble.graphic = newWords;
+	    textBubble.setHitbox(newWords.width, newWords.height);
 	    adjustingPositions = true;
-	    addGraphic(textBubble);
-	    textBubble.visible = true;
 	}
 
 	private function initConversation():void {
@@ -118,7 +123,7 @@ package worlds
 	    newSpeech = new Object();
 	    newSpeech["words"] = "I'm talking to myself.";
 	    newSpeech["char"] = PLAYER_VAL;
-	    newSpeech["location"] = new Point(40, 20);
+	    newSpeech["location"] = new Point(200, 20);
 	    conversation.push(newSpeech);
 
 	    // reverse the array so that we can simply pop things off
