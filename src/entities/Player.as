@@ -30,7 +30,8 @@ package entities
 	    sprPlayer.add("jump", [3], 1, true);
 	    sprPlayer.add("fall", [8], 1, true);
 	    sprPlayer.add("run", [1, 2, 3, 4, 5, 6, 7, 6], 8, true);
-	    sprPlayer.color = 0xad2e3c;
+	    sprPlayer.color = 0xEEEEEE;
+	    // sprPlayer.color = 0xad2e3c; // old maroon color
 	    this.graphic = sprPlayer;
 	    setHitbox(sprPlayer.width, sprPlayer.height);
 	    type = "player";

@@ -1,6 +1,7 @@
 package worlds
 {
     import flash.geom.Point;
+    import flash.utils.*;
     
     import net.flashpunk.FP;
     import net.flashpunk.World;
@@ -62,13 +63,18 @@ package worlds
 	    var dataElement:XML;
 
 	    levelData = level.getLevelData();
-	    dataList = levelData.objects.player;
 
-	    // should only have one player, but with this code, 
+
+	    // should only have one player and so, but with this code
 	    // only the last one will get added
-	    for each(dataElement in dataList) 
-	    {	    
+
+	    dataList = levelData.objects.player;
+	    for each(dataElement in dataList) {	    
 		player = new Player(int(dataElement.@x), int(dataElement.@y));
+	    }
+	    dataList = levelData.objects.so;
+	    for each(dataElement in dataList) {	    
+		sO = new SO(int(dataElement.@x), int(dataElement.@y));
 	    }
 
 	    initConversation();
@@ -121,23 +127,24 @@ package worlds
 
 	private function convoFirst():void {
 	    add(player);
+	    
+	    var moveToCenterAndSpeak:Function = function():void {
+		adjustingPositions = true;
+		player.isAdjusting = true;
+		playerTextBubble.x = 100;
+		playerTextBubble.y = 230;
+	    
+		var words:Text = new Text("What a fun party.");
+		words.size = 8;
+		words.color = 0xFFFFFF;
+		playerTextBubble.graphic = words;
+		playerTextBubble.setHitbox(words.width, words.height);
+	    }
+	    setTimeout(moveToCenterAndSpeak, 300);
 	}
 
 	private function convoSecond():void {
-	    adjustingPositions = true;
-	    player.isAdjusting = true;
-	    playerTextBubble.x = 60;
-	    playerTextBubble.y = 20;
-	    
-	    var words:Text = new Text("What a fun party.");
-	    words.color = 0xFFFFFF;
-	    playerTextBubble.graphic = words;
-	    playerTextBubble.setHitbox(words.width, words.height);
+	    add(sO);	    
 	}
-
-	private function convoThird():void {
-	    add(player);
-	}
-
     }
 }
