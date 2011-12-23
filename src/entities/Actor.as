@@ -2,18 +2,22 @@ package entities
 {
     import net.flashpunk.FP;
     import net.flashpunk.Entity;
+    import net.flashpunk.graphics.Spritemap;
 
     public class Actor extends Entity {
 	protected var
 	    xSpeed:Number,
 	    ySpeed:Number,
 	    vx:Number = 0,
-	    vy:Number = 0;
+	    vy:Number = 0,
+	    controllable:Boolean = true,
+	    sprActor:Spritemap;
 
 	public var
 	    isAdjusting:Boolean = false;
 
 	public function moveLeft(xLimit:Number):void {
+	    FP.console.log("moving left");
 	    vx = -xSpeed;
 	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
 	    this.playLeft();
@@ -24,6 +28,7 @@ package entities
 	}
 
 	public function moveRight(xLimit:Number):void {
+	    FP.console.log("moving right");
 	    vx = xSpeed;
 	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
 	    this.playRight();	    
@@ -32,6 +37,20 @@ package entities
 		this.playFaceRight();
 		this.x = xLimit - this.halfWidth;
 	    }
+	}
+
+	// used for flipping sprites
+	protected function flip(val:Boolean=true):void {
+	    if (sprActor.flipped == val) return;
+	    sprActor.flipped = val;
+	}
+
+	public function setControllable(val:Boolean=true):void {
+	    this.controllable = val;
+	}
+	
+	public function getControllable():Boolean {
+	    return this.controllable;
 	}
 
 	// I'm basically trying to do an objective-c prototype without knowing how

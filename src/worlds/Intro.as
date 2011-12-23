@@ -29,7 +29,7 @@ package worlds
 	private var
 	    adjustingPositions:Boolean,
 	    playerTextBubble:Entity,
-	    soTextBubble:Entity,
+	    sOTextBubble:Entity,
 	    currSpeech:Object,
 	    player:Player,
 	    sO:SO,
@@ -45,9 +45,9 @@ package worlds
 	    add(playerTextBubble);
 	    playerTextBubble.visible = false;
 
-	    soTextBubble = new Entity();
-	    add(soTextBubble);
-	    soTextBubble.visible = false;
+	    sOTextBubble = new Entity();
+	    add(sOTextBubble);
+	    sOTextBubble.visible = false;
 	}
 
 	override public function begin():void {
@@ -72,8 +72,10 @@ package worlds
 	    for each(dataElement in dataList) {	    
 		player = new Player(int(dataElement.@x), int(dataElement.@y));
 	    }
+	    player.setControllable(false);
+
 	    dataList = levelData.objects.so;
-	    for each(dataElement in dataList) {	    
+	    for each(dataElement in dataList) {
 		sO = new SO(int(dataElement.@x), int(dataElement.@y));
 	    }
 
@@ -83,15 +85,16 @@ package worlds
 	override public function update():void {
 	    super.update();
 	    
-	    FP.console.log("updating and visible is" + this.visible);
-
 	    if (adjustingPositions) {
 		if (player.isAdjusting) { adjustActor(player, playerTextBubble); }
-		if (sO.isAdjusting) { adjustActor(sO, soTextBubble); }
+		if (sO.isAdjusting) { adjustActor(sO, sOTextBubble); }
+
+		if (!player.isAdjusting && !sO.isAdjusting) {
+		    adjustingPositions = false;
+		}
 	    }
 	    
 	    if (Input.pressed(Key.X) && !adjustingPositions) {
-		player.setControllable(false);
 		FP.console.log("pop");
 		// normally I would pop off function references every time the player
 		// hits X
@@ -103,25 +106,21 @@ package worlds
 	    }
 	}
 
-	override public function render():void {
-	    FP.console.log("rendering");
-	    super.render();
-	}
-
 	private function initConversation():void {
-	    conversation = new Array(convoFirst, convoSecond);
+	    conversation = new Array(convoFirst, convoSecond, convoThird);
 	    conversation.reverse();
 	}
 
 	private function adjustActor(actor:Actor, endEntity:Entity):void {
+	    FP.console.log("adjusting " + FP.elapsed);
 	    var adjustingX:Number = actor.centerX;
 	    var endX:Number = endEntity.centerX;
 	    if (adjustingX < endX) { actor.moveRight(endX); }
 	    else if (adjustingX > endX) { actor.moveLeft(endX);}
 	    if (endX == adjustingX) { 
 	    	endEntity.visible = true;
-	    	adjustingPositions = false; 
-	    	player.setControllable(true);
+		actor.isAdjusting = false;
+		FP.console.log("done adjusting");
 	    }
 	}
 
@@ -131,20 +130,64 @@ package worlds
 	    var moveToCenterAndSpeak:Function = function():void {
 		adjustingPositions = true;
 		player.isAdjusting = true;
-		playerTextBubble.x = 100;
+		playerTextBubble.x = 200;
 		playerTextBubble.y = 230;
 	    
 		var words:Text = new Text("What a fun party.");
 		words.size = 8;
-		words.color = 0xFFFFFF;
+		words.color = player.color;
 		playerTextBubble.graphic = words;
 		playerTextBubble.setHitbox(words.width, words.height);
+		playerTextBubble.visible = false;
 	    }
 	    setTimeout(moveToCenterAndSpeak, 300);
 	}
 
 	private function convoSecond():void {
-	    add(sO);	    
+	    add(sO);
+
+	    var moveToCenterAndSpeak:Function = function():void {
+		adjustingPositions = true;
+		sO.isAdjusting = true;
+		sOTextBubble.x = 100;
+		sOTextBubble.y = 230;
+	    
+		var words:Text = new Text("Hey, wait!");
+		words.size = 8;
+		words.color = sO.color;
+		sOTextBubble.graphic = words;
+		sOTextBubble.setHitbox(words.width, words.height)
+		sOTextBubble.visible = false;
+	    }
+	    setTimeout(moveToCenterAndSpeak, 300);
+	}
+
+	private function convoThird():void {
+	    adjustingPositions = true;
+
+	    // sO movement
+	    {
+		sO.isAdjusting = true;
+
+		var sOWords:Text = new Text("You forgot your keys.");
+		sOWords.size = 8;
+		sOWords.color = sO.color;
+		sOTextBubble.graphic = sOWords;
+		sOTextBubble.setHitbox(sOWords.width, sOWords.height);
+		sOTextBubble.x = 165;
+		sOTextBubble.visible = false;
+	    }
+
+	    // player movement
+	    {
+		player.isAdjusting = true;;
+
+		var playerWords:Text = new Text("");
+		playerTextBubble.graphic = playerWords;
+		playerTextBubble.setHitbox(playerWords.width, playerWords.height);
+		playerTextBubble.x = 235;
+		playerTextBubble.visible = false;
+	    }
 	}
     }
 }
