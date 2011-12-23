@@ -10,6 +10,9 @@ package entities
 	    vx:Number = 0,
 	    vy:Number = 0;
 
+	public var
+	    isAdjusting:Boolean = false;
+
 	public function moveLeft(xLimit:Number):void {
 	    vx = -xSpeed;
 	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);

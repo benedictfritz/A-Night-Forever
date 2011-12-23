@@ -27,18 +27,26 @@ package worlds
 
 	private var
 	    adjustingPositions:Boolean,
-	    textBubble:Entity,
+	    playerTextBubble:Entity,
+	    soTextBubble:Entity,
 	    currSpeech:Object,
 	    player:Player,
 	    sO:SO,
 	    conversation:Array;
 
 	public function Intro():void {
+	    player = new Player();
+	    sO = new SO();
 	    conversation = new Array();
 	    adjustingPositions = false;
-	    textBubble = new Entity();
-	    add(textBubble);
-	    textBubble.visible = false;
+
+	    playerTextBubble = new Entity();
+	    add(playerTextBubble);
+	    playerTextBubble.visible = false;
+
+	    soTextBubble = new Entity();
+	    add(soTextBubble);
+	    soTextBubble.visible = false;
 	}
 
 	override public function begin():void {
@@ -61,7 +69,6 @@ package worlds
 	    for each(dataElement in dataList) 
 	    {	    
 		player = new Player(int(dataElement.@x), int(dataElement.@y));
-		add(player);
 	    }
 
 	    initConversation();
@@ -69,28 +76,20 @@ package worlds
 
 	override public function update():void {
 	    super.update();
+	    
+	    FP.console.log("updating and visible is" + this.visible);
 
 	    if (adjustingPositions) {
-		var currActor:Actor;
-		if (currSpeech["char"] == PLAYER_VAL) { currActor = player; }
-		else if (currSpeech["char"] == SO_VAL) { currActor = sO; }
-
-		var adjustingX:Number = currActor.centerX;
-		var endX:Number = textBubble.centerX;
-		if (adjustingX < endX) { currActor.moveRight(endX); }
-		else if (adjustingX > endX) { currActor.moveLeft(endX);}
-		if (endX == adjustingX) { 
-		    textBubble.visible = true;
-		    adjustingPositions = false; 
-		    player.setControllable(true);
-		}
-
-		return;
+		if (player.isAdjusting) { adjustActor(player, playerTextBubble); }
+		if (sO.isAdjusting) { adjustActor(sO, soTextBubble); }
 	    }
 	    
-	    if (Input.pressed(Key.X)) {
+	    if (Input.pressed(Key.X) && !adjustingPositions) {
 		player.setControllable(false);
-	    	displaySpeech(conversation.pop());
+		FP.console.log("pop");
+		// normally I would pop off function references every time the player
+		// hits X
+		conversation.pop()();
 	    }
 
 	    if (player.x > FP.width / FP.screen.scale) {
@@ -98,36 +97,47 @@ package worlds
 	    }
 	}
 
-	private function displaySpeech(speech:Object):void {
-	    currSpeech = speech;
-	    if (textBubble) { textBubble.visible = false; }
-	    var wordsPoint:Point = speech["location"];
-	    textBubble.x = wordsPoint.x;
-	    textBubble.y = wordsPoint.y;
-
-	    var newWords:Text = new Text(speech["words"]);
-	    newWords.color = 0xFFFFFF;
-	    textBubble.graphic = newWords;
-	    textBubble.setHitbox(newWords.width, newWords.height);
-	    adjustingPositions = true;
+	override public function render():void {
+	    FP.console.log("rendering");
+	    super.render();
 	}
 
 	private function initConversation():void {
-	    var newSpeech:Object = new Object();
-
-	    newSpeech["words"] = "What a fun party.";
-	    newSpeech["char"] = PLAYER_VAL;
-	    newSpeech["location"] = new Point(0, 20);
-	    conversation.push(newSpeech);
-
-	    newSpeech = new Object();
-	    newSpeech["words"] = "I'm talking to myself.";
-	    newSpeech["char"] = PLAYER_VAL;
-	    newSpeech["location"] = new Point(200, 20);
-	    conversation.push(newSpeech);
-
-	    // reverse the array so that we can simply pop things off
+	    conversation = new Array(convoFirst, convoSecond);
 	    conversation.reverse();
 	}
+
+	private function adjustActor(actor:Actor, endEntity:Entity):void {
+	    var adjustingX:Number = actor.centerX;
+	    var endX:Number = endEntity.centerX;
+	    if (adjustingX < endX) { actor.moveRight(endX); }
+	    else if (adjustingX > endX) { actor.moveLeft(endX);}
+	    if (endX == adjustingX) { 
+	    	endEntity.visible = true;
+	    	adjustingPositions = false; 
+	    	player.setControllable(true);
+	    }
+	}
+
+	private function convoFirst():void {
+	    add(player);
+	}
+
+	private function convoSecond():void {
+	    adjustingPositions = true;
+	    player.isAdjusting = true;
+	    playerTextBubble.x = 60;
+	    playerTextBubble.y = 20;
+	    
+	    var words:Text = new Text("What a fun party.");
+	    words.color = 0xFFFFFF;
+	    playerTextBubble.graphic = words;
+	    playerTextBubble.setHitbox(words.width, words.height);
+	}
+
+	private function convoThird():void {
+	    add(player);
+	}
+
     }
 }
