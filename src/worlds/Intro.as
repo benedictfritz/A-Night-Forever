@@ -107,7 +107,9 @@ package worlds
 	}
 
 	private function initConversation():void {
-	    conversation = new Array(convoFirst, convoSecond, convoThird);
+	    conversation = new Array(convoFirst, convoSecond, convoThird, 
+				     convoFourth, convoFifth, convoSixth,
+				     convoSeventh);
 	    conversation.reverse();
 	}
 
@@ -146,6 +148,8 @@ package worlds
 	private function convoSecond():void {
 	    add(sO);
 
+	    playerTextBubble.visible = false;
+	    
 	    var moveToCenterAndSpeak:Function = function():void {
 		adjustingPositions = true;
 		sO.isAdjusting = true;
@@ -156,7 +160,7 @@ package worlds
 		words.size = 8;
 		words.color = sO.color;
 		sOTextBubble.graphic = words;
-		sOTextBubble.setHitbox(words.width, words.height)
+		sOTextBubble.setHitbox(words.width, words.height);
 		sOTextBubble.visible = false;
 	    }
 	    setTimeout(moveToCenterAndSpeak, 300);
@@ -189,5 +193,89 @@ package worlds
 		playerTextBubble.visible = false;
 	    }
 	}
+
+	private function convoFourth():void {
+	    adjustingPositions = true;
+
+	    // sO
+	    {
+		sOTextBubble.visible = false;
+	    }
+
+	    // player
+	    {
+		var playerWords:Text = new Text("Wow, thanks!");
+		playerWords.size = 8;
+		playerWords.color = player.color;
+		playerTextBubble.setHitbox(playerWords.width, playerWords.height);
+
+		playerTextBubble.x = player.centerX - playerTextBubble.halfWidth;
+		playerTextBubble.graphic = playerWords;
+		playerTextBubble.visible = true;
+	    }
+	}
+
+	private function convoFifth():void {
+	    adjustingPositions = true;
+
+	    // sO movement
+	    {
+		var sOWords:Text = 
+		    new Text("Follow me...");
+		sOWords.size = 8;
+		sOWords.color = sO.color;
+		sOTextBubble.graphic = sOWords;
+		sOTextBubble.setHitbox(sOWords.width, sOWords.height);
+		sOTextBubble.x = sO.centerX - sOTextBubble.halfWidth;
+		sOTextBubble.visible = true;
+	    }
+
+	    // player movement
+	    {
+		playerTextBubble.visible = false;
+	    }
+	}
+
+	private function convoSixth():void {
+	    adjustingPositions = true;
+
+	    // sO movement
+	    {
+		var sOWords:Text = 
+		    new Text("I want to show you something");
+		sOWords.size = 8;
+		sOWords.color = sO.color;
+		sOTextBubble.graphic = sOWords;
+		sOTextBubble.setHitbox(sOWords.width, sOWords.height);
+		sOTextBubble.x = sO.centerX - sOTextBubble.halfWidth;
+		sOTextBubble.visible = true;
+	    }
+
+	    // player movement
+	    {
+		playerTextBubble.visible = false;
+	    }
+	}
+
+	private function convoSeventh():void {
+	    adjustingPositions = true;
+
+	    var offscreenX:Number = FP.width + 10;
+
+	    // move sO off screen first
+	    sO.isAdjusting = true;
+	    sOTextBubble.x = offscreenX;
+	    sOTextBubble.y = 230;
+	    sOTextBubble.visible = false;
+
+	    // player follows shortly afterward
+	    var movePlayerOffScreen:Function = function():void {
+		player.isAdjusting = true;
+		playerTextBubble.x = offscreenX;
+		playerTextBubble.visible = false;
+	    }
+	    setTimeout(movePlayerOffScreen, 500);
+	}
+
     }
 }

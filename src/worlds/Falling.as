@@ -15,16 +15,17 @@ package worlds
 	    private static const MAP_DATA:Class;
 
 	private const
-	    NUM_STARS:Number = 8,
+	    STAR_RANGE:Number = 4,
 	    FALLING_GRAVITY:Number = 0.1;
 
 	private var
 	    sectors:Array,
 	    currSector:Sector,
-	    couple:Couple;
+	    couple:Couple,
+	    minStars:Number = 8;
 
 	public function Falling():void {
-	    Util.addCenteredText("World One", this, 5, 1);
+	    sectors = new Array();
 	}
 
 	override public function begin():void {
@@ -59,17 +60,7 @@ package worlds
 	    updateCamera();
 
 	    if (!currSector.contains(couple.x, couple.y)) {
-		var newSectorX:int = int(couple.x/Sector.WIDTH);
-		var newSectorY:int = int(couple.y/Sector.HEIGHT);
-
-		var newCurrSector:Sector = isInSectorsArray(newSectorX, newSectorY);
-		if (newCurrSector) {
-		    currSector = newCurrSector;
-		}
-		else {
-		    newCurrSector = new Sector(newSectorX, newSectorY);
-		    sectors.push(newCurrSector);
-		}
+		pushNewSector();
 		updateSectors();
 	    }
 	}
@@ -87,59 +78,34 @@ package worlds
 	    }
 	}
 
+	private function pushNewSector():void {
+	    var newSectorX:int = int(couple.x/Sector.WIDTH);
+	    var newSectorY:int = int(couple.y/Sector.HEIGHT);
+
+	    var newCurrSector:Sector = isInSectorsArray(newSectorX, newSectorY);
+	    if (newCurrSector) {
+		currSector = newCurrSector;
+	    }
+	    else {
+		newCurrSector = new Sector(newSectorX, newSectorY);
+		sectors.push(newCurrSector);
+	    }
+	}
+
 	private function updateSectors():void {
 	    var sectorColumn:Number = currSector.column;
 	    var sectorRow:Number = currSector.row;
 
-	    // you could write this more concisely with just a nested loop, but this
-	    // way is much easier for me to understand.
-	    
-	    // start at the sector above the current sector and then update clockwise
-	    var column:Number = sectorColumn;
-	    var row:Number = sectorRow - 1;
-	    updateSector(column, row);
-
-	    // top right
-	    column = sectorColumn + 1;
-	    row = sectorRow - 1;
-	    updateSector(column, row);
-
-	    // right
-	    column = sectorColumn + 1;
-	    row = sectorRow;
-	    updateSector(column, row);
-
-	    // bottom right
-	    column = sectorColumn + 1;
-	    row = sectorRow + 1;
-	    updateSector(column, row);
-
-	    // bottom
-	    column = sectorColumn;
-	    row = sectorRow + 1;
-	    updateSector(column, row);
-
-	    // bottom left
-	    column = sectorColumn - 1;
-	    row = sectorRow + 1;
-	    updateSector(column, row);
-
-	    // left
-	    column = sectorColumn - 1;
-	    row = sectorRow;
-	    updateSector(column, row);
-
-	    // top left
-	    column = sectorColumn - 1;
-	    row = sectorRow - 1;
-	    updateSector(column, row);
-	}
-	
-	private function updateSector(column:Number, row:Number):void {
-	    if (!isInSectorsArray(column, row)) {
-		var newSector:Sector = new Sector(column, row);
-		sectors.push(newSector);
-		populateSector(newSector);
+	    for (var column:Number = sectorColumn-1; 
+		 column <= sectorColumn+1; column++) {
+		for (var row:Number = sectorRow-1; row <= sectorRow+1; row++) {
+		    if (!isInSectorsArray(column, row)) {
+			var newSector:Sector = new Sector(column, row);
+			sectors.push(newSector);
+			populateSector(newSector);
+			minStars -= 0.1;
+		    }		    
+		}
 	    }
 	}
 
@@ -153,11 +119,13 @@ package worlds
 	    return null;
 	}
 	
-	// fill sector randomly with stars
 	private function populateSector(sector:Sector):void {
 	    var starX:Number;
 	    var starY:Number;
-	    for (var i:Number=0; i < NUM_STARS; i++) {
+
+	    var numStars:Number = minStars + FP.random * STAR_RANGE;
+
+	    for (var i:Number=0; i < numStars; i++) {
 		starX = FP.random * Sector.WIDTH + sector.minX();
 		starY = FP.random * Sector.HEIGHT + sector.minY();
 		
