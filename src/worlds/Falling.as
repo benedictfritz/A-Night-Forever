@@ -10,7 +10,7 @@ package worlds
 
     public class Falling extends World
     {
-	[Embed(source="../../assets/levels/TestStars.oel", 
+	[Embed(source="../../assets/levels/Falling.oel", 
 	       mimeType="application/octet-stream")]
 	    private static const MAP_DATA:Class;
 
@@ -30,21 +30,15 @@ package worlds
 
 	override public function begin():void {
 	    super.begin();
-	    FP.screen.scale = 2;
 
 	    var level:Level = new Level(MAP_DATA);
 	    add(level);
 
-	    var levelData:XML;
-	    var dataList:XMLList;
-	    var dataElement:XML;
-	    levelData = level.getLevelData();
-
 	    // should only have one couple, but with this code, 
 	    // only the last one will get added
-	    dataList = levelData.objects.couple;
-	    for each(dataElement in dataList) 
-	    {	    
+	    var levelData:XML = level.getLevelData();
+	    var dataList:XMLList = levelData.objects.couple;
+	    for each(var dataElement:XML in dataList) {	    
 		couple = new Couple(int(dataElement.@x), int(dataElement.@y));
 		add(couple);
 	    }
@@ -62,20 +56,18 @@ package worlds
 	    if (!currSector.contains(couple.x, couple.y)) {
 		pushNewSector();
 		updateSectors();
+		if (minStars < -STAR_RANGE) {
+		    FP.world = new Reality();
+		}
 	    }
 	}
 
 	private function updateCamera():void {
-	    camera.x = couple.x - FP.halfWidth / FP.screen.scale + 
-		(couple.width / 2);
-	    camera.y = couple.y - FP.halfHeight / FP.screen.scale + couple.height;
+	    camera.x = couple.x - FP.halfWidth + (couple.width / 2);
+	    camera.y = couple.y - FP.halfHeight + couple.height;
 	    
-	    if (camera.x < 0) {
-		camera.x = 0;
-	    }
-	    if (camera.y < 0) {
-		camera.y = 0;
-	    }
+	    if (camera.x < 0) { camera.x = 0; }
+	    if (camera.y < 0) { camera.y = 0; }
 	}
 
 	private function pushNewSector():void {
@@ -122,9 +114,8 @@ package worlds
 	private function populateSector(sector:Sector):void {
 	    var starX:Number;
 	    var starY:Number;
-
 	    var numStars:Number = minStars + FP.random * STAR_RANGE;
-
+	    
 	    for (var i:Number=0; i < numStars; i++) {
 		starX = FP.random * Sector.WIDTH + sector.minX();
 		starY = FP.random * Sector.HEIGHT + sector.minY();

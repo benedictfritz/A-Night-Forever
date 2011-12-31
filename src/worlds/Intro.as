@@ -53,24 +53,16 @@ package worlds
 	override public function begin():void {
 	    super.begin();
 
-	    FP.screen.scale = 2;
-	    
 	    var level:Level = new Level(MAP_DATA);
 	    add(level);
 
-	    var levelData:XML;
-	    var dataList:XMLList;
-	    var dataElement:XML;
-
-	    levelData = level.getLevelData();
-
-
 	    // should only have one player and so, but with this code
 	    // only the last one will get added
-
-	    dataList = levelData.objects.player;
-	    for each(dataElement in dataList) {	    
+	    var levelData:XML = level.getLevelData();
+	    var dataList:XMLList = levelData.objects.player;
+	    for each(var dataElement:XML in dataList) {	    
 		player = new Player(int(dataElement.@x), int(dataElement.@y));
+		add(player);
 	    }
 	    player.setControllable(false);
 
@@ -101,7 +93,7 @@ package worlds
 		conversation.pop()();
 	    }
 
-	    if (player.x > FP.width / FP.screen.scale) {
+	    if (player.x > FP.width) {
 		FP.world = new Falling();
 	    }
 	}

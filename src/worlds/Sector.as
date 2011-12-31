@@ -8,8 +8,8 @@ package worlds
     public class Sector extends Entity {
 	// the width and height are one screen width
 	public static const
-	    WIDTH:Number = FP.width / FP.screen.scale,
-	    HEIGHT:Number = FP.height / FP.screen.scale;;
+	    WIDTH:Number = FP.width,
+	    HEIGHT:Number = FP.height;
 
 	public var
 	    column:Number,

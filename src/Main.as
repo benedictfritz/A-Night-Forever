@@ -9,7 +9,8 @@ package
 
     public class Main extends Engine {
 	public function Main() {
-	    super(800, 600, 60, false);
+	    super(400, 300, 60, false);
+	    FP.screen.scale = 2;
 	    FP.console.enable();
 	    FP.world = new Falling();
 	}
