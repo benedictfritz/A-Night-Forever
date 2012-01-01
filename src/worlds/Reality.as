@@ -15,7 +15,8 @@ package worlds
 	    private static const MAP_DATA:Class;
 
 	private var
-	    player:Player;
+	    player:Player,
+	    sO:SO;
 
 	public function Reality():void {
 	}
@@ -31,9 +32,15 @@ package worlds
 	    // only the last one will get added
 	    var levelData:XML = level.getLevelData();
 	    var dataList:XMLList = levelData.objects.player;
-	    for each(var dataElement:XML in dataList) {	    
+	    var dataElement:XML;
+	    for each(dataElement in dataList) {	    
 		player = new Player(int(dataElement.@x), int(dataElement.@y));
 		add(player);
+	    }
+	    dataList = levelData.objects.so;
+	    for each(dataElement in dataList) {	    
+		sO = new SO(int(dataElement.@x), int(dataElement.@y));
+		add(sO);
 	    }
 	}
 

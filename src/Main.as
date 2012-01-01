@@ -12,7 +12,7 @@ package
 	    super(400, 300, 60, false);
 	    FP.screen.scale = 2;
 	    FP.console.enable();
-	    FP.world = new Falling();
+	    FP.world = new Reality();
 	}
     }
 }

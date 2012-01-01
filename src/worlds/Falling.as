@@ -16,7 +16,8 @@ package worlds
 
 	private const
 	    STAR_RANGE:Number = 4,
-	    FALLING_GRAVITY:Number = 0.1;
+	    FALLING_GRAVITY:Number = 0.1,
+	    WORLD_CHANGE_BUFFER:Number = 3;
 
 	private var
 	    sectors:Array,
@@ -56,7 +57,7 @@ package worlds
 	    if (!currSector.contains(couple.x, couple.y)) {
 		pushNewSector();
 		updateSectors();
-		if (minStars < -STAR_RANGE) {
+		if (minStars < -STAR_RANGE - WORLD_CHANGE_BUFFER) {
 		    FP.world = new Reality();
 		}
 	    }
