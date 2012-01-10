@@ -16,7 +16,7 @@ package worlds
 
 	private var
 	    player:Player,
-	    sO:SO;
+	    SO:RunningSO;
 
 	public function Reality():void {
 	}
@@ -39,17 +39,21 @@ package worlds
 	    }
 	    dataList = levelData.objects.so;
 	    for each(dataElement in dataList) {	    
-		sO = new SO(int(dataElement.@x), int(dataElement.@y));
-		add(sO);
+		SO = new RunningSO(int(dataElement.@x), int(dataElement.@y));
+		add(SO);
 	    }
 	}
 
 	override public function update():void {
 	    super.update();
-	    updateCamera();
-	}
-
-	private function updateCamera():void {
+	    
+	    if (player.x < FP.camera.x) {
+		// have so come back and pick player up
+		SO.pickUpPlayer(player.x, player.y);
+	    }
+	    else {
+		FP.camera.x = SO.x - FP.width + SO.width;
+	    }
 	}
     }
 }
