@@ -52,7 +52,8 @@ package entities
 	    else if (Input.check(Key.A)) { vx = -xSpeed; }
 	    else { vx = 0; }
 	    vx == 0 ? sprActor.play("stand") : sprActor.play("run");
-	    flip(vx < 0);
+	    
+	    if(vx != 0) { vx < 0 ? flip(true) : flip(false); }
 
 	    // jumping movement
 	    if (Input.check(Key.W)) {
