@@ -83,14 +83,13 @@ package entities
 
 	private function bounceUp():void {
 	    var bounceUpTween:VarTween = new VarTween(bounceDown);
-	    bounceUpTween.tween(this, "y", this.y - 10, PLAYER_BOUNCE_SPEED);//, Ease.backInOut);
+	    bounceUpTween.tween(this, "y", this.y - 10, PLAYER_BOUNCE_SPEED);
 	    FP.world.addTween(bounceUpTween, true);
 	}
 
 	private function bounceDown():void {
-	    FP.console.log("down");
 	    var bounceDownTween:VarTween = new VarTween(bounceUp);
-	    bounceDownTween.tween(this, "y", this.y + 10, PLAYER_BOUNCE_SPEED);//, Ease.backInOut);
+	    bounceDownTween.tween(this, "y", this.y + 10, PLAYER_BOUNCE_SPEED);
 	    FP.world.addTween(bounceDownTween, true);
 	}
 
