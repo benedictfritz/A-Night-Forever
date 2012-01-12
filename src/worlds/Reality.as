@@ -16,7 +16,8 @@ package worlds
 
 	private var
 	    player:Player,
-	    SO:RunningSO;
+	    SO:RunningSO,
+	    pickingUp:Boolean;
 
 	public function Reality():void {
 	}
@@ -46,10 +47,15 @@ package worlds
 
 	override public function update():void {
 	    super.update();
+
+	    if (pickingUp) {
+		return;
+	    }
 	    
 	    if (player.x < FP.camera.x) {
 		// have so come back and pick player up
 		SO.pickUpPlayer(player.x, player.y);
+		pickingUp = true;
 	    }
 	    else {
 		FP.camera.x = SO.x - FP.width + SO.width;

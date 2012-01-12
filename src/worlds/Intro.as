@@ -87,7 +87,6 @@ package worlds
 	    }
 	    
 	    if (Input.pressed(Key.X) && !adjustingPositions) {
-		FP.console.log("pop");
 		// normally I would pop off function references every time the player
 		// hits X
 		conversation.pop()();
