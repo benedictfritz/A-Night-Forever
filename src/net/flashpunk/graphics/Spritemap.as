@@ -1,12 +1,9 @@
 ﻿package net.flashpunk.graphics 
 {
-	import flash.display.BitmapData;
-	import flash.display.BlendMode;
-	import flash.display.SpreadMethod;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
+
 	import net.flashpunk.FP;
-	
+
 	/**
 	 * Performance-optimized animated Image. Can have multiple animations,
 	 * which draw frames from the provided source image to the screen.
@@ -57,9 +54,8 @@
 		override public function updateBuffer(clearBefore:Boolean = false):void 
 		{
 			// get position of the current frame
-			_rect.x = _rect.width * _frame;
-			_rect.y = uint(_rect.x / _width) * _rect.height;
-			_rect.x %= _width;
+			_rect.x = _rect.width * (_frame % _columns);
+			_rect.y = _rect.height * uint(_frame / _columns);
 			if (_flipped) _rect.x = (_width - _rect.width) - _rect.x;
 			
 			// update the buffer
@@ -71,7 +67,7 @@
 		{
 			if (_anim && !complete)
 			{
-				_timer += (FP.fixed ? _anim._frameRate : _anim._frameRate * FP.elapsed) * rate;
+				_timer += (FP.timeInFrames ? _anim._frameRate : _anim._frameRate * FP.elapsed) * rate;
 				if (_timer >= 1)
 				{
 					while (_timer >= 1)
@@ -119,9 +115,10 @@
 		 * Plays an animation.
 		 * @param	name		Name of the animation to play.
 		 * @param	reset		If the animation should force-restart if it is already playing.
+		 * @param	frame		Frame of the animation to start from, if restarted.
 		 * @return	Anim object representing the played animation.
 		 */
-		public function play(name:String = "", reset:Boolean = false):Anim
+		public function play(name:String = "", reset:Boolean = false, frame:int = 0):Anim
 		{
 			if (!reset && _anim && _anim._name == name) return _anim;
 			_anim = _anims[name];
@@ -134,7 +131,7 @@
 			}
 			_index = 0;
 			_timer = 0;
-			_frame = uint(_anim._frames[0]);
+			_frame = uint(_anim._frames[frame % _anim._frameCount]);
 			complete = false;
 			updateBuffer();
 			return _anim;
@@ -163,6 +160,7 @@
 			var frame:uint = (row % _rows) * _columns + (column % _columns);
 			if (_frame == frame) return;
 			_frame = frame;
+			_timer = 0;
 			updateBuffer();
 		}
 		
@@ -199,6 +197,7 @@
 			if (value < 0) value = _frameCount + value;
 			if (_frame == value) return;
 			_frame = value;
+			_timer = 0;
 			updateBuffer();
 		}
 		
@@ -213,6 +212,7 @@
 			if (_index == value) return;
 			_index = value;
 			_frame = uint(_anim._frames[_index]);
+			_timer = 0;
 			updateBuffer();
 		}
 		

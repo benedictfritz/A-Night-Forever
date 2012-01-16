@@ -8,13 +8,14 @@
 	import flash.geom.Rectangle;
 	import flash.media.SoundMixer;
 	import flash.media.SoundTransform;
-	import flash.system.System;
 	import flash.utils.ByteArray;
+	import flash.utils.Dictionary;
 	import flash.utils.getTimer;
-	import net.flashpunk.*;
+
 	import net.flashpunk.debug.Console;
+	import net.flashpunk.tweens.misc.Alarm;
 	import net.flashpunk.tweens.misc.MultiVarTween;
-	
+
 	/**
 	 * Static catch-all class used to access global properties and functions.
 	 */
@@ -23,7 +24,7 @@
 		/**
 		 * The FlashPunk major version.
 		 */
-		public static const VERSION:String = "1.4";
+		public static const VERSION:String = "1.6";
 		
 		/**
 		 * Width of the game.
@@ -36,9 +37,25 @@
 		public static var height:uint;
 		
 		/**
+		 * Half width of the game.
+		 */
+		public static var halfWidth:Number;
+		
+		/**
+		 * Half height of the game.
+		 */
+		public static var halfHeight:Number;
+		
+		/**
 		 * If the game is running at a fixed framerate.
 		 */
 		public static var fixed:Boolean;
+		
+		/**
+		 * If times should be given in frames (as opposed to seconds).
+		 * Default is true in fixed timestep mode and false in variable timestep mode.
+		 */
+		public static var timeInFrames:Boolean;
 		
 		/**
 		 * The framerate assigned to the stage.
@@ -51,12 +68,12 @@
 		public static var assignedFrameRate:Number;
 		
 		/**
-		 * Time elapsed since the last frame (non-fixed framerate only).
+		 * Time elapsed since the last frame (in seconds).
 		 */
 		public static var elapsed:Number;
 		
 		/**
-		 * Timescale applied to FP.elapsed (non-fixed framerate only).
+		 * Timescale applied to FP.elapsed.
 		 */
 		public static var rate:Number = 1;
 		
@@ -81,14 +98,14 @@
 		public static var camera:Point = new Point;
 		
 		/**
-		 * Half the screen width.
+		 * Global Tweener for tweening values across multiple worlds.
 		 */
-		public static function get halfWidth():Number { return width / 2; }
+		public static var tweener:Tweener = new Tweener;
 		
 		/**
-		 * Half the screen height.
+		 * If the game currently has input focus or not. Note: may not be correct initially.
 		 */
-		public static function get halfHeight():Number { return height / 2; }
+		public static var focused:Boolean = true;
 		
 		/**
 		 * The currently active World object. When you set this, the World is flagged
@@ -146,8 +163,25 @@
 		}
 		
 		/**
+		 * Remove an element from an array
+		 * @return	True if element existed and has been removed, false if element was not in array.
+		 */
+		public static function remove(array:*, toRemove:*):Boolean
+		{
+			var i:int = array.indexOf(toRemove);
+			
+			if (i >= 0) {
+				array.splice(i, 1);
+			
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
+		/**
 		 * Randomly chooses and returns one of the provided values.
-		 * @param	...objs		The Objects you want to randomly choose from. Can be ints, Numbers, Points, etc.
+		 * @param	objs		The Objects you want to randomly choose from. Can be ints, Numbers, Points, etc.
 		 * @return	A randomly chosen one of the provided parameters.
 		 */
 		public static function choose(...objs):*
@@ -294,6 +328,21 @@
 			FP.angleXY(object, angle, FP.distance(anchor.x, anchor.y, object.x, object.y), anchor.x, anchor.y);
 		}
 		
+		/**
+		 * Gets the difference of two angles, wrapped around to the range -180 to 180.
+		 * @param	a	First angle in degrees.
+		 * @param	b	Second angle in degrees.
+		 * @return	Difference in angles, wrapped around to the range -180 to 180.
+		 */
+		public static function angleDiff(a:Number, b:Number):Number
+		{
+			var diff:Number = b - a;
+
+			while (diff > 180) { diff -= 360; }
+			while (diff <= -180) { diff += 360; }
+
+			return diff;
+		}
 		/**
 		 * Find the distance between two points.
 		 * @param	x1		The first x-position.
@@ -537,9 +586,12 @@
 		 */
 		public static function getColorHSV(h:Number, s:Number, v:Number):uint
 		{
+			h = h < 0 ? 0 : (h > 1 ? 1 : h);
+			s = s < 0 ? 0 : (s > 1 ? 1 : s);
+			v = v < 0 ? 0 : (v > 1 ? 1 : v);
 			h = int(h * 360);
-			var hi:int = Math.floor(h / 60) % 6,
-				f:Number = h / 60 - Math.floor(h / 60),
+			var hi:int = int(h / 60) % 6,
+				f:Number = h / 60 - int(h / 60),
 				p:Number = (v * (1 - s)),
 				q:Number = (v * (1 - f * s)),
 				t:Number = (v * (1 - (1 - f) * s));
@@ -553,7 +605,6 @@
 				case 5: return int(v * 255) << 16 | int(p * 255) << 8 | int(q * 255);
 				default: return 0;
 			}
-			return 0;
 		}
 		
 		/**
@@ -593,8 +644,16 @@
 		 */
 		public static function getBitmap(source:Class):BitmapData
 		{
-			if (_bitmap[String(source)]) return _bitmap[String(source)];
-			return (_bitmap[String(source)] = (new source).bitmapData);
+			if (_bitmap[source]) return _bitmap[source];
+			return (_bitmap[source] = (new source).bitmapData);
+		}
+		
+		/**
+		 * Clears the cache of BitmapData objects used by the getBitmap method.
+		 */
+		public static function clearBitmapCache():void
+		{
+			_bitmap = new Dictionary();
 		}
 		
 		/**
@@ -620,7 +679,7 @@
 		
 		/**
 		 * Logs data to the console.
-		 * @param	...data		The data parameters to log, can be variables, objects, etc. Parameters will be separated by a space (" ").
+		 * @param	data		The data parameters to log, can be variables, objects, etc. Parameters will be separated by a space (" ").
 		 */
 		public static function log(...data):void
 		{
@@ -642,7 +701,7 @@
 		
 		/**
 		 * Adds properties to watch in the console's debug panel.
-		 * @param	...properties		The properties (strings) to watch.
+		 * @param	properties		The properties (strings) to watch.
 		 */
 		public static function watch(...properties):void
 		{
@@ -680,13 +739,21 @@
 		 */
 		public static function tween(object:Object, values:Object, duration:Number, options:Object = null):MultiVarTween
 		{
+			if (options && options.hasOwnProperty("delay")) {
+				var delay:Number = options.delay;
+				delete options.delay;
+				FP.alarm(delay, function ():void { FP.tween(object, values, duration, options); });
+				return null;
+			}
+			
 			var type:uint = Tween.ONESHOT,
 				complete:Function = null,
 				ease:Function = null,
-				tweener:Tweener = FP.world;
+				tweener:Tweener = FP.tweener;
 			if (object is Tweener) tweener = object as Tweener;
 			if (options)
 			{
+				if (options is Function) complete = options as Function;
 				if (options.hasOwnProperty("type")) type = options.type;
 				if (options.hasOwnProperty("complete")) complete = options.complete;
 				if (options.hasOwnProperty("ease")) ease = options.ease;
@@ -696,6 +763,27 @@
 			tween.tween(object, values, duration, ease);
 			tweener.addTween(tween);
 			return tween;
+		}
+		
+		/**
+		 * Schedules a callback for the future. Shorthand for creating an Alarm tween, starting it and adding it to a Tweener.
+		 * @param	delay		The duration to wait before calling the callback.
+		 * @param	callback	The function to be called.
+		 * @param	type		The tween type (PERSIST, LOOPING or ONESHOT). Defaults to ONESHOT.
+		 * @param	tweener		The Tweener object to add this Alarm to. Defaults to FP.tweener.
+		 * @return	The added Alarm object.
+		 * 
+		 * Example: FP.alarm(5.0, callbackFunction, Tween.LOOPING); // Calls callbackFunction every 5 seconds
+		 */
+		public static function alarm(delay:Number, callback:Function, type:uint = 2, tweener:Tweener = null):Alarm
+		{
+			if (! tweener) tweener = FP.tweener;
+			
+			var alarm:Alarm = new Alarm(delay, callback, type);
+			
+			tweener.addTween(alarm, true);
+			
+			return alarm;
 		}
 		
 		/**
@@ -855,9 +943,9 @@
 		/** @private */ public static var _flashTime:uint;
 		
 		// Bitmap storage.
-		/** @private */ private static var _bitmap:Object = { };
+		/** @private */ private static var _bitmap:Dictionary = new Dictionary();
 		
-		// Pseudo-random number generation (the seed is set in Engine's contructor).
+		// Pseudo-random number generation (the seed is set in Engine's constructor).
 		/** @private */ private static var _seed:uint = 0;
 		/** @private */ private static var _getSeed:uint;
 		
