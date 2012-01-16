@@ -17,7 +17,6 @@ package entities
 	    isAdjusting:Boolean = false;
 
 	public function moveLeft(xLimit:Number):void {
-	    FP.console.log("moving left");
 	    vx = -xSpeed;
 	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
 	    this.playLeft();
@@ -28,7 +27,6 @@ package entities
 	}
 
 	public function moveRight(xLimit:Number):void {
-	    FP.console.log("moving right");
 	    vx = xSpeed;
 	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
 	    this.playRight();	    

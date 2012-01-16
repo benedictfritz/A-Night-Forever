@@ -105,7 +105,6 @@ package worlds
 	}
 
 	private function adjustActor(actor:Actor, endEntity:Entity):void {
-	    FP.console.log("adjusting " + FP.elapsed);
 	    var adjustingX:Number = actor.centerX;
 	    var endX:Number = endEntity.centerX;
 	    if (adjustingX < endX) { actor.moveRight(endX); }
@@ -113,7 +112,6 @@ package worlds
 	    if (endX == adjustingX) { 
 	    	endEntity.visible = true;
 		actor.isAdjusting = false;
-		FP.console.log("done adjusting");
 	    }
 	}
 
