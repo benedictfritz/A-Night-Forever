@@ -9,12 +9,10 @@ package entities
 	[Embed(source = '../../assets/images/png/player_anim.png')]
 	    private const SO_SPRITE:Class;
 
-	public var
-	    color:uint = 0xEE0000;
-
 	public function SO(x:int=0, y:int=0) {
 	    this.x = x;
 	    this.y = y;
+	    this.color = 0xEE0000;
 
 	    // set variables declared in super
 	    sprActor = new Spritemap(SO_SPRITE, 32, 32);

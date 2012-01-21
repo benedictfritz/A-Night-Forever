@@ -17,12 +17,10 @@ package entities
 	private var
 	    gravity:Number = 300;
 
-	public var
-	    color:uint = 0xEEEEEE;
-
 	public function Player(x:int=0, y:int=0) {
 	    this.x = x;
 	    this.y = y;
+	    this.color = 0xEEEEEE;
 
 	    // declared within super
 	    xSpeed = 80;

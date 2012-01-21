@@ -14,7 +14,8 @@ package entities
 	    sprActor:Spritemap;
 
 	public var
-	    isAdjusting:Boolean = false;
+	    isAdjusting:Boolean = false,
+	    color:uint = 0xFFFFFF;
 
 	public function moveLeft(xLimit:Number):void {
 	    vx = -xSpeed;
