@@ -33,7 +33,9 @@ package worlds
 	    currSpeech:Object,
 	    player:Player,
 	    sO:SO,
-	    conversation:Array;
+	    conversation:Array,
+	    textOptions:Object,
+	    textBubbleHeight:Number = 230;
 
 	public function Intro():void {
 	    player = new Player();
@@ -115,129 +117,93 @@ package worlds
 	    }
 	}
 
+	// not sure how to do compile-time constants, but speechY's default value
+	// should always match textBubbleHeight
+	private function setupSpeechBubble(text:String, actor:Actor, 
+					   speechBubble:Entity, speechX:Number,
+					   speechY:Number=230):void {
+	    textOptions = new Object();
+	    textOptions["size"] = 8;
+	    textOptions["color"] = actor.color;
+	    
+	    var words:Text = new Text(text, 0, 0, textOptions);
+	    speechBubble.graphic = words;
+	    speechBubble.visible = false;
+	    speechBubble.x = speechX;
+	    speechBubble.y = speechY;
+	    speechBubble.setHitbox(words.width, words.height);
+	}
+
+	private function adjustPlayer():void {
+	    adjustingPositions = true;
+	    player.isAdjusting = true;
+	}
+
+	private function adjustSO():void {
+	    adjustingPositions = true;
+	    sO.isAdjusting = true;
+	}
+
 	private function convoFirst():void {
 	    add(player);
-	    
+
 	    var moveToCenterAndSpeak:Function = function():void {
-		adjustingPositions = true;
-		player.isAdjusting = true;
-		playerTextBubble.x = 200;
-		playerTextBubble.y = 230;
-	    
-		var words:Text = new Text("What a fun party.");
-		words.size = 8;
-		words.color = player.color;
-		playerTextBubble.graphic = words;
-		playerTextBubble.setHitbox(words.width, words.height);
-		playerTextBubble.visible = false;
+		setupSpeechBubble("What a fun party.", player, playerTextBubble,
+				  200);
+		adjustPlayer();
 	    }
+
 	    setTimeout(moveToCenterAndSpeak, 300);
 	}
 
 	private function convoSecond():void {
 	    add(sO);
-
 	    playerTextBubble.visible = false;
 	    
 	    var moveToCenterAndSpeak:Function = function():void {
-		adjustingPositions = true;
-		sO.isAdjusting = true;
-		sOTextBubble.x = 100;
-		sOTextBubble.y = 230;
-	    
-		var words:Text = new Text("Hey, wait!");
-		words.size = 8;
-		words.color = sO.color;
-		sOTextBubble.graphic = words;
-		sOTextBubble.setHitbox(words.width, words.height);
-		sOTextBubble.visible = false;
+		adjustSO();
+		setupSpeechBubble("Hey, wait!", sO, sOTextBubble, 100, 
+				  textBubbleHeight);
 	    }
 	    setTimeout(moveToCenterAndSpeak, 300);
 	}
 
 	private function convoThird():void {
-	    adjustingPositions = true;
-
-	    // sO movement
-	    {
-		sO.isAdjusting = true;
-
-		var sOWords:Text = new Text("You forgot your keys.");
-		sOWords.size = 8;
-		sOWords.color = sO.color;
-		sOTextBubble.graphic = sOWords;
-		sOTextBubble.setHitbox(sOWords.width, sOWords.height);
-		sOTextBubble.x = 165;
-		sOTextBubble.visible = false;
-	    }
-
-	    // player movement
-	    {
-		player.isAdjusting = true;;
-
-		var playerWords:Text = new Text("");
-		playerTextBubble.graphic = playerWords;
-		playerTextBubble.setHitbox(playerWords.width, playerWords.height);
-		playerTextBubble.x = 235;
-		playerTextBubble.visible = false;
-	    }
+	    adjustSO();
+	    setupSpeechBubble("You forgot your keys.", sO, sOTextBubble, 165);
+	    adjustPlayer();
+	    setupSpeechBubble("", player, playerTextBubble, playerTextBubble.y);
 	}
 
 	private function convoFourth():void {
-	    adjustingPositions = true;
+	    sOTextBubble.visible = false;
 
-	    // sO
-	    {
-		sOTextBubble.visible = false;
-	    }
-
-	    // player
-	    {
-		var playerWords:Text = new Text("Wow, thanks!");
-		playerWords.size = 8;
-		playerWords.color = player.color;
-		playerTextBubble.setHitbox(playerWords.width, playerWords.height);
-
-		playerTextBubble.x = player.centerX - playerTextBubble.halfWidth;
-		playerTextBubble.graphic = playerWords;
-		playerTextBubble.visible = true;
-	    }
+	    setupSpeechBubble("Wow, thanks!", player, playerTextBubble, player.x);
+	    // by default the speech bubble is set to invisible for moving
+	    playerTextBubble.visible = true;
 	}
 
 	private function convoFifth():void {
-	    adjustingPositions = true;
+	    setupSpeechBubble("Follow me...", sO, sOTextBubble, 
+			      sO.centerX - sOTextBubble.halfWidth);
+	    sOTextBubble.visible = true;
 
-	    // sO movement
-	    {
-		var sOWords:Text = 
-		    new Text("Follow me...");
-		sOWords.size = 8;
-		sOWords.color = sO.color;
-		sOTextBubble.graphic = sOWords;
-		sOTextBubble.setHitbox(sOWords.width, sOWords.height);
-		sOTextBubble.x = sO.centerX - sOTextBubble.halfWidth;
-		sOTextBubble.visible = true;
-	    }
-
-	    // player movement
-	    {
-		playerTextBubble.visible = false;
-	    }
+	    playerTextBubble.visible = false;
 	}
 
 	private function convoSixth():void {
 	    adjustingPositions = true;
 
-	    // sO movement
+	    sO movement
 	    {
-		var sOWords:Text = 
-		    new Text("I want to show you something");
-		sOWords.size = 8;
-		sOWords.color = sO.color;
-		sOTextBubble.graphic = sOWords;
-		sOTextBubble.setHitbox(sOWords.width, sOWords.height);
-		sOTextBubble.x = sO.centerX - sOTextBubble.halfWidth;
-		sOTextBubble.visible = true;
+	    	var sOWords:Text = 
+	    	    new Text("I want to show you something");
+	    	sOWords.size = 8;
+	    	sOWords.color = sO.color;
+	    	sOTextBubble.graphic = sOWords;
+	    	sOTextBubble.setHitbox(sOWords.width, sOWords.height);
+	    	sOTextBubble.x = sO.centerX - sOTextBubble.halfWidth;
+	    	sOTextBubble.visible = true;
 	    }
 
 	    // player movement
@@ -254,7 +220,7 @@ package worlds
 	    // move sO off screen first
 	    sO.isAdjusting = true;
 	    sOTextBubble.x = offscreenX;
-	    sOTextBubble.y = 230;
+	    sOTextBubble.y = textBubbleHeight;
 	    sOTextBubble.visible = false;
 
 	    // player follows shortly afterward
