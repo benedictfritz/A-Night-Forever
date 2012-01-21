@@ -117,10 +117,13 @@ package worlds
 	    }
 	}
 
-	// not sure how to do compile-time constants, but speechY's default value
+	// - not sure how to do compile-time constants, but speechY's default value
 	// should always match textBubbleHeight
+	// - if center is true, it will override whatever positions are passed in
+	// and center the text right over the actor
 	private function setupSpeechBubble(text:String, actor:Actor, 
-					   speechBubble:Entity, speechX:Number,
+					   speechBubble:Entity, center:Boolean,
+					   speechX:Number=0, 
 					   speechY:Number=230):void {
 	    textOptions = new Object();
 	    textOptions["size"] = 8;
@@ -129,9 +132,14 @@ package worlds
 	    var words:Text = new Text(text, 0, 0, textOptions);
 	    speechBubble.graphic = words;
 	    speechBubble.visible = false;
-	    speechBubble.x = speechX;
-	    speechBubble.y = speechY;
 	    speechBubble.setHitbox(words.width, words.height);
+	    if (center) {
+		speechBubble.x = actor.x + actor.halfWidth - speechBubble.halfWidth;
+	    }
+	    else {
+		speechBubble.x = speechX;
+	    }
+	    speechBubble.y = speechY;
 	}
 
 	private function adjustPlayer():void {
@@ -149,7 +157,7 @@ package worlds
 
 	    var moveToCenterAndSpeak:Function = function():void {
 		setupSpeechBubble("What a fun party.", player, playerTextBubble,
-				  200);
+				  false, 200);
 		adjustPlayer();
 	    }
 
@@ -162,7 +170,7 @@ package worlds
 	    
 	    var moveToCenterAndSpeak:Function = function():void {
 		adjustSO();
-		setupSpeechBubble("Hey, wait!", sO, sOTextBubble, 100, 
+		setupSpeechBubble("Hey, wait!", sO, sOTextBubble, false, 100, 
 				  textBubbleHeight);
 	    }
 	    setTimeout(moveToCenterAndSpeak, 300);
@@ -170,22 +178,22 @@ package worlds
 
 	private function convoThird():void {
 	    adjustSO();
-	    setupSpeechBubble("You forgot your keys.", sO, sOTextBubble, 165);
+	    setupSpeechBubble("You forgot your keys.", sO, sOTextBubble, false, 165);
 	    adjustPlayer();
-	    setupSpeechBubble("", player, playerTextBubble, playerTextBubble.y);
+	    setupSpeechBubble("", player, playerTextBubble, false, 
+			      playerTextBubble.y);
 	}
 
 	private function convoFourth():void {
 	    sOTextBubble.visible = false;
 
-	    setupSpeechBubble("Wow, thanks!", player, playerTextBubble, player.x);
+	    setupSpeechBubble("Wow, thanks!", player, playerTextBubble, true);
 	    // by default the speech bubble is set to invisible for moving
 	    playerTextBubble.visible = true;
 	}
 
 	private function convoFifth():void {
-	    setupSpeechBubble("Follow me...", sO, sOTextBubble, 
-			      sO.centerX - sOTextBubble.halfWidth);
+	    setupSpeechBubble("Follow me...", sO, sOTextBubble, true);
 	    sOTextBubble.visible = true;
 
 	    playerTextBubble.visible = false;
@@ -194,17 +202,8 @@ package worlds
 	private function convoSixth():void {
 	    adjustingPositions = true;
 
-	    sO movement
-	    {
-	    	var sOWords:Text = 
-	    	    new Text("I want to show you something");
-	    	sOWords.size = 8;
-	    	sOWords.color = sO.color;
-	    	sOTextBubble.graphic = sOWords;
-	    	sOTextBubble.setHitbox(sOWords.width, sOWords.height);
-	    	sOTextBubble.x = sO.centerX - sOTextBubble.halfWidth;
-	    	sOTextBubble.visible = true;
-	    }
+	    setupSpeechBubble("I want to show you something", sO, sOTextBubble, true);
+	    sOTextBubble.visible = true;
 
 	    // player movement
 	    {
