@@ -95,7 +95,8 @@ package worlds
 	    }
 
 	    if (player.x > FP.width) {
-		FP.world = new Falling();
+		var transition:TransitionOut = new TransitionOut(new Falling());
+		FP.world.add(transition);
 	    }
 	}
 

@@ -23,7 +23,8 @@ package worlds
 	    sectors:Array,
 	    currSector:Sector,
 	    couple:Couple,
-	    minStars:Number = 8;
+	    minStars:Number = 8,
+	    transitionIn:TransitionIn;
 
 	public function Falling():void {
 	    sectors = new Array();
@@ -48,9 +49,16 @@ package worlds
 	    currSector = new Sector(0, 0);
 	    sectors.push(currSector);
 	    updateSectors();
+
+	    // fade in from black
+	    transitionIn = new TransitionIn();
+	    add(transitionIn);
 	}
 
 	override public function update():void {
+	    // no interaction is allowed while transitioning in
+	    if (transitionIn.alpha > 0) { return; }
+
 	    super.update();
 	    updateCamera();
 
