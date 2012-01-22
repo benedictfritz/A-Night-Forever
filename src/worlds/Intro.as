@@ -26,6 +26,10 @@ package worlds
 	    PLAYER_VAL:String = "player",
 	    SO_VAL:String = "so";
 
+	private var
+	    textFadeRate:Number = 0.8,
+	    textBubbleHeight:Number = 230;
+
 	private var 
 	    inMenu:Boolean=true,
 	    sweepingCam:Boolean=false,
@@ -44,8 +48,7 @@ package worlds
 	    playerTextBubble:Entity,
 	    sOTextBubble:Entity,
 	    conversation:Array,
-	    textOptions:Object,
-	    textBubbleHeight:Number = 230;
+	    textOptions:Object;
 
 	public function Intro():void {
 	    player = new Player();
@@ -89,7 +92,11 @@ package worlds
 	}
 
 	private function camUpdate():void {
-	    
+	    Text(titleTextEntity.graphic).alpha -= textFadeRate * FP.elapsed;
+	    Text(instructionTextEntity.graphic).alpha -= textFadeRate * FP.elapsed;
+	    if (Text(titleTextEntity.graphic).alpha <= 0) {
+		FP.console.log("let's move");
+	    }
 	}
 
 	private function cutsceneUpdate():void {
