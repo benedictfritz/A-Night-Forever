@@ -30,8 +30,8 @@ package worlds
 	    this.width = levelData.width;
 	    this.height = levelData.height;
 
-	    tiles = new Tilemap(TILESET, 
-				this.width, this.height, TILE_WIDTH, TILE_HEIGHT);
+	    tiles = new Tilemap(TILESET, this.width, this.height, 
+				TILE_WIDTH, TILE_HEIGHT);
 	    graphic = tiles;
 	    layer = 1;
 
