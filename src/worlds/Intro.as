@@ -27,8 +27,10 @@ package worlds
 	    SO_VAL:String = "so";
 
 	private var
-	    textFadeRate:Number = 0.8,
-	    textBubbleHeight:Number = 230;
+	    textFadeRate:Number = 0.5,
+	    cameraPanRate:Number = 70,
+	    textBubbleHeight:Number = 240,
+	    conversationOffset:Number = 200;
 
 	private var 
 	    inMenu:Boolean=true,
@@ -41,7 +43,8 @@ package worlds
 
 	private var
 	    player:Player,
-	    sO:SO;
+	    sO:SO,
+	    level:Level;
 
 	private var
 	    adjustingPositions:Boolean,
@@ -82,11 +85,12 @@ package worlds
 
 	    if (inMenu) { menuUpdate(); }
 	    if (sweepingCam) { camUpdate(); }
-	    if (inConversation) { cutsceneUpdate(); }
+	    if (inConversation) { conversationUpdate(); }
 	}
 
 	private function menuUpdate():void {
 	    if (Input.pressed(Key.X)) {
+		endMenu();
 		startCameraSweep();
 	    }
 	}
@@ -94,12 +98,17 @@ package worlds
 	private function camUpdate():void {
 	    Text(titleTextEntity.graphic).alpha -= textFadeRate * FP.elapsed;
 	    Text(instructionTextEntity.graphic).alpha -= textFadeRate * FP.elapsed;
-	    if (Text(titleTextEntity.graphic).alpha <= 0) {
-		FP.console.log("let's move");
+
+	    if (Text(titleTextEntity.graphic).alpha <= 0.8) {
+		this.camera.x += cameraPanRate * FP.elapsed;
+		if (this.camera.x > 200) {
+		    endCameraSweep();
+		    startConversation();
+		}
 	    }
 	}
 
-	private function cutsceneUpdate():void {
+	private function conversationUpdate():void {
 	    if (adjustingPositions) {
 		if (player.isAdjusting) { adjustActor(player, playerTextBubble); }
 		if (sO.isAdjusting) { adjustActor(sO, sOTextBubble); }
@@ -110,14 +119,11 @@ package worlds
 	    }
 	    
 	    if (Input.pressed(Key.X) && !adjustingPositions) {
-		// normally I would pop off function references every time the player
-		// hits X
 		conversation.pop()();
 	    }
 
-	    if (player.x > FP.width) {
-		var transition:TransitionOut = new TransitionOut(new Falling());
-		FP.world.add(transition);
+	    if (player.x > level.width) {
+		endConversation();
 	    }
 	}
 
@@ -130,12 +136,37 @@ package worlds
 	    sweepingCam = true;
 	}
 
+
+	private function startConversation():void {
+	    inConversation = true;
+	    conversation.pop()();
+	}
+
+	/*
+	 * ends
+	 */
+
+	private function endMenu():void {
+	    inMenu = false;
+	}
+
+	private function endCameraSweep():void {
+	    remove(titleTextEntity);
+	    remove(instructionTextEntity);
+	    sweepingCam = false;
+	}
+
+	private function endConversation():void {
+	    var transition:TransitionOut = new TransitionOut(new Falling());
+	    FP.world.add(transition);
+	}
+
 	/*
 	 * inits
 	 */
 	
 	private function initLevel():void {
-	    var level:Level = new Level(MAP_DATA);
+	    level = new Level(MAP_DATA);
 	    add(level);
 
 	    // should only have one player and so, but with this code
@@ -182,7 +213,6 @@ package worlds
 	    conversation.reverse();
 	}
 
-
 	/*
 	 * conversation
 	 */
@@ -204,23 +234,24 @@ package worlds
 	// and center the text right over the actor
 	private function setupSpeechBubble(text:String, actor:Actor, 
 					   speechBubble:Entity, center:Boolean,
-					   speechX:Number=0, 
-					   speechY:Number=230):void {
+					   speechX:Number=0):void {
 	    textOptions = new Object();
 	    textOptions["size"] = 8;
 	    textOptions["color"] = actor.color;
 	    
 	    var words:Text = new Text(text, 0, 0, textOptions);
 	    speechBubble.graphic = words;
-	    speechBubble.visible = false;
+
 	    speechBubble.setHitbox(words.width, words.height);
 	    if (center) {
 		speechBubble.x = actor.x + actor.halfWidth - speechBubble.halfWidth;
+		speechBubble.visible = true;
 	    }
 	    else {
-		speechBubble.x = speechX;
+		speechBubble.x = speechX + conversationOffset;
+		speechBubble.visible = false;
 	    }
-	    speechBubble.y = speechY;
+	    speechBubble.y = textBubbleHeight;
 	}
 
 	private function adjustPlayer():void {
@@ -241,9 +272,9 @@ package worlds
 	    add(player);
 
 	    var moveToCenterAndSpeak:Function = function():void {
-		setupSpeechBubble("What a fun party.", player, playerTextBubble,
-				  false, 200);
-		adjustPlayer();
+	    	setupSpeechBubble("What a fun party.", player, playerTextBubble,
+	    			  false, 200);
+	    	adjustPlayer();
 	    }
 
 	    setTimeout(moveToCenterAndSpeak, 300);
@@ -255,8 +286,7 @@ package worlds
 	    
 	    var moveToCenterAndSpeak:Function = function():void {
 		adjustSO();
-		setupSpeechBubble("Hey, wait!", sO, sOTextBubble, false, 100, 
-				  textBubbleHeight);
+		setupSpeechBubble("Hey, wait!", sO, sOTextBubble, false, 100);
 	    }
 	    setTimeout(moveToCenterAndSpeak, 300);
 	}
@@ -265,30 +295,22 @@ package worlds
 	    adjustSO();
 	    setupSpeechBubble("You forgot your keys.", sO, sOTextBubble, false, 165);
 	    adjustPlayer();
-	    setupSpeechBubble("", player, playerTextBubble, false, 
-			      playerTextBubble.y);
+	    setupSpeechBubble("", player, playerTextBubble, false, 230);
 	}
 
 	private function convoFourth():void {
-	    sOTextBubble.visible = false;
-
 	    setupSpeechBubble("Wow, thanks!", player, playerTextBubble, true);
-	    // by default the speech bubble is set to invisible for moving
-	    playerTextBubble.visible = true;
+	    sOTextBubble.visible = false;
 	}
 
 	private function convoFifth():void {
 	    setupSpeechBubble("Follow me...", sO, sOTextBubble, true);
-	    sOTextBubble.visible = true;
-
 	    playerTextBubble.visible = false;
 	}
 
 	private function convoSixth():void {
 	    adjustingPositions = true;
-
 	    setupSpeechBubble("I want to show you something", sO, sOTextBubble, true);
-	    sOTextBubble.visible = true;
 
 	    // player movement
 	    {
@@ -298,8 +320,7 @@ package worlds
 
 	private function convoSeventh():void {
 	    adjustingPositions = true;
-
-	    var offscreenX:Number = FP.width + 10;
+	    var offscreenX:Number = level.width + 10;
 
 	    // move sO off screen first
 	    sO.isAdjusting = true;

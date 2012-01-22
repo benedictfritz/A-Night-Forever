@@ -56,5 +56,6 @@
   </tiles>
   <objects>
     <player x="256" y="256"/>
+    <so x="256" y="256"/>
   </objects>
 </level>
