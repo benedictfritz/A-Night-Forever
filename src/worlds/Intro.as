@@ -27,6 +27,9 @@ package worlds
 	    SO_VAL:String = "so";
 
 	private var
+	    inMenu:Boolean=true,
+	    titleTextEntity:Entity,
+	    instructionTextEntity:Entity,
 	    adjustingPositions:Boolean,
 	    playerTextBubble:Entity,
 	    sOTextBubble:Entity,
@@ -64,7 +67,6 @@ package worlds
 	    var dataList:XMLList = levelData.objects.player;
 	    for each(var dataElement:XML in dataList) {	    
 		player = new Player(int(dataElement.@x), int(dataElement.@y));
-		add(player);
 	    }
 	    player.setControllable(false);
 
@@ -74,11 +76,27 @@ package worlds
 	    }
 
 	    initConversation();
+	    initMenu();
 	}
 
 	override public function update():void {
 	    super.update();
+
+	    if (inMenu) { menuUpdate(); }
+	    else { cutsceneUpdate(); }
+	}
+
+	private function menuUpdate():void {
+	    if (Input.pressed(Key.X)) {
+		cameraSweep();
+	    }
+	}
+
+	private function cameraSweep():void {
 	    
+	}
+
+	private function cutsceneUpdate():void {
 	    if (adjustingPositions) {
 		if (player.isAdjusting) { adjustActor(player, playerTextBubble); }
 		if (sO.isAdjusting) { adjustActor(sO, sOTextBubble); }
@@ -98,6 +116,28 @@ package worlds
 		var transition:TransitionOut = new TransitionOut(new Falling());
 		FP.world.add(transition);
 	    }
+	}
+	
+	private function initMenu():void {
+	    initTitleEntity();
+	    initInstructionsEntity();
+	}
+
+	private function initTitleEntity():void {
+	    var titleScale:Number = 3;
+	    var titleText:Text = new Text("Valentine");
+	    titleText.scale = titleScale;
+	    titleTextEntity = new Entity(FP.halfWidth - 
+					 titleScale*(titleText.width/2), 10, 
+					 titleText);
+	    add(titleTextEntity);	    
+	}
+
+	private function initInstructionsEntity():void {
+	    var instructionText:Text = new Text("[x] - Start");
+	    instructionTextEntity = new Entity(FP.halfWidth - instructionText.width/2,
+					       80, instructionText);
+	    add(instructionTextEntity);
 	}
 
 	private function initConversation():void {
