@@ -26,16 +26,23 @@ package worlds
 	    PLAYER_VAL:String = "player",
 	    SO_VAL:String = "so";
 
-	private var
+	private var 
 	    inMenu:Boolean=true,
+	    sweepingCam:Boolean=false,
+	    inConversation:Boolean=false;
+
+	private var
 	    titleTextEntity:Entity,
-	    instructionTextEntity:Entity,
+	    instructionTextEntity:Entity;
+
+	private var
+	    player:Player,
+	    sO:SO;
+
+	private var
 	    adjustingPositions:Boolean,
 	    playerTextBubble:Entity,
 	    sOTextBubble:Entity,
-	    currSpeech:Object,
-	    player:Player,
-	    sO:SO,
 	    conversation:Array,
 	    textOptions:Object,
 	    textBubbleHeight:Number = 230;
@@ -58,41 +65,30 @@ package worlds
 	override public function begin():void {
 	    super.begin();
 
-	    var level:Level = new Level(MAP_DATA);
-	    add(level);
-
-	    // should only have one player and so, but with this code
-	    // only the last one will get added
-	    var levelData:XML = level.getLevelData();
-	    var dataList:XMLList = levelData.objects.player;
-	    for each(var dataElement:XML in dataList) {	    
-		player = new Player(int(dataElement.@x), int(dataElement.@y));
-	    }
-	    player.setControllable(false);
-
-	    dataList = levelData.objects.so;
-	    for each(dataElement in dataList) {
-		sO = new SO(int(dataElement.@x), int(dataElement.@y));
-	    }
-
+	    initLevel();
 	    initConversation();
 	    initMenu();
 	}
+
+	/*
+	 * update functions
+	 */
 
 	override public function update():void {
 	    super.update();
 
 	    if (inMenu) { menuUpdate(); }
-	    else { cutsceneUpdate(); }
+	    if (sweepingCam) { camUpdate(); }
+	    if (inConversation) { cutsceneUpdate(); }
 	}
 
 	private function menuUpdate():void {
 	    if (Input.pressed(Key.X)) {
-		cameraSweep();
+		startCameraSweep();
 	    }
 	}
 
-	private function cameraSweep():void {
+	private function camUpdate():void {
 	    
 	}
 
@@ -117,7 +113,39 @@ package worlds
 		FP.world.add(transition);
 	    }
 	}
+
+
+	/*
+	 * starts
+	 */
+
+	private function startCameraSweep():void {
+	    sweepingCam = true;
+	}
+
+	/*
+	 * inits
+	 */
 	
+	private function initLevel():void {
+	    var level:Level = new Level(MAP_DATA);
+	    add(level);
+
+	    // should only have one player and so, but with this code
+	    // only the last one will get added
+	    var levelData:XML = level.getLevelData();
+	    var dataList:XMLList = levelData.objects.player;
+	    for each(var dataElement:XML in dataList) {	    
+		player = new Player(int(dataElement.@x), int(dataElement.@y));
+	    }
+	    player.setControllable(false);
+
+	    dataList = levelData.objects.so;
+	    for each(dataElement in dataList) {
+		sO = new SO(int(dataElement.@x), int(dataElement.@y));
+	    }
+	}
+
 	private function initMenu():void {
 	    initTitleEntity();
 	    initInstructionsEntity();
@@ -146,6 +174,11 @@ package worlds
 				     convoSeventh);
 	    conversation.reverse();
 	}
+
+
+	/*
+	 * conversation
+	 */
 
 	private function adjustActor(actor:Actor, endEntity:Entity):void {
 	    var adjustingX:Number = actor.centerX;
@@ -192,6 +225,10 @@ package worlds
 	    adjustingPositions = true;
 	    sO.isAdjusting = true;
 	}
+
+	/*
+	 * conversation parts
+	 */
 
 	private function convoFirst():void {
 	    add(player);
