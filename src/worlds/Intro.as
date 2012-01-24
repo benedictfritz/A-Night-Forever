@@ -42,7 +42,7 @@ package worlds
 	    instructionTextEntity:Entity;
 
 	private var
-	    player:Player,
+	    player:RunningPlayer,
 	    sO:SO,
 	    level:Level;
 
@@ -54,7 +54,7 @@ package worlds
 	    textOptions:Object;
 
 	public function Intro():void {
-	    player = new Player();
+	    player = new RunningPlayer();
 	    sO = new SO();
 	    conversation = new Array();
 	    adjustingPositions = false;
@@ -174,7 +174,7 @@ package worlds
 	    var levelData:XML = level.getLevelData();
 	    var dataList:XMLList = levelData.objects.player;
 	    for each(var dataElement:XML in dataList) {	    
-		player = new Player(int(dataElement.@x), int(dataElement.@y));
+		player = new RunningPlayer(int(dataElement.@x), int(dataElement.@y));
 	    }
 	    player.setControllable(false);
 

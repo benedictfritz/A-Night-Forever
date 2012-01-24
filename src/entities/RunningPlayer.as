@@ -8,35 +8,48 @@ package entities
     import net.flashpunk.graphics.Spritemap;
     import net.flashpunk.tweens.misc.VarTween;
 
-    public class FlyingPlayer extends Player {
-	[Embed(source = '../../assets/images/png/player_anim.png')]
-	    private const PLAYER_SPRITE:Class;
+    public class RunningPlayer extends Player {
+
+	private const 
+	    JUMP_SPEED:Number = 130;
 
 	private var
 	    gravity:Number = 300;
 
-	public function FlyingPlayer(x:int=0, y:int=0) {
+	public function RunningPlayer(x:int=0, y:int=0) {
 	    super(x, y);
 	    xSpeed = 160;
-	    ySpeed = 160;
+	    ySpeed = 0;
 	}
 
 	override public function update():void {
 	    super.update();
-	    FP.console.log("update " + FP.elapsed);
 	    if (controllable) { checkKeyPresses(); }
 	}
 
 	private function checkKeyPresses():void {
+	    var jumping:Boolean = collide("level", x, y+1) == null;
+
+	    // left / right movement
 	    if (Input.check(Key.D)) { vx = xSpeed; }
 	    else if (Input.check(Key.A)) { vx = -xSpeed; }
 	    else { vx = 0; }
+	    vx == 0 ? sprActor.play("stand") : sprActor.play("run");
+	    
+	    if(vx != 0) { vx < 0 ? flip(true) : flip(false); }
 
-	    if (Input.check(Key.S)) { vy = ySpeed; }
-	    else if (Input.check(Key.W)) { vy = -ySpeed; }
-	    else { vy = 0; }
+	    // jumping movement
+	    if (Input.check(Key.W)) {
+		if (!jumping) { vy = -JUMP_SPEED }
+	    }
+	    if (jumping) {
+		vy > 0 ? sprActor.play("fall") : sprActor.play("jump");
+		vy += gravity * FP.elapsed;
+	    }
 
 	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
 	}
+
     }
+
 }

@@ -20,7 +20,7 @@ package worlds
 	    level:Level;
 
 	public function Chase():void {
-	    player = new Player();
+	    player = new FlyingPlayer();
 	    sO = new SO();
 	}
 
@@ -36,7 +36,7 @@ package worlds
 	    var levelData:XML = level.getLevelData();
 	    var dataList:XMLList = levelData.objects.player;
 	    for each(var dataElement:XML in dataList) {	    
-		player = new Player(int(dataElement.@x), int(dataElement.@y));
+		player = new FlyingPlayer(int(dataElement.@x), int(dataElement.@y));
 	    }
 	    add(player);
 
