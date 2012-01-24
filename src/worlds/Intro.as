@@ -28,9 +28,9 @@ package worlds
 
 	private var
 	    textFadeRate:Number = 0.5,
-	    cameraPanRate:Number = 70,
-	    textBubbleHeight:Number = 240,
-	    conversationOffset:Number = 200;
+	    cameraPanRate:Number = 140,
+	    textBubbleHeight:Number = 460,
+	    conversationOffset:Number = 600;
 
 	private var 
 	    inMenu:Boolean=true,
@@ -101,7 +101,7 @@ package worlds
 
 	    if (Text(titleTextEntity.graphic).alpha <= 0.8) {
 		this.camera.x += cameraPanRate * FP.elapsed;
-		if (this.camera.x > 200) {
+		if (this.camera.x > FP.halfWidth) {
 		    endCameraSweep();
 		    startConversation();
 		}
@@ -190,7 +190,7 @@ package worlds
 	}
 
 	private function initTitleEntity():void {
-	    var titleScale:Number = 3;
+	    var titleScale:Number = 5;
 	    var titleText:Text = new Text("Valentine");
 	    titleText.scale = titleScale;
 	    titleTextEntity = new Entity(FP.halfWidth - 
@@ -200,9 +200,12 @@ package worlds
 	}
 
 	private function initInstructionsEntity():void {
+	    var instructionScale:Number = 2;
 	    var instructionText:Text = new Text("[x] - Start");
-	    instructionTextEntity = new Entity(FP.halfWidth - instructionText.width/2,
-					       80, instructionText);
+	    instructionText.scale = instructionScale;
+	    instructionTextEntity = new Entity(FP.halfWidth - instructionScale *
+					       (instructionText.width/2), 
+					       130, instructionText);
 	    add(instructionTextEntity);
 	}
 
@@ -236,8 +239,9 @@ package worlds
 					   speechBubble:Entity, center:Boolean,
 					   speechX:Number=0):void {
 	    textOptions = new Object();
-	    textOptions["size"] = 8;
+	    textOptions["size"] = 16;
 	    textOptions["color"] = actor.color;
+	    textOptions["wordWrap"] = true;
 	    
 	    var words:Text = new Text(text, 0, 0, textOptions);
 	    speechBubble.graphic = words;
@@ -286,16 +290,16 @@ package worlds
 	    
 	    var moveToCenterAndSpeak:Function = function():void {
 		adjustSO();
-		setupSpeechBubble("Hey, wait!", sO, sOTextBubble, false, 100);
+		setupSpeechBubble("Hey, wait!", sO, sOTextBubble, false, 60);
 	    }
 	    setTimeout(moveToCenterAndSpeak, 300);
 	}
 
 	private function convoThird():void {
 	    adjustSO();
-	    setupSpeechBubble("You forgot your keys.", sO, sOTextBubble, false, 165);
+	    setupSpeechBubble("You forgot your keys.", sO, sOTextBubble, false, 115);
 	    adjustPlayer();
-	    setupSpeechBubble("", player, playerTextBubble, false, 230);
+	    setupSpeechBubble("", player, playerTextBubble, false, 245);
 	}
 
 	private function convoFourth():void {

@@ -15,8 +15,8 @@ package entities
 	    this.color = 0xEE0000;
 
 	    // set variables declared in super
-	    sprActor = new Spritemap(SO_SPRITE, 32, 32);
-	    xSpeed = 80;
+	    sprActor = new Spritemap(SO_SPRITE, 64, 64);
+	    xSpeed = 160;
 	    ySpeed = 0;
 
 	    sprActor.add("stand", [0], 1, true);

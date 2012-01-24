@@ -16,8 +16,8 @@ package worlds
 	    levelData:XML;
 	
 	private static const
-	    TILE_WIDTH:Number = 16,
-	    TILE_HEIGHT:Number = 16;
+	    TILE_WIDTH:Number = 32,
+	    TILE_HEIGHT:Number = 32;
 	
 	[Embed(source="../../assets/levels/images/png/tiles.png")]
 	    private const TILESET:Class;

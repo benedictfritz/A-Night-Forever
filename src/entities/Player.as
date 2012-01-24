@@ -23,9 +23,9 @@ package entities
 	    this.color = 0xEEEEEE;
 
 	    // declared within super
-	    xSpeed = 80;
+	    xSpeed = 160;
 	    ySpeed = 0;
-	    sprActor = new Spritemap(PLAYER_SPRITE, 32, 32),
+	    sprActor = new Spritemap(PLAYER_SPRITE, 64, 64),
 
 	    sprActor.add("stand", [0], 1, true);
 	    sprActor.add("jump", [3], 1, true);

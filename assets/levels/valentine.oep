@@ -3,27 +3,27 @@
 
   <settings>
     <workingDirectory>images/png</workingDirectory>
-    <defaultWidth>400</defaultWidth>
-    <defaultHeight>300</defaultHeight>
-    <minWidth>400</minWidth>
-    <minHeight>300</minHeight>
+    <defaultWidth>800</defaultWidth>
+    <defaultHeight>600</defaultHeight>
+    <minWidth>800</minWidth>
+    <minHeight>600</minHeight>
     <maxWidth>3200</maxWidth>
     <maxHeight>2400</maxHeight>
   </settings>
 
   <tilesets>
-    <tileset name="tiles" image="tiles.png" tileHeight="16" tileWidth="16"/>
+    <tileset name="tiles" image="tiles.png" tileHeight="32" tileWidth="32"/>
   </tilesets>
 
   <objects>
-    <object name="player" image="player.png" height="32" width="32" limit="1"/>
-    <object name="so" image="so.png" height="32" width="32" limit="1"/>
-    <object name="couple" image="couple.png" height="16" width="32" limit="1"/>
-    <object name="star" image="star.png" height="16" width="16"/>
+    <object name="player" image="player.png" height="64" width="64" limit="1"/>
+    <object name="so" image="so.png" height="64" width="64" limit="1"/>
+    <object name="couple" image="couple.png" height="32" width="64" limit="1"/>
+    <object name="star" image="star.png" height="32" width="32"/>
   </objects>
 
   <layers>
-    <tiles name="tiles" gridSize="16"/>
-    <objects name="objects" gridSize="16"/>
+    <tiles name="tiles" gridSize="32"/>
+    <objects name="objects" gridSize="32"/>
   </layers>
 </project>
