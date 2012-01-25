@@ -13,12 +13,11 @@ package entities
 	    private const PLAYER_SPRITE:Class;
 
 	private var
-	    gravity:Number = 300;
+	    acceleration:Number = 50,
+	    friction:Number = 0.05;
 
 	public function FlyingPlayer(x:int=0, y:int=0) {
 	    super(x, y);
-	    xSpeed = 160;
-	    ySpeed = 160;
 	}
 
 	override public function update():void {
@@ -28,13 +27,13 @@ package entities
 	}
 
 	private function checkKeyPresses():void {
-	    if (Input.check(Key.D)) { vx = xSpeed; }
-	    else if (Input.check(Key.A)) { vx = -xSpeed; }
-	    else { vx = 0; }
+	    if (Input.check(Key.D)) { vx += acceleration; }
+	    else if (Input.check(Key.A)) { vx -= acceleration; }
+	    vx -= vx*friction;
 
-	    if (Input.check(Key.S)) { vy = ySpeed; }
-	    else if (Input.check(Key.W)) { vy = -ySpeed; }
-	    else { vy = 0; }
+	    if (Input.check(Key.S)) { vy += acceleration; }
+	    else if (Input.check(Key.W)) { vy -= acceleration; }
+	    vy -= vy*friction;
 
 	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
 	}
