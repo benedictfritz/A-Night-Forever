@@ -18,7 +18,8 @@ package entities
 
 	private var
 	    acceleration:Number = 50,
-	    friction:Number = 0.05;
+	    friction:Number = 0.05,
+	    bounceBuffer:Number = 0.1;
 
 	public function FlyingPlayer(x:int=0, y:int=0) {
 	    super(x, y);
@@ -42,13 +43,16 @@ package entities
 	}
 
 	private function checkWindBarriers():void {
-	    if (upperBarrier.distanceToLocation(x, y) < 10) {
-		if (vy < 0) { vy = -vy; }
-		if (vx < 0) { vx = -vx; }
+	    var distanceToBarrier:Number = upperBarrier.distanceToLocation(x, y);
+	    if (distanceToBarrier < 10) {
+		if (vy < 0) { vy = -vy * (bounceBuffer * distanceToBarrier); }
+		if (vx < 0) { vx = -vx * (bounceBuffer * distanceToBarrier); }
 	    }
-	    if (lowerBarrier.distanceToLocation(x, y) < 10) {
-		if (vy > 0) { vy = -vy; }
-		if (vx > 0) { vx = -vx; }
+
+	    distanceToBarrier = lowerBarrier.distanceToLocation(x, y);
+	    if (distanceToBarrier < 10) {
+		if (vy > 0) { vy = -vy * (bounceBuffer * distanceToBarrier); }
+		if (vx > 0) { vx = -vx * (bounceBuffer * distanceToBarrier); }
 	    }
 	}
 
