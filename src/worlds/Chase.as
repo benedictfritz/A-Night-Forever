@@ -4,6 +4,7 @@ package worlds
     import net.flashpunk.World;
     import net.flashpunk.masks.Grid;
     import net.flashpunk.graphics.Tilemap;
+    import net.flashpunk.utils.Draw;
 
     import entities.*;
     import util.Util;
@@ -17,7 +18,9 @@ package worlds
 	private var
 	    player:Player,
 	    sO:SO,
-	    level:Level;
+	    level:Level,
+	    lowerBarrier:WindBarrier,
+	    upperBarrier:WindBarrier;
 
 	public function Chase():void {
 	    player = new FlyingPlayer();
@@ -45,12 +48,38 @@ package worlds
 		sO = new SO(int(dataElement.@x), int(dataElement.@y));
 	    }
 	    add(sO);
+
+	    dataList = levelData.objects.windBarrier;
+	    for each(dataElement in dataList) {
+	        if (!lowerBarrier) {
+		    lowerBarrier = new WindBarrier(int(dataElement.@x), 
+						   int(dataElement.@y));
+		    add(lowerBarrier);
+		}
+		else {
+		    upperBarrier = new WindBarrier(int(dataElement.@x), 
+						   int(dataElement.@y));
+		    add(upperBarrier);
+		}
+	    }
+	    add(sO);
 	}
 
 	override public function update():void {
 	    super.update();
 	    FP.camera.x = player.x - FP.halfWidth;
 	    FP.camera.y = player.y - FP.halfWidth;
+
+	    var distanceToUpper:Number = 
+		upperBarrier.distanceToLocation(player.x, player.y);
+	    var distanceToLower:Number = 
+	    	lowerBarrier.distanceToLocation(player.x, player.y);
+	    if (distanceToUpper < distanceToLower) {
+	    	FP.console.log("Closer to upper: " + distanceToUpper);
+	    }
+	    else {
+	    	FP.console.log("Closer to lower: " + distanceToLower);
+	    }
 	}
     }
 }
