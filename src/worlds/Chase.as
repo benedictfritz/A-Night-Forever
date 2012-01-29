@@ -16,7 +16,7 @@ package worlds
 	    private static const MAP_DATA:Class;
 
 	private var
-	    player:Player,
+	    player:FlyingPlayer,
 	    sO:SO,
 	    level:Level,
 	    lowerBarrier:WindBarrier,
@@ -55,11 +55,13 @@ package worlds
 		    lowerBarrier = new WindBarrier(int(dataElement.@x), 
 						   int(dataElement.@y));
 		    add(lowerBarrier);
+		    player.lowerBarrier = lowerBarrier;
 		}
 		else {
 		    upperBarrier = new WindBarrier(int(dataElement.@x), 
 						   int(dataElement.@y));
 		    add(upperBarrier);
+		    player.upperBarrier = upperBarrier;
 		}
 	    }
 	    add(sO);
@@ -74,12 +76,6 @@ package worlds
 		upperBarrier.distanceToLocation(player.x, player.y);
 	    var distanceToLower:Number = 
 	    	lowerBarrier.distanceToLocation(player.x, player.y);
-	    if (distanceToUpper < distanceToLower) {
-	    	FP.console.log("Closer to upper: " + distanceToUpper);
-	    }
-	    else {
-	    	FP.console.log("Closer to lower: " + distanceToLower);
-	    }
 	}
     }
 }

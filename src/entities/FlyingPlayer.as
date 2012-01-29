@@ -12,6 +12,10 @@ package entities
 	[Embed(source = '../../assets/images/png/player_anim.png')]
 	    private const PLAYER_SPRITE:Class;
 
+	public var
+	    upperBarrier:WindBarrier,
+	    lowerBarrier:WindBarrier;
+
 	private var
 	    acceleration:Number = 50,
 	    friction:Number = 0.05;
@@ -22,8 +26,9 @@ package entities
 
 	override public function update():void {
 	    super.update();
-	    FP.console.log("update " + FP.elapsed);
 	    if (controllable) { checkKeyPresses(); }
+	    checkWindBarriers();
+	    move();
 	}
 
 	private function checkKeyPresses():void {
@@ -34,7 +39,20 @@ package entities
 	    if (Input.check(Key.S)) { vy += acceleration; }
 	    else if (Input.check(Key.W)) { vy -= acceleration; }
 	    vy -= vy*friction;
+	}
 
+	private function checkWindBarriers():void {
+	    if (upperBarrier.distanceToLocation(x, y) < 10) {
+		if (vy < 0) { vy = -vy; }
+		if (vx < 0) { vx = -vx; }
+	    }
+	    if (lowerBarrier.distanceToLocation(x, y) < 10) {
+		if (vy > 0) { vy = -vy; }
+		if (vx > 0) { vx = -vx; }
+	    }
+	}
+
+	private function move():void {
 	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
 	}
     }
