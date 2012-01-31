@@ -17,9 +17,10 @@ package entities
 	    lowerBarrier:WindBarrier;
 
 	private var
-	    acceleration:Number = 50,
+	    acceleration:Number = 20,
 	    friction:Number = 0.05,
-	    bounceBuffer:Number = 0.1;
+	    bounceBuffer:Number = 0.1,
+	    windBoost:Number = 60;
 
 	public function FlyingPlayer(x:int=0, y:int=0) {
 	    super(x, y);
@@ -29,6 +30,7 @@ package entities
 	    super.update();
 	    if (controllable) { checkKeyPresses(); }
 	    checkWindBarriers();
+	    checkWindTunnels();
 	    move();
 	}
 
@@ -53,6 +55,14 @@ package entities
 	    if (distanceToBarrier < 10) {
 		if (vy > 0) { vy = -vy * (bounceBuffer * distanceToBarrier); }
 		if (vx > 0) { vx = -vx * (bounceBuffer * distanceToBarrier); }
+	    }
+	}
+
+	private function checkWindTunnels():void {
+	    var boost:Boolean = collide("windTunnel", x, y) != null;
+	    if (boost) {
+		vx += windBoost;
+		vy -= windBoost;
 	    }
 	}
 

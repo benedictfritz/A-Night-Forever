@@ -5,12 +5,15 @@ package entities
     import net.flashpunk.utils.Draw;
 
     public class WindBarrier extends Entity {
-	private var
+	public var
 	    a:Number = 1,
 	    b:Number = 1,
 	    c:Number = 0;
 	
 	public function WindBarrier(x:Number, y:Number) {
+	    this.x = x;
+	    this.y = y;
+
 	    this.c = -(y + x);
 	}
 

@@ -4,7 +4,7 @@
   <objects>
     <player x="32" y="2272"/>
     <so x="160" y="2144"/>
+    <windBarrier x="640" y="1280"/>
     <windBarrier x="640" y="2336"/>
-    <windBarrier x="0" y="1632"/>
   </objects>
 </level>

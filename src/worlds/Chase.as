@@ -20,7 +20,9 @@ package worlds
 	    sO:SO,
 	    level:Level,
 	    lowerBarrier:WindBarrier,
-	    upperBarrier:WindBarrier;
+	    upperBarrier:WindBarrier,
+	    numTunnels:Number = 20,
+	    levelWidth:Number = 10000;
 
 	public function Chase():void {
 	    player = new FlyingPlayer();
@@ -51,20 +53,39 @@ package worlds
 
 	    dataList = levelData.objects.windBarrier;
 	    for each(dataElement in dataList) {
-	        if (!lowerBarrier) {
-		    lowerBarrier = new WindBarrier(int(dataElement.@x), 
-						   int(dataElement.@y));
-		    add(lowerBarrier);
-		    player.lowerBarrier = lowerBarrier;
-		}
-		else {
+	        if (!upperBarrier) {
 		    upperBarrier = new WindBarrier(int(dataElement.@x), 
 						   int(dataElement.@y));
 		    add(upperBarrier);
 		    player.upperBarrier = upperBarrier;
 		}
+		else {
+		    lowerBarrier = new WindBarrier(int(dataElement.@x), 
+						   int(dataElement.@y));
+		    add(lowerBarrier);
+		    player.lowerBarrier = lowerBarrier;
+		}
 	    }
+
+	    spawnWindTunnels();
 	    add(sO);
+	}
+
+	private function spawnWindTunnels():void {
+	    // calculate the vertical distance between the two barriers.
+	    // always place barriers on top of each other.
+	    var yRange:Number = upperBarrier.distanceFrom(lowerBarrier);
+	    var minC:Number = lowerBarrier.c;
+
+	    // x + y + c = 0 => y = -c - x
+	    for (var i:Number=0; i < numTunnels; i++) {
+		var c:Number = minC + FP.random * yRange;
+		var x:Number = FP.random * levelWidth;
+		var y:Number = -x - c;
+		
+		var windTunnel:WindTunnel = new WindTunnel(x, y);
+		add(windTunnel);
+	    }
 	}
 
 	override public function update():void {
