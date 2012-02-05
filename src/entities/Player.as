@@ -9,7 +9,7 @@ package entities
     import net.flashpunk.tweens.misc.VarTween;
 
     public class Player extends Actor {
-	[Embed(source = '../../assets/images/png/player_anim.png')]
+	[Embed(source = '../../assets/images/gerry/run.png')]
 	    private const PLAYER_SPRITE:Class;
 
 	public function Player(x:int=0, y:int=0) {
@@ -17,11 +17,11 @@ package entities
 	    this.y = y;
 	    this.color = 0xEEEEEE;
 
-	    sprActor = new Spritemap(PLAYER_SPRITE, 64, 64),
+	    sprActor = new Spritemap(PLAYER_SPRITE, 96, 96),
 	    sprActor.add("stand", [0], 1, true);
-	    sprActor.add("jump", [3], 1, true);
-	    sprActor.add("fall", [8], 1, true);
-	    sprActor.add("run", [1, 2, 3, 4, 5, 6, 7, 6], 8, true);
+	    sprActor.add("jump", [6], 1, true);
+	    sprActor.add("fall", [7], 1, true);
+	    sprActor.add("run", [1, 2, 3, 4, 5, 6, 7, 8], 8, true);
 	    sprActor.color = color;
 	    this.graphic = sprActor;
 	    setHitbox(sprActor.width, sprActor.height);
