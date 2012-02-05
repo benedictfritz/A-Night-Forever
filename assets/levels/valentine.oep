@@ -21,6 +21,7 @@
     <object name="windBarrier" image="wind_barrier.png" height="64" width="64" limit="2"/>
     <object name="couple" image="couple.png" height="32" width="64" limit="1"/>
     <object name="star" image="star.png" height="32" width="32"/>
+    <object name="cloud" image="cloud.png" height="64" width="128"/>
   </objects>
 
   <layers>

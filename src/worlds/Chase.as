@@ -9,6 +9,8 @@ package worlds
     import entities.*;
     import util.Util;
 
+    import flash.geom.Point;
+
     public class Chase extends World
     {
 	[Embed(source="../../assets/levels/Chase.oel", 
@@ -72,20 +74,35 @@ package worlds
 	}
 
 	private function spawnWindTunnels():void {
+	    for (var i:Number=0; i < numTunnels; i++) {
+		var spawnPoint:Point = randomSpawnPoint();
+		var windTunnel:WindTunnel = new WindTunnel(spawnPoint.x, 
+							   spawnPoint.y);
+		add(windTunnel);
+	    }
+	}
+
+	private function spawnClouds():void {
+	    for (var i:Number=0; i < numTunnels; i++) {
+	    	var spawnPoint:Point = randomSpawnPoint();
+	    	var windTunnel:SlowingCloud = new SlowingCloud(spawnPoint.x, 
+							       spawnPoint.y);
+	    	add(windTunnel);
+	    }
+	}
+
+	private function randomSpawnPoint():Point {
 	    // calculate the vertical distance between the two barriers.
 	    // always place barriers on top of each other.
 	    var yRange:Number = upperBarrier.distanceFrom(lowerBarrier);
 	    var minC:Number = lowerBarrier.c;
 
 	    // x + y + c = 0 => y = -c - x
-	    for (var i:Number=0; i < numTunnels; i++) {
-		var c:Number = minC + FP.random * yRange;
-		var x:Number = FP.random * levelWidth;
-		var y:Number = -x - c;
-		
-		var windTunnel:WindTunnel = new WindTunnel(x, y);
-		add(windTunnel);
-	    }
+	    var c:Number = minC + FP.random * yRange;
+	    var x:Number = FP.random * levelWidth;
+	    var y:Number = -x - c;
+
+	    return new Point(x, y);
 	}
 
 	override public function update():void {
