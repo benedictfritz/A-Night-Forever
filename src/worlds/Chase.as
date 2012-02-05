@@ -70,6 +70,7 @@ package worlds
 	    }
 
 	    spawnWindTunnels();
+	    spawnClouds();
 	    add(sO);
 	}
 
@@ -85,9 +86,9 @@ package worlds
 	private function spawnClouds():void {
 	    for (var i:Number=0; i < numTunnels; i++) {
 	    	var spawnPoint:Point = randomSpawnPoint();
-	    	var windTunnel:SlowingCloud = new SlowingCloud(spawnPoint.x, 
+	    	var slowingCloud:SlowingCloud = new SlowingCloud(spawnPoint.x, 
 							       spawnPoint.y);
-	    	add(windTunnel);
+	    	add(slowingCloud);
 	    }
 	}
 
