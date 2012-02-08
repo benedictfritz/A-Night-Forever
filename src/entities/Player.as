@@ -13,7 +13,7 @@ package entities
 	    private const PLAYER_SPRITE:Class;
 
 	private var
-	    hitboxBuffer:Number = 30;
+	    hitboxBuffer:Number = 35;
 
 	public function Player(x:int=0, y:int=0) {
 	    this.x = x;
