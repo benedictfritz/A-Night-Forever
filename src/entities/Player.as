@@ -12,6 +12,9 @@ package entities
 	[Embed(source = '../../assets/images/gerry/run.png')]
 	    private const PLAYER_SPRITE:Class;
 
+	private var
+	    hitboxBuffer:Number = 30;
+
 	public function Player(x:int=0, y:int=0) {
 	    this.x = x;
 	    this.y = y;
@@ -24,7 +27,8 @@ package entities
 	    sprActor.add("run", [1, 2, 3, 4, 5, 6, 7, 8], 12, true);
 	    sprActor.color = color;
 	    this.graphic = sprActor;
-	    setHitbox(sprActor.width, sprActor.height);
+	    setHitbox(sprActor.width - hitboxBuffer*2, sprActor.height, 
+		      -hitboxBuffer, 0);
 	    type = "player";
 	}
 
