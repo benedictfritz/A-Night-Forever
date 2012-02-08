@@ -14,7 +14,7 @@ package entities
 	    JUMP_SPEED:Number = 130;
 
 	private var
-	    gravity:Number = 300;
+	    gravity:Number = 200;
 
 	public function RunningPlayer(x:int=0, y:int=0) {
 	    super(x, y);

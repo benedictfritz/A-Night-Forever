@@ -19,9 +19,9 @@ package entities
 
 	    sprActor = new Spritemap(PLAYER_SPRITE, 96, 96),
 	    sprActor.add("stand", [0], 1, true);
-	    sprActor.add("jump", [6], 1, true);
+	    sprActor.add("jump", [5], 1, true);
 	    sprActor.add("fall", [7], 1, true);
-	    sprActor.add("run", [1, 2, 3, 4, 5, 6, 7, 8], 8, true);
+	    sprActor.add("run", [1, 2, 3, 4, 5, 6, 7, 8], 12, true);
 	    sprActor.color = color;
 	    this.graphic = sprActor;
 	    setHitbox(sprActor.width, sprActor.height);

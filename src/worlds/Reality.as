@@ -2,10 +2,12 @@ package worlds
 {
     import net.flashpunk.FP;
     import net.flashpunk.World;
+    import net.flashpunk.Entity;
     import net.flashpunk.masks.Grid;
     import net.flashpunk.graphics.Tilemap;
 
     import entities.*;
+    import worlds.*;
     import util.Util;
 
     public class Reality extends World
@@ -15,18 +17,19 @@ package worlds
 	    private static const MAP_DATA:Class;
 
 	private var
-	    player:Player,
+	    player:RunningPlayer,
 	    SO:RunningSO,
-	    pickingUp:Boolean;
+	    pickingUp:Boolean,
+	    level:Level;
 
 	public function Reality():void {
+	    super();
 	}
 
 	override public function begin():void {
 	    super.begin();
-	    FP.screen.scale = 2;
 
-	    var level:Level = new Level(MAP_DATA);
+	    level = new Level(MAP_DATA);
 	    add(level);
 
 	    // should only have one couple, but with this code, 
@@ -35,7 +38,7 @@ package worlds
 	    var dataList:XMLList = levelData.objects.player;
 	    var dataElement:XML;
 	    for each(dataElement in dataList) {	    
-		player = new Player(int(dataElement.@x), int(dataElement.@y));
+		player = new RunningPlayer(int(dataElement.@x), int(dataElement.@y));
 		add(player);
 	    }
 	    dataList = levelData.objects.so;
