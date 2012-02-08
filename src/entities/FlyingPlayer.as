@@ -8,6 +8,8 @@ package entities
     import net.flashpunk.graphics.Spritemap;
     import net.flashpunk.tweens.misc.VarTween;
 
+    import entities.*;
+
     public class FlyingPlayer extends Player {
 	[Embed(source = '../../assets/images/png/player_anim.png')]
 	    private const PLAYER_SPRITE:Class;
@@ -31,6 +33,7 @@ package entities
 	    if (controllable) { checkKeyPresses(); }
 	    checkWindBarriers();
 	    checkWindTunnels();
+	    checkSlowingClouds();
 	    move();
 	}
 
@@ -63,6 +66,16 @@ package entities
 	    if (boost) {
 		vx += windBoost;
 		vy -= windBoost;
+	    }
+	}
+
+	private function checkSlowingClouds():void {
+	    var cloud:SlowingCloud = collide("slowingCloud", x, y) as SlowingCloud;
+	    if (cloud) {
+		var slowingVelocity:Number = cloud.slowingVelocity;
+		vx -= FP.sign(vx)*slowingVelocity;
+		vy -= FP.sign(vy)*slowingVelocity;
+		cloud.poof();
 	    }
 	}
 
