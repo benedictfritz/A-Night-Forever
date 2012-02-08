@@ -24,7 +24,9 @@ package worlds
 	    lowerBarrier:WindBarrier,
 	    upperBarrier:WindBarrier,
 	    numTunnels:Number = 20,
-	    levelWidth:Number = 10000;
+	    levelWidth:Number = 10000,
+	    camOffsetX:Number = 70,
+	    camOffsetY:Number = 400;
 
 	public function Chase():void {
 	    player = new FlyingPlayer();
@@ -108,13 +110,8 @@ package worlds
 
 	override public function update():void {
 	    super.update();
-	    FP.camera.x = player.x - FP.halfWidth;
-	    FP.camera.y = player.y - FP.halfWidth;
-
-	    var distanceToUpper:Number = 
-		upperBarrier.distanceToLocation(player.x, player.y);
-	    var distanceToLower:Number = 
-	    	lowerBarrier.distanceToLocation(player.x, player.y);
+	    FP.camera.x = player.x - camOffsetX;
+	    FP.camera.y = player.y - camOffsetY;;
 	}
     }
 }
