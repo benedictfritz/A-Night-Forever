@@ -26,7 +26,8 @@ package worlds
 	    numTunnels:Number = 20,
 	    levelWidth:Number = 10000,
 	    camOffsetX:Number = 70,
-	    camOffsetY:Number = 400;
+	    camOffsetY:Number = 400,
+	    spawnSectorWidth:Number = 250;
 
 	public function Chase():void {
 	    player = new FlyingPlayer();
@@ -77,24 +78,24 @@ package worlds
 	}
 
 	private function spawnWindTunnels():void {
-	    for (var i:Number=0; i < numTunnels; i++) {
-		var spawnPoint:Point = randomSpawnPoint();
-		var windTunnel:WindTunnel = new WindTunnel(spawnPoint.x, 
+	    for (var i:Number=0; i < levelWidth; i += spawnSectorWidth) {
+	    	var spawnPoint:Point = randomSpawnPoint(i);
+	    	var windTunnel:WindTunnel = new WindTunnel(spawnPoint.x, 
 							   spawnPoint.y);
-		add(windTunnel);
+	    	add(windTunnel);
 	    }
 	}
 
 	private function spawnClouds():void {
-	    for (var i:Number=0; i < numTunnels; i++) {
-	    	var spawnPoint:Point = randomSpawnPoint();
+	    for (var i:Number=0; i < levelWidth; i += spawnSectorWidth) {
+	    	var spawnPoint:Point = randomSpawnPoint(i);
 	    	var slowingCloud:SlowingCloud = new SlowingCloud(spawnPoint.x, 
-							       spawnPoint.y);
+								 spawnPoint.y);
 	    	add(slowingCloud);
 	    }
 	}
 
-	private function randomSpawnPoint():Point {
+	private function randomSpawnPoint(xStart:Number):Point {
 	    // calculate the vertical distance between the two barriers.
 	    // always place barriers on top of each other.
 	    var yRange:Number = upperBarrier.distanceFrom(lowerBarrier);
@@ -102,7 +103,7 @@ package worlds
 
 	    // x + y + c = 0 => y = -c - x
 	    var c:Number = minC + FP.random * yRange;
-	    var x:Number = FP.random * levelWidth;
+	    var x:Number = xStart + FP.random * spawnSectorWidth;
 	    var y:Number = -x - c;
 
 	    return new Point(x, y);
