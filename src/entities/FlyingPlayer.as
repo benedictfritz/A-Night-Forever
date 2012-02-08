@@ -64,8 +64,8 @@ package entities
 	private function checkWindTunnels():void {
 	    var boost:Boolean = collide("windTunnel", x, y) != null;
 	    if (boost) {
-		vx += windBoost;
-		vy -= windBoost;
+		vx *= 1.1;
+		vy *= 1.1;
 	    }
 	}
 
@@ -73,8 +73,8 @@ package entities
 	    var cloud:SlowingCloud = collide("slowingCloud", x, y) as SlowingCloud;
 	    if (cloud) {
 		var slowingVelocity:Number = cloud.slowingVelocity;
-		vx -= FP.sign(vx)*slowingVelocity;
-		vy -= FP.sign(vy)*slowingVelocity;
+		vx *= 0.9;
+		vy *= 0.9;
 		cloud.poof();
 	    }
 	}
