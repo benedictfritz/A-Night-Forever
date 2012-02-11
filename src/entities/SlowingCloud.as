@@ -10,7 +10,8 @@ package entities
 	    private const SLOWING_CLOUD_SPRITE:Class;
 
 	private var
-	    sprCloud:Spritemap;
+	    sprCloud:Spritemap,
+	    hitboxLeeway:Number = 15;
 
 	public var
 	    slowingVelocity:Number = 15;
@@ -24,7 +25,8 @@ package entities
 	    sprCloud.add("burst", [0, 1, 2, 3], 12, false);
 	    sprCloud.scale = scale;
 	    this.graphic = sprCloud;
-	    setHitbox(sprCloud.width * scale, sprCloud.height * scale);
+	    setHitbox(sprCloud.width*scale - hitboxLeeway*2*scale, 
+		      sprCloud.height*scale - hitboxLeeway*2*scale, -hitboxLeeway*scale, - hitboxLeeway*scale);
 	    type="slowingCloud";
 	}
 
