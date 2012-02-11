@@ -1,10 +1,8 @@
 <level>
-  <width>3200</width>
-  <height>2400</height>
+  <width>800</width>
+  <height>600</height>
   <objects>
-    <player x="32" y="2272"/>
-    <so x="160" y="2144"/>
-    <windBarrier x="640" y="1280"/>
-    <windBarrier x="640" y="2336"/>
+    <player x="352" y="480"/>
+    <so x="352" y="128"/>
   </objects>
 </level>

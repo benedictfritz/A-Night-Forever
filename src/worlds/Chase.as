@@ -2,9 +2,10 @@ package worlds
 {
     import net.flashpunk.FP;
     import net.flashpunk.World;
+    import net.flashpunk.Entity;
     import net.flashpunk.masks.Grid;
-    import net.flashpunk.graphics.Tilemap;
     import net.flashpunk.utils.Draw;
+    import net.flashpunk.graphics.Tilemap;
 
     import entities.*;
     import util.Util;
@@ -21,15 +22,13 @@ package worlds
 	    player:FlyingPlayer,
 	    sO:SO,
 	    level:Level,
-	    lowerBarrier:WindBarrier,
-	    upperBarrier:WindBarrier,
-	    numTunnels:Number = 20,
-	    levelWidth:Number = 10000,
-	    camOffsetX:Number = 70,
-	    camOffsetY:Number = 400,
-	    spawnSectorWidth:Number = 250;
+	    levelHeight:Number = 100000,
+	    spawnSectorHeight:Number = 500,
+	    spawnedWindTunnels:Boolean = false,
+	    spawnedSlowingClouds:Boolean = false;
 
 	public function Chase():void {
+	    super();
 	    player = new FlyingPlayer();
 	    sO = new SO();
 	}
@@ -55,64 +54,72 @@ package worlds
 		sO = new SO(int(dataElement.@x), int(dataElement.@y));
 	    }
 	    add(sO);
-
-	    dataList = levelData.objects.windBarrier;
-	    for each(dataElement in dataList) {
-	        if (!upperBarrier) {
-		    upperBarrier = new WindBarrier(int(dataElement.@x), 
-						   int(dataElement.@y));
-		    add(upperBarrier);
-		    player.upperBarrier = upperBarrier;
-		}
-		else {
-		    lowerBarrier = new WindBarrier(int(dataElement.@x), 
-						   int(dataElement.@y));
-		    add(lowerBarrier);
-		    player.lowerBarrier = lowerBarrier;
-		}
-	    }
-
-	    spawnWindTunnels();
-	    spawnClouds();
-	    add(sO);
 	}
 
 	private function spawnWindTunnels():void {
-	    for (var i:Number=0; i < levelWidth; i += spawnSectorWidth) {
-	    	var spawnPoint:Point = randomSpawnPoint(i);
-	    	var windTunnel:WindTunnel = new WindTunnel(spawnPoint.x, 
+	    var startingY:Number = player.y;
+	    var i:Number = startingY;
+
+	    for (i; i > startingY - levelHeight; i -= spawnSectorHeight) {
+		var spawnPoint:Point = randomSpawnPoint(i);
+		var windTunnel:WindTunnel = new WindTunnel(spawnPoint.x, 
 							   spawnPoint.y);
-	    	add(windTunnel);
+		add(windTunnel);
 	    }
 	}
 
-	private function spawnClouds():void {
-	    for (var i:Number=0; i < levelWidth; i += spawnSectorWidth) {
-	    	var spawnPoint:Point = randomSpawnPoint(i);
-	    	var slowingCloud:SlowingCloud = new SlowingCloud(spawnPoint.x, 
-								 spawnPoint.y);
-	    	add(slowingCloud);
-	    }
+	private function spawnSlowingClouds():void {
+	    var startingY:Number = player.y;
+	    var i:Number = startingY;
+	    for (i; i > startingY - levelHeight; i -= spawnSectorHeight) {
+		var slowingCloud:SlowingCloud = spawnIndividualCloud(i);
+		var nearestTunnel:WindTunnel = 
+		    WindTunnel(this.nearestToEntity("windTunnel", 
+						    slowingCloud));
+		while (nearestTunnel && 
+		       slowingCloud.distanceFrom(nearestTunnel, true) < 50) {
+		    slowingCloud = spawnIndividualCloud(i);
+		    nearestTunnel = WindTunnel(this.nearestToEntity("windTunnel", 
+								    slowingCloud, 
+								    true));
+		}
+		add(slowingCloud);
+            }
+        }
+
+	private function spawnIndividualCloud(spawnSectorY:Number):SlowingCloud {
+	    var spawnPoint:Point = randomSpawnPoint(spawnSectorY);
+	    var slowingCloud:SlowingCloud = new SlowingCloud(spawnPoint.x, 
+							     spawnPoint.y);
+	    return slowingCloud;
 	}
 
-	private function randomSpawnPoint(xStart:Number):Point {
-	    // calculate the vertical distance between the two barriers.
-	    // always place barriers on top of each other.
-	    var yRange:Number = upperBarrier.distanceFrom(lowerBarrier);
-	    var minC:Number = lowerBarrier.c;
-
-	    // x + y + c = 0 => y = -c - x
-	    var c:Number = minC + FP.random * yRange;
-	    var x:Number = xStart + FP.random * spawnSectorWidth;
-	    var y:Number = -x - c;
-
+	private function randomSpawnPoint(yStart:Number):Point {
+	    var x:Number = FP.random * FP.width;
+	    var y:Number = yStart + FP.random * spawnSectorHeight;
 	    return new Point(x, y);
 	}
 
 	override public function update():void {
 	    super.update();
-	    FP.camera.x = player.x - camOffsetX;
-	    FP.camera.y = player.y - camOffsetY;;
+
+	    // the world's entity list is only updated after an update loop.
+	    // this is a really ugly way to fix this problem. ask online if there's
+	    // a better way.
+	    if (spawnedWindTunnels && !spawnedSlowingClouds) {
+		spawnedSlowingClouds = true;
+		spawnSlowingClouds();
+	    }
+	    if (!spawnedWindTunnels) {
+		spawnedWindTunnels = true;
+		spawnWindTunnels();
+	    }
+
+	    updateCamera();
+	}
+
+	private function updateCamera():void {
+	    FP.camera.y = player.y - FP.height + player.height;
 	}
     }
 }

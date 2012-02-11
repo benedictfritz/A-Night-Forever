@@ -22,7 +22,7 @@ package entities
 	    acceleration:Number = 20,
 	    friction:Number = 0.05,
 	    bounceBuffer:Number = 0.1,
-	    windBoost:Number = 60;
+	    windBoost:Number = 40;
 
 	public function FlyingPlayer(x:int=0, y:int=0) {
 	    super(x, y);
@@ -31,7 +31,6 @@ package entities
 	override public function update():void {
 	    super.update();
 	    if (controllable) { checkKeyPresses(); }
-	    checkWindBarriers();
 	    checkWindTunnels();
 	    checkSlowingClouds();
 	    move();
