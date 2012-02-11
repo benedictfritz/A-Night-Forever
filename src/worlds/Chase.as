@@ -89,13 +89,15 @@ package worlds
 
 	private function spawnIndividualCloud(spawnSectorY:Number):SlowingCloud {
 	    var spawnPoint:Point = randomSpawnPoint(spawnSectorY);
+	    var cloudScale:Number = FP.random*2 + 1;
 	    var slowingCloud:SlowingCloud = new SlowingCloud(spawnPoint.x, 
-							     spawnPoint.y);
+							     spawnPoint.y, 
+							     cloudScale);
 	    return slowingCloud;
 	}
 
 	private function randomSpawnPoint(yStart:Number):Point {
-	    var x:Number = FP.random * FP.width;
+	    var x:Number = (FP.random * FP.width) - 50;
 	    var y:Number = yStart + FP.random * spawnSectorHeight;
 	    return new Point(x, y);
 	}

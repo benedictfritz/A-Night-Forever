@@ -19,10 +19,11 @@ package entities
 	    lowerBarrier:WindBarrier;
 
 	private var
-	    acceleration:Number = 20,
-	    friction:Number = 0.05,
-	    bounceBuffer:Number = 0.1,
-	    windBoost:Number = 40;
+	    yAcceleration:Number = 20,
+	    xAcceleration:Number = 80,
+	    xFriction:Number = 0.1,
+	    yFriction:Number = 0.04,
+	    windBoost:Number = 12;
 
 	public function FlyingPlayer(x:int=0, y:int=0) {
 	    super(x, y);
@@ -37,33 +38,18 @@ package entities
 	}
 
 	private function checkKeyPresses():void {
-	    if (Input.check(Key.D)) { vx += acceleration; }
-	    else if (Input.check(Key.A)) { vx -= acceleration; }
-	    vx -= vx*friction;
+	    if (Input.check(Key.D)) { vx += xAcceleration; }
+	    else if (Input.check(Key.A)) { vx -= xAcceleration; }
+	    vx -= vx*xFriction;
 
-	    if (Input.check(Key.S)) { vy += acceleration; }
-	    else if (Input.check(Key.W)) { vy -= acceleration; }
-	    vy -= vy*friction;
-	}
-
-	private function checkWindBarriers():void {
-	    var distanceToBarrier:Number = upperBarrier.distanceToLocation(x, y);
-	    if (distanceToBarrier < 10) {
-		if (vy < 0) { vy = -vy * (bounceBuffer * distanceToBarrier); }
-		if (vx < 0) { vx = -vx * (bounceBuffer * distanceToBarrier); }
-	    }
-
-	    distanceToBarrier = lowerBarrier.distanceToLocation(x, y);
-	    if (distanceToBarrier < 10) {
-		if (vy > 0) { vy = -vy * (bounceBuffer * distanceToBarrier); }
-		if (vx > 0) { vx = -vx * (bounceBuffer * distanceToBarrier); }
-	    }
+	    if (Input.check(Key.S)) { vy += yAcceleration; }
+	    else if (Input.check(Key.W)) { vy -= yAcceleration; }
+	    vy -= vy*yFriction;
 	}
 
 	private function checkWindTunnels():void {
 	    var boost:Boolean = collide("windTunnel", x, y) != null;
 	    if (boost) {
-		vx *= 1.1;
 		vy *= 1.1;
 	    }
 	}
@@ -72,8 +58,8 @@ package entities
 	    var cloud:SlowingCloud = collide("slowingCloud", x, y) as SlowingCloud;
 	    if (cloud) {
 		var slowingVelocity:Number = cloud.slowingVelocity;
-		vx *= 0.9;
-		vy *= 0.9;
+		vx *= 0.95;
+		vy *= 0.95;
 		cloud.poof();
 	    }
 	}
