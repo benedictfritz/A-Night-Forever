@@ -2,19 +2,24 @@ package entities
 {
     import net.flashpunk.FP;
     import net.flashpunk.Entity;
-    import net.flashpunk.graphics.Image;
+    import net.flashpunk.graphics.Spritemap;
 
     public class WindTunnel extends Entity {
-	[Embed(source="../../assets/images/png/wind_tunnel.png")]
-	    private const WIND_TUNNEL_IMG:Class;
+	[Embed(source="../../assets/images/gerry/wind_tunnel.png")]
+	    private const WIND_TUNNEL_SPRITE:Class;
+
+	private var 
+	    sprWindTunnel:Spritemap;
 
 	public function WindTunnel(x:int=0, y:int=0) {
 	    this.x = x;
 	    this.y = y;
 
-	    var img:Image = new Image(WIND_TUNNEL_IMG);
-	    this.graphic = img;
-	    setHitbox(img.width, img.height);
+	    sprWindTunnel = new Spritemap(WIND_TUNNEL_SPRITE, 64, 64);
+	    sprWindTunnel.add("blow", [0, 1, 2, 3, 4], 10, true);
+	    sprWindTunnel.play("blow");
+	    this.graphic = sprWindTunnel;
+	    setHitbox(sprWindTunnel.width, sprWindTunnel.height);
 	    type="windTunnel";
 	}
     }

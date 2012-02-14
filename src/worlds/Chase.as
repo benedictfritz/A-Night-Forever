@@ -25,7 +25,8 @@ package worlds
 	    levelHeight:Number = 100000,
 	    spawnSectorHeight:Number = 500,
 	    spawnedWindTunnels:Boolean = false,
-	    spawnedSlowingClouds:Boolean = false;
+	    spawnedSlowingClouds:Boolean = false,
+	    skyBackground:SkyBackground;
 
 	public function Chase():void {
 	    super();
@@ -54,6 +55,9 @@ package worlds
 		sO = new SO(int(dataElement.@x), int(dataElement.@y));
 	    }
 	    add(sO);
+
+	    skyBackground = new SkyBackground(player.x, player.y, levelHeight);
+	    add(skyBackground);
 	}
 
 	private function spawnWindTunnels():void {
