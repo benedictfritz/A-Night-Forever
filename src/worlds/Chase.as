@@ -20,7 +20,7 @@ package worlds
 
 	private var
 	    player:FlyingPlayer,
-	    sO:SO,
+	    sO:FlyingSO,
 	    level:Level,
 	    levelHeight:Number = 100000,
 	    spawnSectorHeight:Number = 500,
@@ -31,7 +31,7 @@ package worlds
 	public function Chase():void {
 	    super();
 	    player = new FlyingPlayer();
-	    sO = new SO();
+	    sO = new FlyingSO();
 	}
 
 	override public function begin():void {
@@ -55,7 +55,7 @@ package worlds
 
 	    dataList = levelData.objects.so;
 	    for each(dataElement in dataList) {
-		sO = new SO(int(dataElement.@x), int(dataElement.@y));
+		sO = new FlyingSO(int(dataElement.@x), int(dataElement.@y));
 	    }
 	    add(sO);
 
