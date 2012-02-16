@@ -13,8 +13,7 @@ package entities
 	    TILE_WIDTH:Number = 400,
 	    TILE_HEIGHT:Number = 300;
 
-	public function SkyBackground(startX:Number, startY:Number, 
-				      levelHeight:Number):void {
+	public function SkyBackground(startY:Number, levelHeight:Number):void {
 	    this.y = startY - levelHeight;
 	    tiles = new Tilemap(SKY_TILE, FP.width, levelHeight,
 				TILE_WIDTH, TILE_HEIGHT);

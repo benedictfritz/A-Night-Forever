@@ -56,7 +56,7 @@ package worlds
 	    }
 	    add(sO);
 
-	    skyBackground = new SkyBackground(player.x, player.y, levelHeight);
+	    skyBackground = new SkyBackground(player.y + player.height, levelHeight);
 	    add(skyBackground);
 	}
 
