@@ -48,6 +48,9 @@ package worlds
 	    for each(var dataElement:XML in dataList) {	    
 		player = new FlyingPlayer(int(dataElement.@x), int(dataElement.@y));
 	    }
+	    player.minX = 0;
+	    player.maxX = FP.width;
+	    player.maxY = player.y;
 	    add(player);
 
 	    dataList = levelData.objects.so;
@@ -127,5 +130,6 @@ package worlds
 	private function updateCamera():void {
 	    FP.camera.y = player.y - FP.height + player.height;
 	}
+
     }
 }

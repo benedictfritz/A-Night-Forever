@@ -15,8 +15,9 @@ package entities
 	    private const PLAYER_SPRITE:Class;
 
 	public var
-	    upperBarrier:WindBarrier,
-	    lowerBarrier:WindBarrier;
+	    minX:Number,
+	    maxX:Number,
+	    maxY:Number;
 
 	private var
 	    yAcceleration:Number = 20,
@@ -45,6 +46,7 @@ package entities
 	    if (Input.check(Key.S)) { vy += yAcceleration; }
 	    else if (Input.check(Key.W)) { vy -= yAcceleration; }
 	    vy -= vy*yFriction;
+	    if (vy > 0) { vy = 0; }
 	}
 
 	private function checkWindTunnels():void {
@@ -66,6 +68,10 @@ package entities
 
 	private function move():void {
 	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
+
+	    // constrain player within limits
+	    if (left < minX) { x = minX + originX; }
+	    if (right > maxX) { x = maxX + originX - width; }
 	}
     }
 }
