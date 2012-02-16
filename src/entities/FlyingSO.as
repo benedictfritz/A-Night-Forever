@@ -3,6 +3,7 @@ package entities
     import net.flashpunk.FP;
     import net.flashpunk.Entity;
     import net.flashpunk.utils.Key;
+    import net.flashpunk.utils.Ease;
     import net.flashpunk.graphics.Image;
     import net.flashpunk.graphics.Spritemap;
     import net.flashpunk.tweens.misc.VarTween;
@@ -18,7 +19,8 @@ package entities
 	    maxX:Number;
 	
 	private var
-	    nextX:Number;
+	    nextX:Number,
+	    swerveTween:VarTween;
 
 	public function FlyingSO(x:int=0, y:int=0) {
 	    super(x, y);
@@ -33,14 +35,7 @@ package entities
 	}
 
 	private function move():void {
-	    if (vx > 0 && x >= nextX) {
-		resetNextX();
-	    }
-	    else if (vx < 0 && x < nextX) {
-		resetNextX();
-	    }
-
-	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
+	    moveBy(0, vy * FP.elapsed, "level", true);
 	}
 	
 	private function resetNextX():void {
@@ -48,14 +43,9 @@ package entities
 	    var numInRange:Number = FP.random * range;
 	    nextX = numInRange + (minX + originX);
 
-	    FP.console.log(nextX);
-
-	    if (x <= nextX) {
-	    	vx = 200;
-	    }
-	    else if (x > nextX) {
-	    	vx = -200;
-	    }
+	    swerveTween = new VarTween(resetNextX);
+	    swerveTween.tween(this, "x", nextX, 3, Ease.sineInOut);
+	    FP.world.addTween(swerveTween);
 	}
     }
 }
