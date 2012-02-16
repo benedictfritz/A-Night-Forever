@@ -25,8 +25,6 @@ package entities
 	    var numColumns:Number = FP.width / TILE_WIDTH;
 	    var numRows:Number = levelHeight / TILE_HEIGHT;
 
-	    FP.console.log("columns: " + numColumns);
-	    FP.console.log("rows: " + numRows);
 	    for (var _x:int = 0; _x < numColumns; _x += 1) {
 	    	for (var _y:int = 0; _y < numRows; _y+=1) {
 	    	    tiles.setTile(_x, _y);

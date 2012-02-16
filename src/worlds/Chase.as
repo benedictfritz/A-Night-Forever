@@ -57,6 +57,8 @@ package worlds
 	    for each(dataElement in dataList) {
 		sO = new FlyingSO(int(dataElement.@x), int(dataElement.@y));
 	    }
+	    sO.minX = 0;
+	    sO.maxX = FP.width;
 	    add(sO);
 
 	    skyBackground = new SkyBackground(player.y + player.height, levelHeight);
