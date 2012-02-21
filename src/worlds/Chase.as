@@ -8,6 +8,7 @@ package worlds
     import net.flashpunk.graphics.Tilemap;
 
     import entities.*;
+    import worlds.Interlude;
     import util.Util;
 
     import flash.geom.Point;
@@ -114,6 +115,12 @@ package worlds
 	override public function update():void {
 	    super.update();
 
+	    lameSpawnStuff();
+	    updateCamera();
+	    checkCatchingPlayer();
+	}
+
+	private function lameSpawnStuff():void {
 	    // the world's entity list is only updated after an update loop.
 	    // this is a really ugly way to fix this problem. ask online if there's
 	    // a better way.
@@ -125,12 +132,16 @@ package worlds
 		spawnedWindTunnels = true;
 		spawnWindTunnels();
 	    }
-
-	    updateCamera();
 	}
 
 	private function updateCamera():void {
 	    FP.camera.y = player.y - FP.height + player.height;
+	}
+
+	private function checkCatchingPlayer():void {
+	    if (player.y <= sO.y) {
+		FP.world = new Interlude(player.x, player.y);
+	    }
 	}
 
     }
