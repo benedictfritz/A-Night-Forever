@@ -36,7 +36,6 @@ package worlds
 	    couple = new Couple(playerX, 0);
 	    couple.controllable = false;
 	    add(couple);
-	    FP.console.log("Adding couple");
 
 	    flyingToClouds = true;
 	}
@@ -65,7 +64,6 @@ package worlds
 
 	    // the couple in the ogmo file is used only for height positioning.
 	    // the x-position is fed in from the previous world
-	    FP.console.log("Initing level.");
 	    dataList = levelData.objects.couple;
 	    for each(dataElement in dataList) {
 		couple.y = dataElement.@y;
