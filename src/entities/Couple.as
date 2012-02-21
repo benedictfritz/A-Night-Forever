@@ -12,11 +12,15 @@ package entities
 	    Y_SPEED_MAX:Number = -5,
 	    JUMP_SPEED:Number = 8;
 
+	public var
+	    controllable:Boolean = true;
+
 	private var
 	    gravity:Number = 0.5,
 	    jumping:Boolean = false,
 	    xSpeed:Number = 180,
 	    ySpeed:Number = 0;
+
 
 	[Embed(source="../../assets/images/png/couple.png")]
 	    private const COUPLE_IMG:Class;
@@ -33,7 +37,7 @@ package entities
 
 	override public function update():void {
 	    super.update();
-	    checkKeyPresses();
+	    if (controllable) { checkKeyPresses(); }
 	}
 
 	private function checkKeyPresses():void {

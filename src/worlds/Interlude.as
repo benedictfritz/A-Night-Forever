@@ -26,6 +26,7 @@ package worlds
 	public function Interlude(playerX:Number, playerY:Number):void {
 	    super();
 	    couple = new Couple(playerX, playerY);
+	    couple.controllable = false;
 	    add(couple);
 	}
 
