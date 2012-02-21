@@ -40,7 +40,13 @@ package worlds
 	    add(level);
 
 	    var levelData:XML = level.getLevelData();
-	    var dataList:XMLList = levelData.objects.player;
+
+	    skyBackground = new SkyBackground(couple.y + couple.height, 
+					      level.height);
+	    add(skyBackground);
+
+	    var transitionIn:TransitionIn = new TransitionIn(0.1, 0xFFFFFF);
+	    add(transitionIn);
 	}
 
 	override public function update():void {

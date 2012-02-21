@@ -13,16 +13,20 @@ package entities
 	public var 
 	    alpha:Number = 1;
 	private var 
-	    colour:uint = 0x000000;
+	    transitionSpeed:Number,
+	    color:uint;
 		
-	public function TransitionIn() {
+	public function TransitionIn(transitionSpeed:Number=0.01, 
+				     color:uint=0x000000) {
+	    this.transitionSpeed = transitionSpeed;
+	    this.color = color;
 	    layer = -1000;
 	}
 		
 	override public function render():void {
-	    Draw.rect(FP.camera.x, FP.camera.y, FP.width, FP.height, colour, alpha);
+	    Draw.rect(FP.camera.x, FP.camera.y, FP.width, FP.height, color, alpha);
 
-	    alpha -= 0.01;
+	    alpha -= transitionSpeed;
 
 	    if (alpha < 0) {
 		FP.world.remove(this);
