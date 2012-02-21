@@ -1,12 +1,17 @@
 <level>
   <width>800</width>
-  <height>900</height>
+  <height>1700</height>
   <objects>
-    <cloud x="0" y="0"/>
-    <cloud x="128" y="0"/>
-    <cloud x="256" y="0"/>
-    <cloud x="384" y="0"/>
-    <cloud x="512" y="0"/>
-    <cloud x="640" y="0"/>
+    <couple x="352" y="1600"/>
+    <cloud x="0" y="512"/>
+    <cloud x="96" y="512"/>
+    <cloud x="192" y="512"/>
+    <cloud x="288" y="512"/>
+    <cloud x="352" y="512"/>
+    <cloud x="448" y="512"/>
+    <cloud x="480" y="512"/>
+    <cloud x="544" y="512"/>
+    <cloud x="640" y="512"/>
+    <cloud x="672" y="512"/>
   </objects>
 </level>

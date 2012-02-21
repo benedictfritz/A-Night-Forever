@@ -5,7 +5,9 @@ package worlds
     import net.flashpunk.Entity;
     import net.flashpunk.masks.Grid;
     import net.flashpunk.utils.Draw;
+    import net.flashpunk.utils.Ease;
     import net.flashpunk.graphics.Tilemap;
+    import net.flashpunk.tweens.misc.VarTween;
 
     import entities.*;
     import util.Util;
@@ -21,13 +23,22 @@ package worlds
 	private var
 	    couple:Couple,
 	    level:Level,
-	    skyBackground:SkyBackground;
+	    skyBackground:SkyBackground,
+	    flyingToClouds:Boolean,
+	    xTween:VarTween,
+	    yTween:VarTween,
+	    cloudHeight:Number;
 
 	public function Interlude(playerX:Number, playerY:Number):void {
 	    super();
-	    couple = new Couple(playerX, playerY);
+
+	    // set couple's height based on the parsing of the ogmo data
+	    couple = new Couple(playerX, 0);
 	    couple.controllable = false;
 	    add(couple);
+	    FP.console.log("Adding couple");
+
+	    flyingToClouds = true;
 	}
 
 	override public function begin():void {
@@ -41,8 +52,26 @@ package worlds
 
 	    var levelData:XML = level.getLevelData();
 
-	    skyBackground = new SkyBackground(couple.y + couple.height, 
-					      level.height);
+	    // eventually we will have one single entity for the cloud layer
+	    // which will make this assignment of cloudHeight less strange/confusing
+	    var dataList:XMLList = levelData.objects.cloud;
+	    var dataElement:XML;
+	    for each(dataElement in dataList) {
+		var newCloud:SlowingCloud = new SlowingCloud(int(dataElement.@x), 
+							     int(dataElement.@y));
+		add(newCloud);
+		cloudHeight = int(dataElement.@y);
+	    }
+
+	    // the couple in the ogmo file is used only for height positioning.
+	    // the x-position is fed in from the previous world
+	    FP.console.log("Initing level.");
+	    dataList = levelData.objects.couple;
+	    for each(dataElement in dataList) {
+		couple.y = dataElement.@y;
+	    }
+
+	    skyBackground = new SkyBackground(couple.y + couple.height, level.height);
 	    add(skyBackground);
 
 	    var transitionIn:TransitionIn = new TransitionIn(0.1, 0xFFFFFF);
@@ -52,6 +81,22 @@ package worlds
 	override public function update():void {
 	    super.update();
 	    updateCamera();
+
+	    if (flyingToClouds) { toCloudsUpdate();  }
+	}
+
+	private function toCloudsUpdate():void {
+	    if (!xTween) {
+		xTween = new VarTween();
+		var centerX:Number = FP.halfWidth - couple.width/2;
+		xTween.tween(couple, "x", centerX, 2, Ease.sineInOut);
+		FP.world.addTween(xTween);
+	    }
+	    if (!yTween) {
+		yTween = new VarTween();
+		yTween.tween(couple, "y", cloudHeight, 5);
+		FP.world.addTween(yTween);
+	    }
 	}
 
 	private function updateCamera():void {
