@@ -87,12 +87,14 @@ package worlds
 	    super.update();
 
 	    if (flyingToClouds) { toCloudsUpdate();  }
+
+	    
 	}
 
 	private function toCloudsUpdate():void {
 	    if (!xTween) {
 		xTween = new VarTween();
-		var leftPosition:Number = 5;
+		var leftPosition:Number = 100;
 		xTween.tween(couple, "x", leftPosition, 2, Ease.sineInOut);
 		FP.world.addTween(xTween);
 	    }
@@ -114,24 +116,24 @@ package worlds
 	private function coupleUpArc():void {
 	    yTween = new VarTween(coupleDownArc);
 	    var yPeak:Number = couple.y - FP.halfHeight;
-	    yTween.tween(couple, "y", yPeak, HALF_ARC_TIME, Ease.sineOut);
+	    yTween.tween(couple, "y", yPeak, HALF_ARC_TIME, Ease.quadOut);
 	    FP.world.addTween(yTween);
 
 	    xTween = new VarTween();
 	    var xPeak:Number = FP.halfWidth - couple.width/2;
-	    xTween.tween(couple, "x", xPeak, HALF_ARC_TIME, Ease.sineInOut);
+	    xTween.tween(couple, "x", xPeak, HALF_ARC_TIME);
 	    FP.world.addTween(xTween);
 	}
 
 	private function coupleDownArc():void {
 	    yTween = new VarTween();
 	    var yBottom:Number = couple.y + FP.halfHeight;
-	    yTween.tween(couple, "y", yBottom, HALF_ARC_TIME, Ease.sineIn);
+	    yTween.tween(couple, "y", yBottom, HALF_ARC_TIME, Ease.quadIn);
 	    FP.world.addTween(yTween);
 
 	    xTween = new VarTween();
-	    var xBottom:Number = FP.width - couple.width - 10;
-	    xTween.tween(couple, "x", xBottom, HALF_ARC_TIME, Ease.sineOut);
+	    var xBottom:Number = FP.width - couple.width - 100;
+	    xTween.tween(couple, "x", xBottom, HALF_ARC_TIME);
 	    FP.world.addTween(xTween);		
 	}
 
