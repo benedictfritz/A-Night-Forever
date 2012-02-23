@@ -21,7 +21,8 @@ package worlds
 	    private static const MAP_DATA:Class;
 
 	private static const
-	    TO_CLOUD_TIME:Number = 3;
+	    TO_CLOUD_TIME:Number = 2,
+	    HALF_ARC_TIME:Number = 2;
 
 	private var
 	    couple:Couple,
@@ -96,7 +97,7 @@ package worlds
 		FP.world.addTween(xTween);
 	    }
 	    if (!yTween) {
-		yTween = new VarTween();
+		yTween = new VarTween(coupleUpArc);
 		yTween.tween(couple, "y", cloudHeight, TO_CLOUD_TIME);
 		FP.world.addTween(yTween);
 	    }
@@ -108,6 +109,30 @@ package worlds
 		camTween.tween(FP.camera, "y", camY, TO_CLOUD_TIME);
 		FP.world.addTween(camTween);
 	    }
+	}
+
+	private function coupleUpArc():void {
+	    yTween = new VarTween(coupleDownArc);
+	    var yPeak:Number = couple.y - FP.halfHeight;
+	    yTween.tween(couple, "y", yPeak, HALF_ARC_TIME, Ease.sineOut);
+	    FP.world.addTween(yTween);
+
+	    xTween = new VarTween();
+	    var xPeak:Number = FP.halfWidth - couple.width/2;
+	    xTween.tween(couple, "x", xPeak, HALF_ARC_TIME, Ease.sineInOut);
+	    FP.world.addTween(xTween);
+	}
+
+	private function coupleDownArc():void {
+	    yTween = new VarTween();
+	    var yBottom:Number = couple.y + FP.halfHeight;
+	    yTween.tween(couple, "y", yBottom, HALF_ARC_TIME, Ease.sineIn);
+	    FP.world.addTween(yTween);
+
+	    xTween = new VarTween();
+	    var xBottom:Number = FP.width - couple.width - 10;
+	    xTween.tween(couple, "x", xBottom, HALF_ARC_TIME, Ease.sineOut);
+	    FP.world.addTween(xTween);		
 	}
 
     }
