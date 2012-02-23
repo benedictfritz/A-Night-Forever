@@ -20,6 +20,9 @@ package worlds
 	       mimeType="application/octet-stream")]
 	    private static const MAP_DATA:Class;
 
+	private static const
+	    TO_CLOUD_TIME:Number = 3;
+
 	private var
 	    couple:Couple,
 	    level:Level,
@@ -27,6 +30,7 @@ package worlds
 	    flyingToClouds:Boolean,
 	    xTween:VarTween,
 	    yTween:VarTween,
+	    camTween:VarTween,
 	    cloudHeight:Number;
 
 	public function Interlude(playerX:Number, playerY:Number):void {
@@ -69,6 +73,8 @@ package worlds
 		couple.y = dataElement.@y;
 	    }
 
+	    FP.camera.y = couple.y - FP.height + couple.height;
+
 	    skyBackground = new SkyBackground(couple.y + couple.height, level.height);
 	    add(skyBackground);
 
@@ -78,7 +84,6 @@ package worlds
 
 	override public function update():void {
 	    super.update();
-	    updateCamera();
 
 	    if (flyingToClouds) { toCloudsUpdate();  }
 	}
@@ -86,19 +91,23 @@ package worlds
 	private function toCloudsUpdate():void {
 	    if (!xTween) {
 		xTween = new VarTween();
-		var centerX:Number = FP.halfWidth - couple.width/2;
-		xTween.tween(couple, "x", centerX, 2, Ease.sineInOut);
+		var leftPosition:Number = 5;
+		xTween.tween(couple, "x", leftPosition, 2, Ease.sineInOut);
 		FP.world.addTween(xTween);
 	    }
 	    if (!yTween) {
 		yTween = new VarTween();
-		yTween.tween(couple, "y", cloudHeight, 5);
+		yTween.tween(couple, "y", cloudHeight, TO_CLOUD_TIME);
 		FP.world.addTween(yTween);
 	    }
-	}
-
-	private function updateCamera():void {
-	    FP.camera.y = couple.y - FP.height + couple.height;
+	    if (!camTween) {
+		camTween = new VarTween();
+		// TODO: Change 32, the temporary thickness of the cloud layer,
+		// to be related to an actual entity
+		var camY:Number = cloudHeight + 32 - FP.height;
+		camTween.tween(FP.camera, "y", camY, TO_CLOUD_TIME);
+		FP.world.addTween(camTween);
+	    }
 	}
 
     }
