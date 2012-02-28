@@ -22,7 +22,7 @@ package entities
 	    ySpeed:Number = 0;
 
 
-	[Embed(source="../../assets/images/png/couple.png")]
+	[Embed(source="../../assets/images/couple.png")]
 	    private const COUPLE_IMG:Class;
 
 	public function Couple(x:int=0, y:int=0) {

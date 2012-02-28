@@ -19,7 +19,7 @@ package worlds
 	    TILE_WIDTH:Number = 32,
 	    TILE_HEIGHT:Number = 32;
 	
-	[Embed(source="../../assets/levels/images/png/tiles.png")]
+	[Embed(source="../../assets/levels/images/tiles.png")]
 	    private const TILESET:Class;
 
 	public function Level(xml:Class) {

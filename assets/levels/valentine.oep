@@ -2,7 +2,7 @@
   <name>Valentine</name>
 
   <settings>
-    <workingDirectory>images/png</workingDirectory>
+    <workingDirectory>images</workingDirectory>
     <defaultWidth>800</defaultWidth>
     <defaultHeight>600</defaultHeight>
     <minWidth>800</minWidth>

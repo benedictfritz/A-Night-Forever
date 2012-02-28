@@ -9,7 +9,7 @@ package entities
     import net.flashpunk.tweens.misc.VarTween;
 
     public class Player extends Actor {
-	[Embed(source = '../../assets/images/png/player.png')]
+	[Embed(source = '../../assets/images/player.png')]
 	    private const PLAYER_SPRITE:Class;
 
 	private var

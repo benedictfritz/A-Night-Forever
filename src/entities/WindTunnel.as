@@ -5,7 +5,7 @@ package entities
     import net.flashpunk.graphics.Spritemap;
 
     public class WindTunnel extends Entity {
-	[Embed(source="../../assets/images/gerry/wind_tunnel.png")]
+	[Embed(source="../../assets/images/wind_tunnel.png")]
 	    private const WIND_TUNNEL_SPRITE:Class;
 
 	private var 

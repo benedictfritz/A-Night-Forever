@@ -6,7 +6,7 @@ package entities
     import net.flashpunk.graphics.Spritemap;
 
     public class SlowingCloud extends Entity {
-	[Embed(source="../../assets/images/gerry/cloud.png")]
+	[Embed(source="../../assets/images/cloud.png")]
 	    private const SLOWING_CLOUD_SPRITE:Class;
 
 	private var

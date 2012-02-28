@@ -11,7 +11,7 @@ package entities
     import entities.*;
 
     public class FlyingSO extends SO {
-	[Embed(source = '../../assets/images/png/player_anim.png')]
+	[Embed(source = '../../assets/images/player.png')]
 	    private const PLAYER_SPRITE:Class;
 
 	public var

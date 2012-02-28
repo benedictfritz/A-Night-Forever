@@ -5,7 +5,7 @@ package entities
     import net.flashpunk.graphics.Tilemap;
 
     public class SkyBackground extends Entity {
-	[Embed(source="../../assets/images/gerry/star_background.png")]
+	[Embed(source="../../assets/images/star_background.png")]
 	    private const SKY_TILE:Class;
 
 	private var
