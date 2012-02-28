@@ -90,21 +90,25 @@ package worlds
 	}
 
 	private function toCloudsUpdate():void {
-	    xTween = new VarTween();
-	    var leftPosition:Number = 100;
-	    xTween.tween(couple, "x", leftPosition, 2, Ease.sineInOut);
-	    FP.world.addTween(xTween);
-
-	    yTween = new VarTween(coupleUpArc);
-	    yTween.tween(couple, "y", cloudHeight, TO_CLOUD_TIME);
-	    FP.world.addTween(yTween);
-
-	    camTween = new VarTween();
-	    // TODO: Change 32, the temporary thickness of the cloud layer,
-	    // to be related to an actual entity
-	    var camY:Number = cloudHeight + 32 - FP.height;
-	    camTween.tween(FP.camera, "y", camY, TO_CLOUD_TIME);
-	    FP.world.addTween(camTween);
+	    if (!xTween) {
+		xTween = new VarTween();
+		var leftPosition:Number = 100;
+		xTween.tween(couple, "x", leftPosition, 2, Ease.sineInOut);
+		FP.world.addTween(xTween);
+	    }
+	    if (!yTween) {
+		yTween = new VarTween(coupleUpArc);
+		yTween.tween(couple, "y", cloudHeight, TO_CLOUD_TIME);
+		FP.world.addTween(yTween);
+	    }
+	    if (!camTween) {
+		camTween = new VarTween();
+		// TODO: Change 32, the temporary thickness of the cloud layer,
+		// to be related to an actual entity
+		var camY:Number = cloudHeight + 32 - FP.height;
+		camTween.tween(FP.camera, "y", camY, TO_CLOUD_TIME);
+		FP.world.addTween(camTween);
+	    }
 	}
 
 	private function coupleUpArc():void {
