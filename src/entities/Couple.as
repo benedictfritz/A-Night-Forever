@@ -9,8 +9,8 @@ package entities
     public class Couple extends Entity
     {
 	private const
-	    Y_SPEED_MAX:Number = -5,
-	    JUMP_SPEED:Number = 8;
+	    Y_SPEED_MAX:Number = -10,
+	    JUMP_SPEED:Number = 16;
 
 	public var
 	    controllable:Boolean = true;
@@ -18,7 +18,7 @@ package entities
 	private var
 	    gravity:Number = 0.5,
 	    jumping:Boolean = false,
-	    xSpeed:Number = 180,
+	    xSpeed:Number = 360,
 	    ySpeed:Number = 0;
 
 
