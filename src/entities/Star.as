@@ -3,20 +3,25 @@ package entities
     import net.flashpunk.FP;
     import net.flashpunk.Entity;
     import net.flashpunk.graphics.Image;
+    import net.flashpunk.graphics.Spritemap;
 
     import entities.*;
 
     public class Star extends Entity {
-	[Embed(source="../../assets/images/png/star.png")]
-	    private const STAR_IMG:Class;
+	[Embed(source="../../assets/images/star.png")]
+	    private const STAR_SPRITE:Class;
+
+	private var
+	    sprStar:Spritemap;
 
 	public function Star(x:int=0, y:int=0) {
 	    this.x = x;
 	    this.y = y;
 	    
-	    var img:Image = new Image(STAR_IMG);
-	    this.graphic = img;
-	    setHitbox(img.width, img.height);
+	    sprStar = new Spritemap(STAR_SPRITE, 32, 32);
+	    sprStar.add("default", [0, 1, 2, 3], 6, true);
+	    this.graphic = sprStar;
+	    setHitbox(sprStar.width, sprStar.height);
 	    type="star";
 	}
 
@@ -24,8 +29,6 @@ package entities
 	    var couple:Couple = collide("couple", x, y) as Couple;
 	    if(couple) {
 		couple.starBoost();
-		var starBurst:StarBurst = new StarBurst(x, y);
-		FP.world.add(starBurst);
 		FP.world.recycle(this);
 	    }
 	}

@@ -20,7 +20,7 @@ package entities
 	    this.y = y;
 	    this.color = 0xEEEEEE;
 
-	    sprActor = new Spritemap(PLAYER_SPRITE, 96, 96),
+	    sprActor = new Spritemap(PLAYER_SPRITE, 96, 96);
 	    sprActor.add("stand", [0], 1, true);
 	    sprActor.add("jump", [5], 1, true);
 	    sprActor.add("fall", [7], 1, true);
