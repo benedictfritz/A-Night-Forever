@@ -46,7 +46,7 @@ package entities
 	    if (Input.check(Key.S)) { vy += yAcceleration; }
 	    else if (Input.check(Key.W)) { vy -= yAcceleration; }
 	    vy -= vy*yFriction;
-	    if (vy > 0) { vy = 0; }
+	    // if (vy > 0) { vy = 0; }
 	}
 
 	private function checkWindTunnels():void {
