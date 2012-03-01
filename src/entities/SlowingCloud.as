@@ -2,7 +2,6 @@ package entities
 {
     import net.flashpunk.FP;
     import net.flashpunk.Entity;
-    import net.flashpunk.graphics.Image;
     import net.flashpunk.graphics.Spritemap;
 
     public class SlowingCloud extends Entity {
