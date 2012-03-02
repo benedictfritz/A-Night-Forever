@@ -46,7 +46,7 @@ package entities
 	    // vy -= vy*0.1;
 	    // moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
 
-	    // left / right movement
+	    /* standard left / right movement */
 	    if (Input.check(Key.D)) { vx = X_SPEED; }
 	    else if (Input.check(Key.A)) { vx = -X_SPEED; }
 	    else { vx = 0; }

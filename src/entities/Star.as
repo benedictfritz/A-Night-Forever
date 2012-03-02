@@ -12,7 +12,9 @@ package entities
 	    private const STAR_SPRITE:Class;
 
 	private var
-	    sprStar:Spritemap;
+	    sprStar:Spritemap,
+	    spriteTimer:Number = 0,
+	    spriteLength:Number;
 
 	public function Star(x:int=0, y:int=0) {
 	    this.x = x;
@@ -23,13 +25,27 @@ package entities
 	    this.graphic = sprStar;
 	    setHitbox(sprStar.width, sprStar.height);
 	    type="star";
+	    
+	    // randomize the speed with which the star changes its frame
+	    spriteLength = FP.random / 5 + 0.1;
 	}
 
 	override public function update():void {
+	    // randomize so all the stars don't look the same
+	    randomizeStarSpriteFrame();
+
 	    var couple:Couple = collide("couple", x, y) as Couple;
 	    if(couple) {
 		couple.starBoost();
 		FP.world.recycle(this);
+	    }
+	}
+
+	private function randomizeStarSpriteFrame():void {
+	    spriteTimer += FP.elapsed;
+	    if (spriteTimer > spriteLength) {
+		spriteTimer = 0;
+		sprStar.frame = FP.random * 4;
 	    }
 	}
     }
