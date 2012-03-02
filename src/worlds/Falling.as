@@ -81,6 +81,9 @@ package worlds
 	    var newSectorX:int = int(testPlayer.x/Sector.WIDTH);
 	    var newSectorY:int = int(testPlayer.y/Sector.HEIGHT);
 
+	    // need to round down for negatives
+	    if (testPlayer.x < 0) { newSectorX--; }
+
 	    var newCurrSector:Sector = isInSectorsArray(newSectorX, newSectorY);
 	    if (newCurrSector) {
 		currSector = newCurrSector;
