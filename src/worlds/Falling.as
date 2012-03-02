@@ -24,20 +24,14 @@ package worlds
 	    minStars:Number = 4,
 	    transitionIn:TransitionIn;
 
-	private var
-	    testPlayer:FlyingPlayer;
-
 	public function Falling():void {
 	}
 
 	override public function begin():void {
 	    super.begin();
 
-	    // couple = new Couple(1, 1);
-	    // add(couple);
-
-	    testPlayer = new FlyingPlayer(1, 1);
-	    add(testPlayer);
+	    couple = new Couple(0, 0);
+	    add(couple);
 
 	    sectors = new Array();
 	    currSector = new Sector(0, 0);
@@ -52,8 +46,7 @@ package worlds
 
 	    updateCamera();
 
-	    // if (!currSector.contains(couple.x, couple.y)) {
-	    if (!currSector.contains(testPlayer.x, testPlayer.y)) {
+	    if (!currSector.contains(couple.x, couple.y)) {
 		pushNewSector();
 		updateSectors();
 
@@ -64,10 +57,8 @@ package worlds
 	}
 
 	private function updateCamera():void {
-	    camera.x = testPlayer.x - FP.halfWidth + (testPlayer.width / 2);
-	    camera.y = testPlayer.y - FP.halfHeight + testPlayer.height;
-	    // camera.x = couple.x - FP.halfWidth + (couple.width / 2);
-	    // camera.y = couple.y - FP.halfHeight + couple.height;
+	    camera.x = couple.x - FP.halfWidth + (couple.width / 2);
+	    camera.y = couple.y - FP.halfHeight + couple.height;
 	}
 
 	// update the currSector variable to hold the sector the player is in.
@@ -75,14 +66,11 @@ package worlds
 	// happen), be sure to create a new one. the sectors surrounding the new
 	// current sector will be created in updateSectors()
 	private function pushNewSector():void {
-	    // var newSectorX:int = int(couple.x/Sector.WIDTH);
-	    // var newSectorY:int = int(couple.y/Sector.HEIGHT);
-	    
-	    var newSectorX:int = int(testPlayer.x/Sector.WIDTH);
-	    var newSectorY:int = int(testPlayer.y/Sector.HEIGHT);
+	    var newSectorX:int = int(couple.x/Sector.WIDTH);
+	    var newSectorY:int = int(couple.y/Sector.HEIGHT);
 
 	    // need to round down for negatives
-	    if (testPlayer.x < 0) { newSectorX--; }
+	    if (couple.x < 0) { newSectorX--; }
 
 	    var newCurrSector:Sector = isInSectorsArray(newSectorX, newSectorY);
 	    if (newCurrSector) {
@@ -117,10 +105,6 @@ package worlds
 		 column <= sectorColumn+1; column++) {
 		for (var row:Number = sectorRow-1; row <= sectorRow+1; row++) {
 		    if (!isInSectorsArray(column, row)) {
-			if (column == sectorColumn - 1 && row == sectorRow) {
-			    FP.console.log("Adding to the left");
-			}
-
 			var newSector:Sector = new Sector(column, row);
 			if (row == 0) { 
 			    addCloudLayersToSector(column);
