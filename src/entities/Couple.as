@@ -14,6 +14,9 @@ package entities
 	    MIN_Y:Number = 0,
 	    X_SPEED:Number = 300;
 
+	public var 
+	    controllable:Boolean = true;
+
 	private var
 	    vx:Number = 0,
 	    vy:Number = 0;
@@ -33,7 +36,7 @@ package entities
 
 	override public function update():void {
 	    super.update();
-	    checkKeyPresses();
+	    if (controllable) { checkKeyPresses(); }
 	}
 
 	private function checkKeyPresses():void {
