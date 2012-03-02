@@ -39,6 +39,9 @@ package worlds
 	    
 	    sectors.push(currSector);
 	    updateSectors();
+
+	    var transitionIn:TransitionIn = new TransitionIn(0.1, 0xFFFFFF);
+	    add(transitionIn);
 	}
 
 	override public function update():void {
