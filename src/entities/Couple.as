@@ -19,7 +19,9 @@ package entities
 	    gravity:Number = 0.5,
 	    jumping:Boolean = false,
 	    xSpeed:Number = 360,
-	    ySpeed:Number = 0;
+	    ySpeed:Number = 0,
+	    vx:Number = 0,
+	    vy:Number = 0;
 
 
 	[Embed(source="../../assets/images/couple.png")]
@@ -41,45 +43,55 @@ package entities
 	}
 
 	private function checkKeyPresses():void {
-	    var moveDistance:Number = xSpeed * FP.elapsed;
+	    /* move-anywhere test code */
+	    // if (Input.check(Key.D)) { vx += 80; }
+	    // else if (Input.check(Key.A)) { vx -= 80; }
+	    // vx -= vx*0.1;
 
+	    // if (Input.check(Key.S)) { vy += 80; }
+	    // else if (Input.check(Key.W)) { vy -= 80; }
+	    // vy -= vy*0.1;
+
+	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
+
+	    var moveDistance:Number = xSpeed * FP.elapsed;
 	    if (Input.check(Key.D)) {
-		x += moveDistance;
-		if(collide("level", x, y)) {
-		    x -= moveDistance;
-		}
+	    	x += moveDistance;
+	    	if(collide("level", x, y)) {
+	    	    x -= moveDistance;
+	    	}
 	    }
 	    if (Input.check(Key.A)) {
-		x -= moveDistance;
-		if(collide("level", x, y)) {
-		    x += moveDistance;
-		}
+	    	x -= moveDistance;
+	    	if(collide("level", x, y)) {
+	    	    x += moveDistance;
+	    	}
 	    }
 
 	    if (Input.pressed(Key.W)) {
-		if (!jumping) {
-		    jumping = true;
-		    ySpeed = JUMP_SPEED;
-		}
+	    	if (!jumping) {
+	    	    jumping = true;
+	    	    ySpeed = JUMP_SPEED;
+	    	}
 	    }
 
 	    if (jumping) {
-		y -= ySpeed;
-		if (ySpeed > Y_SPEED_MAX) {
-		    ySpeed -= gravity;
-		}
+	    	y -= ySpeed;
+	    	if (ySpeed > Y_SPEED_MAX) {
+	    	    ySpeed -= gravity;
+	    	}
 
-		if (collide("level", x, y)) {
-		    jumping = false;
-		    while(collide("level", x, y)) {
-			y -= 1;
-		    }
-		}
+	    	if (collide("level", x, y)) {
+	    	    jumping = false;
+	    	    while(collide("level", x, y)) {
+	    		y -= 1;
+	    	    }
+	    	}
 	    }
 	    // walking off edges case
 	    else if (!collide("level", x, y+1)) {
-		jumping = true;
-		ySpeed = 0;
+	    	jumping = true;
+	    	ySpeed = 0;
 	    }
 	}
 
