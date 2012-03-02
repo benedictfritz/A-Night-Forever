@@ -59,6 +59,8 @@ package worlds
 	private function updateCamera():void {
 	    camera.x = couple.x - FP.halfWidth + (couple.width / 2);
 	    camera.y = couple.y - FP.halfHeight + couple.height;
+
+	    if (camera.y < 0) { camera.y = 0; }
 	}
 
 	// update the currSector variable to hold the sector the player is in.
