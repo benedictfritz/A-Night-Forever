@@ -21,8 +21,8 @@ package entities
 	    xSpeed:Number = 360,
 	    ySpeed:Number = 0,
 	    vx:Number = 0,
-	    vy:Number = 0;
-
+	    vy:Number = 0,
+	    maxY:Number;
 
 	[Embed(source="../../assets/images/couple.png")]
 	    private const COUPLE_IMG:Class;
@@ -47,12 +47,10 @@ package entities
 	    // if (Input.check(Key.D)) { vx += 80; }
 	    // else if (Input.check(Key.A)) { vx -= 80; }
 	    // vx -= vx*0.1;
-
 	    // if (Input.check(Key.S)) { vy += 80; }
 	    // else if (Input.check(Key.W)) { vy -= 80; }
 	    // vy -= vy*0.1;
-
-	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
+	    // moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
 
 	    var moveDistance:Number = xSpeed * FP.elapsed;
 	    if (Input.check(Key.D)) {
