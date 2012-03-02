@@ -48,6 +48,9 @@ package worlds
 	override public function begin():void {
 	    super.begin();
 	    initLevel();
+
+	    var transitionIn:TransitionIn = new TransitionIn(0.1, 0xFFFFFF);
+	    add(transitionIn);
 	}
 
 	private function initLevel():void {
@@ -76,11 +79,9 @@ package worlds
 
 	    FP.camera.y = couple.y - FP.height + couple.height;
 
-	    skyBackground = new SkyBackground(couple.y + couple.height, level.height);
+	    skyBackground = new SkyBackground(couple.y + couple.height, 
+					      level.height);
 	    add(skyBackground);
-
-	    var transitionIn:TransitionIn = new TransitionIn(0.1, 0xFFFFFF);
-	    add(transitionIn);
 	}
 
 	override public function update():void {
@@ -124,7 +125,7 @@ package worlds
 	}
 
 	private function coupleDownArc():void {
-	    yTween = new VarTween();
+	    yTween = new VarTween(goToFallingWorld);
 	    var yBottom:Number = couple.y + FP.halfHeight;
 	    yTween.tween(couple, "y", yBottom, HALF_ARC_TIME, Ease.quadIn);
 	    FP.world.addTween(yTween);
@@ -133,6 +134,10 @@ package worlds
 	    var xBottom:Number = FP.width - couple.width - 100;
 	    xTween.tween(couple, "x", xBottom, HALF_ARC_TIME);
 	    FP.world.addTween(xTween);		
+	}
+
+	private function goToFallingWorld():void {
+	    FP.world = new Falling();
 	}
 
     }
