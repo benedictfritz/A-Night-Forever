@@ -8,21 +8,15 @@ package entities
 
     public class Couple extends Entity
     {
-	private const
-	    Y_SPEED_MAX:Number = -10,
-	    JUMP_SPEED:Number = 16;
-
-	public var
-	    controllable:Boolean = true;
+	private static const
+	    GRAVITY:Number = 700,
+	    MAX_VY:Number = 500,
+	    MIN_Y:Number = 0,
+	    X_SPEED:Number = 300;
 
 	private var
-	    gravity:Number = 0.5,
-	    jumping:Boolean = false,
-	    xSpeed:Number = 360,
-	    ySpeed:Number = 0,
 	    vx:Number = 0,
-	    vy:Number = 0,
-	    maxY:Number;
+	    vy:Number = 0;
 
 	[Embed(source="../../assets/images/couple.png")]
 	    private const COUPLE_IMG:Class;
@@ -39,7 +33,7 @@ package entities
 
 	override public function update():void {
 	    super.update();
-	    if (controllable) { checkKeyPresses(); }
+	    checkKeyPresses();
 	}
 
 	private function checkKeyPresses():void {
@@ -52,53 +46,21 @@ package entities
 	    // vy -= vy*0.1;
 	    // moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
 
-	    var moveDistance:Number = xSpeed * FP.elapsed;
-	    if (Input.check(Key.D)) {
-	    	x += moveDistance;
-	    	if(collide("level", x, y)) {
-	    	    x -= moveDistance;
-	    	}
-	    }
-	    if (Input.check(Key.A)) {
-	    	x -= moveDistance;
-	    	if(collide("level", x, y)) {
-	    	    x += moveDistance;
-	    	}
-	    }
+	    // left / right movement
+	    if (Input.check(Key.D)) { vx = X_SPEED; }
+	    else if (Input.check(Key.A)) { vx = -X_SPEED; }
+	    else { vx = 0; }
 
-	    if (Input.pressed(Key.W)) {
-	    	if (!jumping) {
-	    	    jumping = true;
-	    	    ySpeed = JUMP_SPEED;
-	    	}
-	    }
+	    vy += GRAVITY * FP.elapsed;
+	    if (vy > MAX_VY) { vy = MAX_VY; }
 
-	    if (jumping) {
-	    	y -= ySpeed;
-	    	if (ySpeed > Y_SPEED_MAX) {
-	    	    ySpeed -= gravity;
-	    	}
+	    moveBy(vx * FP.elapsed, vy * FP.elapsed);
 
-	    	if (collide("level", x, y)) {
-	    	    jumping = false;
-	    	    while(collide("level", x, y)) {
-	    		y -= 1;
-	    	    }
-	    	}
-	    }
-	    // walking off edges case
-	    else if (!collide("level", x, y+1)) {
-	    	jumping = true;
-	    	ySpeed = 0;
-	    }
-	}
-
-	public function setGravity(gravity:Number):void {
-	    this.gravity = gravity;
+	    if (y < MIN_Y) { y = MIN_Y; }
 	}
 
 	public function starBoost():void {
-	    ySpeed = 10;
+	    vy = -400;
 	}
     }
 }
