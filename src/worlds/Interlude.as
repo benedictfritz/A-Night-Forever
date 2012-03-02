@@ -31,8 +31,10 @@ package worlds
 	    flyingToClouds:Boolean,
 	    xTween:VarTween,
 	    yTween:VarTween,
-	    camTween:VarTween,
-	    cloudHeight:Number;
+	    camXTween:VarTween,
+	    camYTween:VarTween,
+	    cloudHeight:Number,
+	    camFollowCouple:Boolean = false;
 
 	public function Interlude(playerX:Number, playerY:Number):void {
 	    super();
@@ -88,38 +90,41 @@ package worlds
 	    super.update();
 
 	    if (flyingToClouds) { toCloudsUpdate();  }
+	    if (camFollowCouple) { updateCamera(); }
 	}
 
 	private function toCloudsUpdate():void {
-	    if (!xTween) {
-		xTween = new VarTween();
-		var leftPosition:Number = 100;
-		xTween.tween(couple, "x", leftPosition, 2, Ease.sineInOut);
-		FP.world.addTween(xTween);
-	    }
 	    if (!yTween) {
 		yTween = new VarTween(coupleUpArc);
 		yTween.tween(couple, "y", cloudHeight, TO_CLOUD_TIME);
 		FP.world.addTween(yTween);
 	    }
-	    if (!camTween) {
-		camTween = new VarTween();
+	    if (!camYTween) {
+		camYTween = new VarTween();
 		// TODO: Change 32, the temporary thickness of the cloud layer,
 		// to be related to an actual entity
 		var camY:Number = cloudHeight + 32 - FP.height;
-		camTween.tween(FP.camera, "y", camY, TO_CLOUD_TIME);
-		FP.world.addTween(camTween);
+		camYTween.tween(FP.camera, "y", camY, TO_CLOUD_TIME);
+		FP.world.addTween(camYTween);
+	    }
+	    if (!camXTween) {
+		camXTween = new VarTween();
+		var camX:Number = couple.x - FP.halfWidth + couple.width/2;
+		camXTween.tween(FP.camera, "x", camX, TO_CLOUD_TIME);
+		FP.world.addTween(camXTween);
 	    }
 	}
 
 	private function coupleUpArc():void {
+	    camFollowCouple = true;
+
 	    yTween = new VarTween(coupleDownArc);
 	    var yPeak:Number = couple.y - FP.halfHeight;
 	    yTween.tween(couple, "y", yPeak, HALF_ARC_TIME, Ease.quadOut);
 	    FP.world.addTween(yTween);
 
 	    xTween = new VarTween();
-	    var xPeak:Number = FP.halfWidth - couple.width/2;
+	    var xPeak:Number = couple.x + FP.halfWidth - couple.width/2;
 	    xTween.tween(couple, "x", xPeak, HALF_ARC_TIME);
 	    FP.world.addTween(xTween);
 	}
@@ -131,13 +136,17 @@ package worlds
 	    FP.world.addTween(yTween);
 
 	    xTween = new VarTween();
-	    var xBottom:Number = FP.width - couple.width - 100;
+	    var xBottom:Number = couple.x + FP.halfWidth - couple.width/2;
 	    xTween.tween(couple, "x", xBottom, HALF_ARC_TIME);
 	    FP.world.addTween(xTween);		
 	}
 
 	private function goToFallingWorld():void {
 	    FP.world = new Falling();
+	}
+
+	private function updateCamera():void {
+	    camera.x = couple.x - FP.halfWidth + (couple.width / 2);
 	}
 
     }
