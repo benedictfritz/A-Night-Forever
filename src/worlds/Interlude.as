@@ -63,13 +63,28 @@ package worlds
 
 	    // eventually we will have one single entity for the cloud layer
 	    // which will make this assignment of cloudHeight less strange/confusing
-	    var dataList:XMLList = levelData.objects.cloud;
+	    var dataList:XMLList = levelData.objects.cloudLayer3;
 	    var dataElement:XML;
+	    dataList = levelData.objects.cloudLayer3;
 	    for each(dataElement in dataList) {
-		var newCloud:SlowingCloud = new SlowingCloud(int(dataElement.@x), 
-							     int(dataElement.@y));
-		add(newCloud);
-		cloudHeight = int(dataElement.@y);
+		var newCloud:CloudLayer = new CloudLayer(int(dataElement.@x), 
+							 int(dataElement.@y), 3);
+	    	add(newCloud);
+	    }
+
+	    dataList = levelData.objects.cloudLayer2;
+	    for each(dataElement in dataList) {
+		newCloud = new CloudLayer(int(dataElement.@x), 
+					  int(dataElement.@y), 2);
+	    	add(newCloud);
+	    }
+
+	    dataList = levelData.objects.cloudLayer1;
+	    for each(dataElement in dataList) {
+	    	newCloud = new CloudLayer(int(dataElement.@x), 
+							 int(dataElement.@y), 1);
+	    	add(newCloud);
+	    	cloudHeight = int(dataElement.@y);
 	    }
 
 	    // the couple in the ogmo file is used only for height positioning.

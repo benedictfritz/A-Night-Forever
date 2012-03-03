@@ -17,9 +17,18 @@ package entities
 	    this.y = y;
 
 	    var cloudImg:Image;
-	    if (layer == 1) { cloudImg = new Image(CLOUD_IMAGE_1); }
-	    if (layer == 2) { cloudImg = new Image(CLOUD_IMAGE_2); }
-	    if (layer == 3) { cloudImg = new Image(CLOUD_IMAGE_3); }
+	    if (layer == 1) { 
+		cloudImg = new Image(CLOUD_IMAGE_1); 
+		cloudImg.scrollX = 0.6;
+	    }
+	    if (layer == 2) { 
+		cloudImg = new Image(CLOUD_IMAGE_2); 
+		cloudImg.scrollX = 0.8;
+	    }
+	    if (layer == 3) { 
+		cloudImg = new Image(CLOUD_IMAGE_3); 
+		cloudImg.scrollX = 1;
+	    }
 	    graphic = cloudImg;
 	    type = "cloudLayer";
 	}

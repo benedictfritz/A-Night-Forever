@@ -19,6 +19,10 @@
     <object name="player" image="player.png" height="96" width="96" limit="1"/>
     <object name="so" image="so.png" height="64" width="64" limit="1"/>
     <object name="windBarrier" image="wind_barrier.png" height="64" width="64" limit="2"/>
+    <object name="cloudLayer1" image="cloud_layer_1.png" height="64" width="256"/>
+    <object name="cloudLayer2" image="cloud_layer_2.png" height="64" width="256"/>
+    <object name="cloudLayer3" image="cloud_layer_3.png" height="64" width="256"/>
+    
     <object name="couple" image="couple.png" height="96" width="96" limit="1"/>
     <object name="star" image="star.png" height="32" width="32"/>
     <object name="cloud" image="cloud.png" height="64" width="128"/>

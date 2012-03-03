@@ -3,15 +3,17 @@
   <height>1700</height>
   <objects>
     <couple x="352" y="1600"/>
-    <cloud x="0" y="512"/>
-    <cloud x="96" y="512"/>
-    <cloud x="192" y="512"/>
-    <cloud x="288" y="512"/>
-    <cloud x="352" y="512"/>
-    <cloud x="448" y="512"/>
-    <cloud x="480" y="512"/>
-    <cloud x="544" y="512"/>
-    <cloud x="640" y="512"/>
-    <cloud x="672" y="512"/>
+    <cloudLayer3 x="0" y="448"/>
+    <cloudLayer3 x="544" y="448"/>
+    <cloudLayer3 x="416" y="448"/>
+    <cloudLayer3 x="160" y="448"/>
+    <cloudLayer2 x="0" y="480"/>
+    <cloudLayer2 x="544" y="480"/>
+    <cloudLayer2 x="416" y="480"/>
+    <cloudLayer2 x="160" y="480"/>
+    <cloudLayer1 x="0" y="512"/>
+    <cloudLayer1 x="544" y="512"/>
+    <cloudLayer1 x="416" y="512"/>
+    <cloudLayer1 x="160" y="512"/>
   </objects>
 </level>
