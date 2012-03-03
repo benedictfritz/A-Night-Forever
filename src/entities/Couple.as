@@ -32,6 +32,7 @@ package entities
 	    this.graphic = img;
 	    setHitbox(img.width, img.height);
 	    type = "couple";
+	    layer = 0;
 	}
 
 	override public function update():void {

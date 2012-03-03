@@ -17,10 +17,12 @@ package entities
 	    this.y = startY - levelHeight;
 	    tiles = new Tilemap(SKY_TILE, FP.width, levelHeight,
 				TILE_WIDTH, TILE_HEIGHT);
+	    tiles.scrollX = 0.2;
+	    tiles.scrollY = 0.2;
 	    graphic = tiles;
 
 	    // render in the background
-	    layer = 1;
+	    layer = 100;
 
 	    var numColumns:Number = FP.width / TILE_WIDTH;
 	    var numRows:Number = levelHeight / TILE_HEIGHT;

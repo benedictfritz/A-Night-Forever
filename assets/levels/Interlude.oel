@@ -1,19 +1,28 @@
 <level>
-  <width>800</width>
+  <width>1600</width>
   <height>1700</height>
   <objects>
     <couple x="352" y="1600"/>
     <cloudLayer3 x="0" y="448"/>
-    <cloudLayer3 x="544" y="448"/>
-    <cloudLayer3 x="416" y="448"/>
-    <cloudLayer3 x="160" y="448"/>
     <cloudLayer2 x="0" y="480"/>
-    <cloudLayer2 x="544" y="480"/>
-    <cloudLayer2 x="416" y="480"/>
-    <cloudLayer2 x="160" y="480"/>
     <cloudLayer1 x="0" y="512"/>
-    <cloudLayer1 x="544" y="512"/>
-    <cloudLayer1 x="416" y="512"/>
-    <cloudLayer1 x="160" y="512"/>
+    <cloudLayer3 x="256" y="448"/>
+    <cloudLayer3 x="512" y="448"/>
+    <cloudLayer3 x="768" y="448"/>
+    <cloudLayer3 x="1024" y="448"/>
+    <cloudLayer3 x="1280" y="448"/>
+    <cloudLayer3 x="1344" y="448"/>
+    <cloudLayer2 x="256" y="480"/>
+    <cloudLayer2 x="512" y="480"/>
+    <cloudLayer2 x="768" y="480"/>
+    <cloudLayer2 x="1024" y="480"/>
+    <cloudLayer2 x="1280" y="480"/>
+    <cloudLayer2 x="1344" y="480"/>
+    <cloudLayer1 x="256" y="512"/>
+    <cloudLayer1 x="512" y="512"/>
+    <cloudLayer1 x="768" y="512"/>
+    <cloudLayer1 x="1024" y="512"/>
+    <cloudLayer1 x="1280" y="512"/>
+    <cloudLayer1 x="1344" y="512"/>
   </objects>
 </level>
