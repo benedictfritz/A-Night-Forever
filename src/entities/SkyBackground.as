@@ -13,10 +13,14 @@ package entities
 	    TILE_WIDTH:Number = 400,
 	    TILE_HEIGHT:Number = 300;
 
-	public function SkyBackground(startY:Number, levelHeight:Number):void {
-	    this.y = startY - levelHeight;
-	    tiles = new Tilemap(SKY_TILE, FP.width, levelHeight,
-				TILE_WIDTH, TILE_HEIGHT);
+	public function SkyBackground(x:Number, y:Number, 
+				      numHorizontal:Number, 
+				      numVertical:Number):void {
+	    this.x = x;
+	    this.y = y - numVertical*TILE_HEIGHT;
+
+	    tiles = new Tilemap(SKY_TILE, TILE_WIDTH*numHorizontal, 
+				TILE_HEIGHT*numVertical, TILE_WIDTH, TILE_HEIGHT);
 	    tiles.scrollX = 0.2;
 	    tiles.scrollY = 0.2;
 	    graphic = tiles;
@@ -24,12 +28,10 @@ package entities
 	    // render in the background
 	    layer = 100;
 
-	    var numColumns:Number = FP.width / TILE_WIDTH;
-	    var numRows:Number = levelHeight / TILE_HEIGHT;
-
-	    for (var _x:int = 0; _x < numColumns; _x += 1) {
-	    	for (var _y:int = 0; _y < numRows; _y+=1) {
-	    	    tiles.setTile(_x, _y);
+	    for (var _x:Number=0; _x < numHorizontal; _x += 1) {
+	    	for (var _y:Number=0; _y < numVertical; _y+=1) {
+	    	    FP.console.log("Setting tile " + _x + ", " + _y);
+	    	    tiles.setTile(_x, _y, 0);
 	    	}
 	    }
 	}

@@ -16,24 +16,21 @@ package worlds
 
     public class Interlude extends World
     {
-	[Embed(source="../../assets/levels/Interlude.oel", 
-	       mimeType="application/octet-stream")]
-	    private static const MAP_DATA:Class;
-
 	private static const
+	    LEVEL_WIDTH:Number = 1600,
+	    LEVEL_HEIGHT:Number = 1600,
 	    TO_CLOUD_TIME:Number = 2,
-	    HALF_ARC_TIME:Number = 2;
+	    HALF_ARC_TIME:Number = 2,
+	    CLOUD_Y:Number = -1024;
 
 	private var
 	    couple:Couple,
-	    level:Level,
 	    skyBackground:SkyBackground,
 	    flyingToClouds:Boolean,
 	    xTween:VarTween,
 	    yTween:VarTween,
 	    camXTween:VarTween,
 	    camYTween:VarTween,
-	    cloudHeight:Number,
 	    camFollowCouple:Boolean = false;
 
 	public function Interlude(playerX:Number, playerY:Number):void {
@@ -56,48 +53,9 @@ package worlds
 	}
 
 	private function initLevel():void {
-	    level = new Level(MAP_DATA);
-	    add(level);
-
-	    var levelData:XML = level.getLevelData();
-
-	    // eventually we will have one single entity for the cloud layer
-	    // which will make this assignment of cloudHeight less strange/confusing
-	    var dataList:XMLList = levelData.objects.cloudLayer3;
-	    var dataElement:XML;
-	    dataList = levelData.objects.cloudLayer3;
-	    for each(dataElement in dataList) {
-		var newCloud:CloudLayer = new CloudLayer(int(dataElement.@x), 
-							 int(dataElement.@y), 3);
-	    	add(newCloud);
-	    }
-
-	    dataList = levelData.objects.cloudLayer2;
-	    for each(dataElement in dataList) {
-		newCloud = new CloudLayer(int(dataElement.@x), 
-					  int(dataElement.@y), 2);
-	    	add(newCloud);
-	    }
-
-	    dataList = levelData.objects.cloudLayer1;
-	    for each(dataElement in dataList) {
-	    	newCloud = new CloudLayer(int(dataElement.@x), 
-							 int(dataElement.@y), 1);
-	    	add(newCloud);
-	    	cloudHeight = int(dataElement.@y);
-	    }
-
-	    // the couple in the ogmo file is used only for height positioning.
-	    // the x-position is fed in from the previous world
-	    dataList = levelData.objects.couple;
-	    for each(dataElement in dataList) {
-		couple.y = dataElement.@y;
-	    }
-
 	    FP.camera.y = couple.y - FP.height + couple.height;
 
-	    skyBackground = new SkyBackground(couple.y + couple.height, 
-					      level.height);
+	    skyBackground = new SkyBackground(-FP.width/2, FP.height, 4, 4);
 	    add(skyBackground);
 	}
 
@@ -111,14 +69,14 @@ package worlds
 	private function toCloudsUpdate():void {
 	    if (!yTween) {
 		yTween = new VarTween(coupleUpArc);
-		yTween.tween(couple, "y", cloudHeight, TO_CLOUD_TIME);
+		yTween.tween(couple, "y", CLOUD_Y, TO_CLOUD_TIME);
 		FP.world.addTween(yTween);
 	    }
 	    if (!camYTween) {
 		camYTween = new VarTween();
 		// TODO: Change 32, the temporary thickness of the cloud layer,
 		// to be related to an actual entity
-		var camY:Number = cloudHeight + 32 - FP.height;
+		var camY:Number = CLOUD_Y + 32 - FP.height;
 		camYTween.tween(FP.camera, "y", camY, TO_CLOUD_TIME);
 		FP.world.addTween(camYTween);
 	    }

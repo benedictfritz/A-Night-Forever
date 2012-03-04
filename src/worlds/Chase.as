@@ -62,7 +62,8 @@ package worlds
 	    sO.maxX = FP.width;
 	    add(sO);
 
-	    skyBackground = new SkyBackground(player.y + player.height, levelHeight);
+	    skyBackground = new SkyBackground(0, FP.height,
+					      2, 10);
 	    add(skyBackground);
 	}
 
