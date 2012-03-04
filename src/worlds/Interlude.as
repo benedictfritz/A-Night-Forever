@@ -6,6 +6,7 @@ package worlds
     import net.flashpunk.masks.Grid;
     import net.flashpunk.utils.Draw;
     import net.flashpunk.utils.Ease;
+    import net.flashpunk.graphics.Image;
     import net.flashpunk.graphics.Tilemap;
     import net.flashpunk.tweens.misc.VarTween;
 
@@ -16,6 +17,9 @@ package worlds
 
     public class Interlude extends World
     {
+	[Embed(source = '../../assets/images/moon.png')]
+	    private const MOON_IMAGE:Class;
+
 	private static const
 	    LEVEL_WIDTH:Number = 1600,
 	    LEVEL_HEIGHT:Number = 1600,
@@ -27,6 +31,7 @@ package worlds
 	    couple:Couple,
 	    skyBackground:SkyBackground,
 	    flyingToClouds:Boolean,
+	    moon:Image,
 	    xTween:VarTween,
 	    yTween:VarTween,
 	    camXTween:VarTween,
@@ -55,7 +60,20 @@ package worlds
 	private function initLevel():void {
 	    FP.camera.y = couple.y - FP.height + couple.height;
 
-	    skyBackground = new SkyBackground(-FP.width/2, FP.height, 4, 4);
+	    for (var i:Number=-FP.width; i < FP.width*2; i+=256) {
+		var newCloudLayer1:CloudLayer = new CloudLayer(i, CLOUD_Y, 1);
+		add(newCloudLayer1);
+		var newCloudLayer2:CloudLayer = new CloudLayer(i, CLOUD_Y-32, 2);
+		add(newCloudLayer2);
+		var newCloudLayer3:CloudLayer = new CloudLayer(i, CLOUD_Y-64, 3);
+		add(newCloudLayer3);
+	    }
+
+	    moon = new Image(MOON_IMAGE);
+	    moon.scrollX = 0.2;
+	    addGraphic(moon, 3, couple.x, CLOUD_Y-moon.height);
+
+	    skyBackground = new SkyBackground(-FP.halfWidth, FP.height, 4, 4);
 	    add(skyBackground);
 	}
 
