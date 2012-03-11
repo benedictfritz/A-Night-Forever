@@ -36,7 +36,8 @@ package worlds
 	    yTween:VarTween,
 	    camXTween:VarTween,
 	    camYTween:VarTween,
-	    camFollowCouple:Boolean = false;
+	    camFollowCouple:Boolean = false,
+	    arcRadius:Number;
 
 	public function Interlude(playerX:Number, playerY:Number):void {
 	    super();
@@ -45,6 +46,8 @@ package worlds
 	    couple = new Couple(playerX, 0);
 	    couple.controllable = false;
 	    add(couple);
+
+	    arcRadius = FP.halfWidth - couple.width/2;
 
 	    flyingToClouds = true;
 	}
@@ -71,7 +74,6 @@ package worlds
 
 	    moon = new Image(MOON_IMAGE);
 	    moon.scrollX = 0.2;
-	    addGraphic(moon, 3, couple.x, CLOUD_Y-moon.height);
 
 	    skyBackground = new SkyBackground(-FP.halfWidth, FP.height, 4, 4);
 	    add(skyBackground);
@@ -100,8 +102,19 @@ package worlds
 	    }
 	    if (!camXTween) {
 		camXTween = new VarTween();
-		var camX:Number = couple.x - FP.halfWidth + couple.width/2;
-		camXTween.tween(FP.camera, "x", camX, TO_CLOUD_TIME);
+		
+		var camCenterX:Number = couple.x + couple.width/2 - FP.halfWidth;
+
+		// this is weird centering math for the moon, but it's not really
+		// right because of the scrollX on the moon.
+		var cameraDelta:Number = FP.camera.x - camCenterX - arcRadius + couple.width/2;
+		var moonScrollXAdjust:Number = cameraDelta * (1-moon.scrollX);
+		var moonX:Number = couple.x + arcRadius - FP.halfWidth;
+
+		addGraphic(moon, 3, moonX + moonScrollXAdjust, CLOUD_Y-moon.height);
+		FP.console.log(cameraDelta);
+
+		camXTween.tween(FP.camera, "x", camCenterX, TO_CLOUD_TIME);
 		FP.world.addTween(camXTween);
 	    }
 	}
@@ -115,7 +128,7 @@ package worlds
 	    FP.world.addTween(yTween);
 
 	    xTween = new VarTween();
-	    var xPeak:Number = couple.x + FP.halfWidth - couple.width/2;
+	    var xPeak:Number = couple.x + arcRadius;
 	    xTween.tween(couple, "x", xPeak, HALF_ARC_TIME);
 	    FP.world.addTween(xTween);
 	}
@@ -127,7 +140,7 @@ package worlds
 	    FP.world.addTween(yTween);
 
 	    xTween = new VarTween();
-	    var xBottom:Number = couple.x + FP.halfWidth - couple.width/2;
+	    var xBottom:Number = couple.x + arcRadius;
 	    xTween.tween(couple, "x", xBottom, HALF_ARC_TIME);
 	    FP.world.addTween(xTween);		
 	}
