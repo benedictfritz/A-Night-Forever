@@ -105,11 +105,15 @@ package worlds
 		
 		var camCenterX:Number = couple.x + couple.width/2 - FP.halfWidth;
 
-		// this is weird centering math for the moon, but it's not really
-		// right because of the scrollX on the moon.
-		var cameraDelta:Number = FP.camera.x - camCenterX - arcRadius + couple.width/2;
+		// have to include the arcRadius since that will be included in
+		// camera movement up until the peak of the leap
+		var cameraDelta:Number = FP.camera.x - camCenterX - arcRadius;
 		var moonScrollXAdjust:Number = cameraDelta * (1-moon.scrollX);
-		var moonX:Number = couple.x + arcRadius - FP.halfWidth;
+
+		// this moonX is correct for sure because it is correct when the
+		// moon's scrollX is 1
+		var moonX:Number = 
+		    couple.x + couple.width/2 + arcRadius - FP.halfWidth;
 
 		addGraphic(moon, 3, moonX + moonScrollXAdjust, CLOUD_Y-moon.height);
 		FP.console.log(cameraDelta);
