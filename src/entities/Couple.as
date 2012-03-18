@@ -66,6 +66,7 @@ package entities
 	    if (Input.check(Key.D)) { vx = X_SPEED; }
 	    else if (Input.check(Key.A)) { vx = -X_SPEED; }
 	    else { vx = 0; }
+	    if(vx != 0) { vx < 0 ? flip(true) : flip(false); }
 
 	    vy += GRAVITY * FP.elapsed;
 	    if (vy > MAX_VY) { vy = MAX_VY; }
@@ -80,6 +81,16 @@ package entities
 
 	public function starBoost():void {
 	    vy = -400;
+	}
+
+
+	/* this is the same flip code that the actor class has. unfortunately,
+	 I don't think this class needs the functionality of the Actor class
+	besides the ability to flip. should consider forking flashpunk and putting
+	flip in the Entity class. */
+	protected function flip(val:Boolean=true):void {
+	    if (sprCouple.flipped == val) return;
+	    sprCouple.flipped = val;
 	}
     }
 }
