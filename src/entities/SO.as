@@ -22,7 +22,7 @@ package entities
 	    xSpeed = 160;
 	    ySpeed = 0;
 
-	    sprActor = new Spritemap(SO_SPRITE, 96, 96),
+	    sprActor = new Spritemap(SO_SPRITE, 96, 96);
 	    sprActor.add("stand", [0], 1, true);
 	    sprActor.add("jump", [5], 1, true);
 	    sprActor.add("fall", [7], 1, true);
