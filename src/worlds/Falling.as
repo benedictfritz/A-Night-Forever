@@ -117,6 +117,10 @@ package worlds
 
 			sectors.push(newSector);
 			populateSector(newSector);
+			var newSectorBackground:SkyBackground = 
+			    new SkyBackground(newSector.minX(), newSector.minY(), 
+					      2, 2);
+			add(newSectorBackground);
 			minStars -= 0.1;
 		    }		    
 		}
