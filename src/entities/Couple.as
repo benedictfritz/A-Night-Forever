@@ -4,7 +4,7 @@ package entities
     import net.flashpunk.Entity;
     import net.flashpunk.utils.Key;
     import net.flashpunk.utils.Input;
-    import net.flashpunk.graphics.Image;
+    import net.flashpunk.graphics.Spritemap;
 
     public class Couple extends Entity
     {
@@ -15,28 +15,40 @@ package entities
 	    X_SPEED:Number = 300;
 
 	public var 
-	    controllable:Boolean = true;
+	    controllable:Boolean = true,
+	    tweeningUp:Boolean;
 
 	private var
 	    vx:Number = 0,
-	    vy:Number = 0;
+	    vy:Number = 0,
+	    sprCouple:Spritemap;
 
 	[Embed(source="../../assets/images/couple.png")]
-	    private const COUPLE_IMG:Class;
+	    private const COUPLE_SPRITE:Class;
 
 	public function Couple(x:int=0, y:int=0) {
 	    this.x = x;
 	    this.y = y;
 
-	    var img:Image = new Image(COUPLE_IMG);
-	    this.graphic = img;
-	    setHitbox(img.width, img.height);
+	    sprCouple = new Spritemap(COUPLE_SPRITE, 96, 96);
+	    sprCouple.add("downOne", [2], 4, true);
+	    sprCouple.add("downTwo", [3], 4, true);
+	    sprCouple.add("upOne", [4], 4, true);
+	    sprCouple.add("upTwo", [5], 4, true);
+	    sprCouple.play("upOne");
+	    
+	    this.graphic = sprCouple;
+	    setHitbox(sprCouple.width, sprCouple.height);
 	    type = "couple";
 	    layer = 0;
 	}
 
 	override public function update():void {
 	    super.update();
+
+	    if (tweeningUp) { sprCouple.play("upOne"); }
+	    else { sprCouple.play("downOne"); }
+
 	    if (controllable) { checkKeyPresses(); }
 	}
 
@@ -57,6 +69,9 @@ package entities
 
 	    vy += GRAVITY * FP.elapsed;
 	    if (vy > MAX_VY) { vy = MAX_VY; }
+
+	    if (vy <= 0) { sprCouple.play("upOne"); }
+	    else { sprCouple.play("downOne"); }
 
 	    moveBy(vx * FP.elapsed, vy * FP.elapsed);
 

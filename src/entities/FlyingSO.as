@@ -11,8 +11,8 @@ package entities
     import entities.*;
 
     public class FlyingSO extends SO {
-	[Embed(source = '../../assets/images/player.png')]
-	    private const PLAYER_SPRITE:Class;
+	[Embed(source = '../../assets/images/couple.png')]
+	    private const COUPLE_SPRITE:Class;
 
 	public var
 	    minX:Number,
@@ -20,10 +20,17 @@ package entities
 	
 	private var
 	    nextX:Number,
-	    swerveTween:VarTween;
+	    swerveTween:VarTween,
+	    goingLeft:Boolean;
 
 	public function FlyingSO(x:int=0, y:int=0) {
 	    super(x, y);
+
+	    sprActor = new Spritemap(COUPLE_SPRITE, 96, 96);
+	    sprActor.add("one", [0], 4, true);
+	    sprActor.add("two", [1], 4, true);
+	    this.graphic = sprActor;
+
 	    vy = -500;
 	}
 
@@ -32,6 +39,9 @@ package entities
 
 	    if (!nextX) { resetNextX(); };
 	    move();
+
+	    (goingLeft) ? flip(true) : flip(false);
+	    sprActor.play("one");
 	}
 
 	private function move():void {
@@ -42,6 +52,8 @@ package entities
 	    var range:Number = maxX - minX;
 	    var numInRange:Number = FP.random * range;
 	    nextX = numInRange + (minX + originX);
+
+	    (nextX < x) ? goingLeft = true : goingLeft = false;
 
 	    swerveTween = new VarTween(resetNextX);
 	    swerveTween.tween(this, "x", nextX, 3, Ease.sineInOut);

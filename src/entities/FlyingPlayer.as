@@ -11,8 +11,8 @@ package entities
     import entities.*;
 
     public class FlyingPlayer extends Player {
-	[Embed(source = '../../assets/images/player.png')]
-	    private const PLAYER_SPRITE:Class;
+	[Embed(source = '../../assets/images/couple.png')]
+	    private const COUPLE_SPRITE:Class;
 
 	public var
 	    minX:Number,
@@ -28,6 +28,11 @@ package entities
 
 	public function FlyingPlayer(x:int=0, y:int=0) {
 	    super(x, y);
+
+	    sprActor = new Spritemap(COUPLE_SPRITE, 96, 96);
+	    sprActor.add("one", [0], 4, true);
+	    sprActor.play("one");
+	    graphic = sprActor;
 	}
 
 	override public function update():void {
@@ -42,6 +47,7 @@ package entities
 	    if (Input.check(Key.D)) { vx += xAcceleration; }
 	    else if (Input.check(Key.A)) { vx -= xAcceleration; }
 	    vx -= vx*xFriction;
+	    if(vx != 0) { vx < 0 ? flip(true) : flip(false); }
 
 	    if (Input.check(Key.S)) { vy += yAcceleration; }
 	    else if (Input.check(Key.W)) { vy -= yAcceleration; }

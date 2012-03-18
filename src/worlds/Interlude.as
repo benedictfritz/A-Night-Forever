@@ -88,6 +88,7 @@ package worlds
 
 	private function toCloudsUpdate():void {
 	    if (!yTween) {
+		couple.tweeningUp = true;
 		yTween = new VarTween(coupleUpArc);
 		yTween.tween(couple, "y", CLOUD_Y, TO_CLOUD_TIME);
 		FP.world.addTween(yTween);
@@ -138,6 +139,7 @@ package worlds
 	}
 
 	private function coupleDownArc():void {
+	    couple.tweeningUp = false;
 	    yTween = new VarTween(goToFallingWorld);
 	    var yBottom:Number = couple.y + FP.halfHeight;
 	    yTween.tween(couple, "y", yBottom, HALF_ARC_TIME, Ease.quadIn);
