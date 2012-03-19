@@ -12,7 +12,9 @@ package entities
 	    GRAVITY:Number = 700,
 	    MAX_VY:Number = 500,
 	    MIN_Y:Number = 0,
-	    X_SPEED:Number = 300;
+	    X_ACCEL:Number = 30,
+	    X_FRICTION:Number = 0.05,
+	    MAX_VX:Number = 300;
 
 	public var 
 	    controllable:Boolean = true,
@@ -63,9 +65,10 @@ package entities
 	    // moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
 
 	    /* standard left / right movement */
-	    if (Input.check(Key.D)) { vx = X_SPEED; }
-	    else if (Input.check(Key.A)) { vx = -X_SPEED; }
-	    else { vx = 0; }
+	    if (Input.check(Key.D)) { vx -= -X_ACCEL; }
+	    else if (Input.check(Key.A)) { vx -= X_ACCEL; }
+	    vx -= vx*X_FRICTION;
+	    if (MAX_VX < Math.abs(vx)) { vx = FP.sign(vx)*MAX_VX; }
 	    if(vx != 0) { vx < 0 ? flip(true) : flip(false); }
 
 	    vy += GRAVITY * FP.elapsed;
