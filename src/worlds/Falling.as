@@ -36,7 +36,10 @@ package worlds
 	    sectors = new Array();
 	    currSector = new Sector(0, 0);
 	    addCloudLayersToSector(0);
-	    
+	    var firstSectorBackground:SkyBackground = 
+	    	new SkyBackground(currSector.minX(), currSector.maxY(), 1, 1);
+	    add(firstSectorBackground);
+
 	    sectors.push(currSector);
 	    updateSectors();
 
@@ -117,12 +120,13 @@ package worlds
 
 			sectors.push(newSector);
 			populateSector(newSector);
+
 			var newSectorBackground:SkyBackground = 
-			    new SkyBackground(newSector.minX(), newSector.minY(), 
-					      2, 2);
+			    new SkyBackground(newSector.minX(), newSector.maxY(), 
+					      1, 1);
 			add(newSectorBackground);
 			minStars -= 0.1;
-		    }		    
+		    }
 		}
 	    }
 	}

@@ -10,8 +10,8 @@ package entities
 
 	private var
 	    tiles:Tilemap,
-	    TILE_WIDTH:Number = 400,
-	    TILE_HEIGHT:Number = 300;
+	    TILE_WIDTH:Number = 800,
+	    TILE_HEIGHT:Number = 600;
 
 	public function SkyBackground(x:Number, y:Number, 
 				      numHorizontal:Number, 
@@ -30,7 +30,6 @@ package entities
 
 	    for (var _x:Number=0; _x < numHorizontal; _x += 1) {
 	    	for (var _y:Number=0; _y < numVertical; _y+=1) {
-	    	    FP.console.log("Setting tile " + _x + ", " + _y);
 	    	    tiles.setTile(_x, _y, 0);
 	    	}
 	    }
