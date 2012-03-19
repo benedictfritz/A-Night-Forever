@@ -33,13 +33,12 @@ package entities
 	    this.y = y;
 
 	    sprCouple = new Spritemap(COUPLE_SPRITE, 96, 96);
-	    sprCouple.add("downOne", [2], 4, true);
-	    sprCouple.add("downTwo", [3], 4, true);
-	    sprCouple.add("upOne", [4], 4, true);
-	    sprCouple.add("upTwo", [5], 4, true);
-	    sprCouple.play("upOne");
-	    
+	    sprCouple.add("downSlow", [2,3], 8, true);
+	    sprCouple.add("downFast", [2, 3], 16, true);
+	    sprCouple.add("upSlow", [4, 5], 8, true);
+	    sprCouple.add("upFast", [4, 5], 16, true);
 	    this.graphic = sprCouple;
+
 	    setHitbox(sprCouple.width, sprCouple.height);
 	    type = "couple";
 	    layer = 0;
@@ -48,10 +47,11 @@ package entities
 	override public function update():void {
 	    super.update();
 
-	    if (tweeningUp) { sprCouple.play("upOne"); }
-	    else { sprCouple.play("downOne"); }
-
 	    if (controllable) { checkKeyPresses(); }
+	    else {
+		if (tweeningUp) { sprCouple.play("upSlow"); }
+		else { sprCouple.play("downSlow"); }
+	    }
 	}
 
 	private function checkKeyPresses():void {
@@ -74,8 +74,10 @@ package entities
 	    vy += GRAVITY * FP.elapsed;
 	    if (vy > MAX_VY) { vy = MAX_VY; }
 
-	    if (vy <= 0) { sprCouple.play("upOne"); }
-	    else { sprCouple.play("downOne"); }
+	    if (vy <= -500) { sprCouple.play("upFast"); }
+	    else if (vy <= 0) { sprCouple.play("upSlow"); }
+	    else if (vy > 500) { sprCouple.play("downFast"); }
+	    else { sprCouple.play("downSlow"); }
 
 	    moveBy(vx * FP.elapsed, vy * FP.elapsed);
 
@@ -85,7 +87,6 @@ package entities
 	public function starBoost():void {
 	    vy = -400;
 	}
-
 
 	/* this is the same flip code that the actor class has. unfortunately,
 	 I don't think this class needs the functionality of the Actor class
