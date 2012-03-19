@@ -27,8 +27,8 @@ package entities
 	    super(x, y);
 
 	    sprActor = new Spritemap(COUPLE_SPRITE, 96, 96);
-	    sprActor.add("one", [0], 4, true);
-	    sprActor.add("two", [1], 4, true);
+	    sprActor.add("slow", [0, 1], 8, true);
+	    sprActor.add("fast", [0, 1], 16, true);
 	    this.graphic = sprActor;
 
 	    vy = -500;
@@ -41,11 +41,16 @@ package entities
 	    move();
 
 	    (goingLeft) ? flip(true) : flip(false);
-	    sprActor.play("one");
+	    adjustHair();
 	}
 
 	private function move():void {
 	    moveBy(0, vy * FP.elapsed, "level", true);
+	}
+
+	private function adjustHair():void {
+	    if (vy > -500) { sprActor.play("slow"); }
+	    else { sprActor.play("fast"); }
 	}
 	
 	private function resetNextX():void {

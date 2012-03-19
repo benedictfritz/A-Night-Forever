@@ -30,8 +30,9 @@ package entities
 	    super(x, y);
 
 	    sprActor = new Spritemap(COUPLE_SPRITE, 96, 96);
-	    sprActor.add("one", [0], 4, true);
-	    sprActor.play("one");
+	    sprActor.add("slow", [0, 1], 8, true);
+	    sprActor.add("fast", [0, 1], 16, true);
+	    sprActor.play("slow");
 	    graphic = sprActor;
 	}
 
@@ -40,6 +41,7 @@ package entities
 	    if (controllable) { checkKeyPresses(); }
 	    checkWindTunnels();
 	    checkSlowingClouds();
+	    adjustHair();
 	    move();
 	}
 
@@ -70,6 +72,11 @@ package entities
 		vy *= 0.95;
 		cloud.poof();
 	    }
+	}
+
+	private function adjustHair():void {
+	    if (vy > -500) { sprActor.play("slow"); }
+	    else { sprActor.play("fast"); }
 	}
 
 	private function move():void {
