@@ -25,6 +25,7 @@ package entities
 	    this.graphic = sprStar;
 	    setHitbox(sprStar.width, sprStar.height);
 	    type="star";
+	    layer = 50;
 	    
 	    // randomize the speed with which the star changes its frame
 	    spriteLength = FP.random / 5 + 0.1;
