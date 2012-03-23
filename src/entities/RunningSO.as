@@ -12,8 +12,8 @@ package entities
 
     public class RunningSO extends SO {
 	private const 
-	    JUMP_SPEED:Number = 130,
-	    GRAVITY:Number = 100,
+	    JUMP_SPEED:Number = 230,
+	    GRAVITY:Number = 400,
 	    // how far the SO looks ahead to see whether or not to jump
 	    JUMP_LOOKAHEAD:Number = 64,
 	    PLAYER_PICKUP_TIME:Number = 3,

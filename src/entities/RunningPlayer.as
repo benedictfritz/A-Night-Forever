@@ -11,10 +11,10 @@ package entities
     public class RunningPlayer extends Player {
 
 	private const 
-	    JUMP_SPEED:Number = 130;
+	    JUMP_SPEED:Number = 230;
 
 	private var
-	    gravity:Number = 100;
+	    gravity:Number = 400;
 
 	public function RunningPlayer(x:int=0, y:int=0) {
 	    super(x, y);
