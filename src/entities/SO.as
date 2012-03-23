@@ -18,7 +18,6 @@ package entities
 	    this.color = 0xFFFF00;
 
 	    // set variables declared in super
-	    sprActor = new Spritemap(SO_SPRITE, 64, 64);
 	    xSpeed = 160;
 	    ySpeed = 0;
 
@@ -29,7 +28,7 @@ package entities
 	    sprActor.add("run", [1, 2, 3, 4, 5, 6, 7, 8], 12, true);
 	    sprActor.color = color;
 	    this.graphic = sprActor;
-	    setHitbox(sprActor.width - hitboxBuffer*2, sprActor.height
+	    setHitbox(sprActor.width - hitboxBuffer*2, sprActor.height, 
 		      -hitboxBuffer, 0);
 	    type = "player";
 	}
