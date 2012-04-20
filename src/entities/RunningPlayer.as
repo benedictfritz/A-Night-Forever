@@ -11,15 +11,17 @@ package entities
     public class RunningPlayer extends Player {
 
 	private const 
-	    JUMP_SPEED:Number = 230;
+	    JUMP_SPEED:Number = 230,
+	    MIN_SPEED:Number = 10.0,
+	    MAX_SPEED:Number = 170;
 
 	private var
-	    gravity:Number = 400;
+	    gravity:Number = 400,
+	    xAcceleration:Number = 20,
+	    xFriction:Number = 0.1;
 
 	public function RunningPlayer(x:int=0, y:int=0) {
 	    super(x, y);
-	    xSpeed = 160;
-	    ySpeed = 0;
 	}
 
 	override public function update():void {
@@ -31,13 +33,23 @@ package entities
 	    var jumping:Boolean = collide("level", x, y+1) == null;
 
 	    // left / right movement
-	    if (Input.check(Key.D)) { vx = xSpeed; }
-	    else if (Input.check(Key.A)) { vx = -xSpeed; }
-	    else { vx = 0; }
-	    vx == 0 ? sprActor.play("stand") : sprActor.play("run");
-	    
+	    if (Input.check(Key.D)) { vx += xAcceleration; }
+	    else if (Input.check(Key.A)) { vx = xAcceleration; }
+	    vx -= vx * xFriction;
+	    if (Math.abs(vx) > MAX_SPEED) { vx = MAX_SPEED; }
+
 	    if(vx != 0) { vx < 0 ? flip(true) : flip(false); }
 
+	    FP.console.log(vx);
+
+	    if (Math.abs(vx) < MIN_SPEED) {
+		sprActor.play("stand");
+	    }
+	    else {
+		sprActor.play("run");
+		sprActor.rate = FP.scale(Math.abs(vx), 0, MAX_SPEED, 0, 1);
+	    }
+	    
 	    // jumping movement
 	    if (Input.check(Key.W)) {
 		if (!jumping) { vy = -JUMP_SPEED }

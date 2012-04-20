@@ -24,7 +24,7 @@ package entities
 	    sprActor.add("stand", [0], 1, true);
 	    sprActor.add("jump", [5], 1, true);
 	    sprActor.add("fall", [7], 1, true);
-	    sprActor.add("run", [1, 2, 3, 4, 5, 6, 7, 8], 12, true);
+	    sprActor.add("run", [1, 2, 3, 4, 5, 6, 7, 8], 10, true);
 	    sprActor.color = color;
 	    this.graphic = sprActor;
 	    setHitbox(sprActor.width - hitboxBuffer*2, sprActor.height, 

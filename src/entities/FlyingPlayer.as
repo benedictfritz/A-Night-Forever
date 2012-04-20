@@ -48,7 +48,7 @@ package entities
 	private function checkKeyPresses():void {
 	    if (Input.check(Key.D)) { vx += xAcceleration; }
 	    else if (Input.check(Key.A)) { vx -= xAcceleration; }
-	    vx -= vx*xFriction;
+	    vx -= vx * xFriction;
 	    if(vx != 0) { vx < 0 ? flip(true) : flip(false); }
 
 	    if (Input.check(Key.S)) { vy += yAcceleration; }
