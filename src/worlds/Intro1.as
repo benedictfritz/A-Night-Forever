@@ -6,6 +6,7 @@ package worlds
     import net.flashpunk.utils.Input;
     import net.flashpunk.tweens.misc.VarTween;
 
+    import util.Util;
     import entities.*;
 	
     public class Intro1 extends World {
@@ -21,6 +22,7 @@ package worlds
 	    player:RunningPlayer,
 	    SO:RunningSO,
 	    panDownTween:VarTween,
+	    panning:Boolean=true,
 	    skyBackground:SkyBackground;
 
 	override public function begin():void {
@@ -56,10 +58,13 @@ package worlds
 
 	    // run SO off screen as soon as the player 
 	    // moves right
-	    if (Input.check(Key.D)) { SO.running = true; }
-
+	    if (!panning && Input.check(Key.D)) {
+		SO.running = true;
+	    }
+	    
 	    if (player.x > FP.width) {
-		FP.world = new Intro2();
+		var transitionOut:TransitionOut = new TransitionOut(new Intro2());
+		add(transitionOut);
 	    }
 
 	    panDownTween = new VarTween(finishPanning);
@@ -68,6 +73,7 @@ package worlds
 	}
 
 	private function finishPanning():void {
+	    panning = false;
 	    player.setControllable(true);
 	}
 
