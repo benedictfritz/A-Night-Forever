@@ -18,7 +18,8 @@ package worlds
 	    player:RunningPlayer,
 	    SO:RunningSO,
 	    crowd:Crowd,
-	    skyBackground:SkyBackground;
+	    skyBackground:SkyBackground,
+	    transitionIn:TransitionIn;;
 
 	override public function begin():void {
 	    super.begin();
@@ -54,12 +55,16 @@ package worlds
 	    skyBackground = new SkyBackground(0, FP.height, 2, 2);
 	    add(skyBackground);
 
-	    var transitionIn:TransitionIn = new TransitionIn(0.02, 0x000000);
+	    transitionIn = new TransitionIn(0.02, 0x000000);
 	    add(transitionIn);
 	}
 
 	override public function update():void {
 	    super.update();
+
+	    if (transitionIn.done && !SO.running) {
+		SO.running = true;
+	    }
 	}
     }
 }

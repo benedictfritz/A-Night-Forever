@@ -11,7 +11,7 @@ package entities
 
 	private var
 	    hitboxXBuffer:Number = 35,
-	    hitboxYBuffer:Number = 20;;
+	    hitboxYBuffer:Number = 20;
 
 	public function SO(x:int=0, y:int=0) {
 	    this.x = x;

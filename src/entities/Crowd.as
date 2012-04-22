@@ -7,12 +7,16 @@ package entities
 	[Embed(source = '../../assets/images/crowd.png')]
 	    private const CROWD_IMAGE:Class;
 
+	private var
+	    yOffset:Number = 20;
+
 	public function Crowd(x:int=0, y:int=0) {
 	    this.x = x;
 	    this.y = y;
 	    this.layer = -10;
 
 	    this.graphic = new Image(CROWD_IMAGE);
+	    this.y += yOffset;
 	}
     }
 }

@@ -11,7 +11,9 @@ package entities
      */
     public class TransitionIn extends Entity {
 	public var 
-	    alpha:Number = 1;
+	    alpha:Number = 1,
+	    done:Boolean=false;
+
 	private var 
 	    transitionSpeed:Number,
 	    color:uint;
@@ -30,6 +32,7 @@ package entities
 
 	    if (alpha < 0) {
 		FP.world.remove(this);
+		done = true;
 	    }
 	}
 
