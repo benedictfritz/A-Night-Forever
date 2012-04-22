@@ -34,9 +34,9 @@ package entities
 
 	    // left / right movement
 	    if (Input.check(Key.D)) { vx += xAcceleration; }
-	    else if (Input.check(Key.A)) { vx = xAcceleration; }
+	    else if (Input.check(Key.A)) { vx -= xAcceleration; }
 	    vx -= vx * xFriction;
-	    if (Math.abs(vx) > MAX_SPEED) { vx = MAX_SPEED; }
+	    if (Math.abs(vx) > MAX_SPEED) { vx = FP.sign(vx)*MAX_SPEED; }
 
 	    if(vx != 0) { vx < 0 ? flip(true) : flip(false); }
 
