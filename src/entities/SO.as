@@ -10,7 +10,8 @@ package entities
 	    private const SO_SPRITE:Class;
 
 	private var
-	    hitboxBuffer:Number = 35;
+	    hitboxXBuffer:Number = 35,
+	    hitboxYBuffer:Number = 20;;
 
 	public function SO(x:int=0, y:int=0) {
 	    this.x = x;
@@ -27,9 +28,10 @@ package entities
 	    sprActor.add("run", [1, 2, 3, 4, 5, 6, 7, 8], 12, true);
 
 	    this.graphic = sprActor;
-	    setHitbox(sprActor.width - hitboxBuffer*2, sprActor.height, 
-		      -hitboxBuffer, 0);
-	    this.x -= hitboxBuffer;
+	    setHitbox(sprActor.width - hitboxXBuffer*2, sprActor.height-hitboxYBuffer, 
+		      -hitboxXBuffer, 0);
+	    this.x -= hitboxXBuffer;
+	    this.y += hitboxYBuffer;
 	    type = "player";
 	}
 
