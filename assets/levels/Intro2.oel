@@ -33,7 +33,9 @@
   </tiles>
   <objects>
     <so x="0" y="416"/>
-    <crowd x="96" y="416"/>
-    <crowd x="320" y="416"/>
+    <foregroundCrowd x="128" y="416"/>
+    <foregroundCrowd x="320" y="416"/>
+    <backgroundCrowd x="160" y="416"/>
+    <backgroundCrowd x="288" y="416"/>
   </objects>
 </level>

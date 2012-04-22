@@ -25,7 +25,8 @@
     <object name="star" image="star.png" height="32" width="32"/>
     <object name="cloud" image="cloud.png" height="64" width="128"/>
     <object name="couple" image="couple.png" height="96" width="96" limit="1"/>
-    <object name="crowd" image="crowd.png" height="96" width="528"/>
+    <object name="foregroundCrowd" image="crowd.png" height="96" width="528"/>
+    <object name="backgroundCrowd" image="crowd.png" height="96" width="528"/>
   </objects>
 
   <layers>
