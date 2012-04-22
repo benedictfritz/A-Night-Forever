@@ -1,26 +1,29 @@
 package worlds
 {
-    import net.flashpunk.World;
     import net.flashpunk.FP;
+    import net.flashpunk.World;
+    import net.flashpunk.tweens.misc.VarTween;
 
     import entities.*;
 	
-    public class Intro2 extends World {
-	[Embed(source="../../assets/levels/Intro2.oel", 
+    public class Intro3 extends World {
+	[Embed(source="../../assets/levels/Intro3.oel", 
 	       mimeType="application/octet-stream")]
 	    private static const MAP_DATA:Class;
 
 	private static const
-	    CAM_X_OFFSET:Number = 64;
+	    CAM_X_OFFSET:Number = 64,
+	    SO_TAKEOFF_DISTANCE:Number = 300,
+	    SO_TAKEOFF_TIME:Number = 3;
 
 	private var
 	    level:Level,
 	    player:RunningPlayer,
 	    SO:RunningSO,
-	    crowd:Crowd,
 	    skyBackground:SkyBackground,
 	    transitionIn:TransitionIn,
-	    playerEntering:Boolean=false;
+	    playerEntering:Boolean=false,
+	    soUpTween:VarTween;
 
 	override public function begin():void {
 	    super.begin();
@@ -46,18 +49,6 @@ package worlds
 	    for each(dataElement in dataList) {
 		SO = new RunningSO(int(dataElement.@x), int(dataElement.@y));
 		add(SO);
-	    }
-
-	    dataList = levelData.objects.foregroundCrowd;
-	    for each(dataElement in dataList) {
-		crowd = new Crowd(int(dataElement.@x), int(dataElement.@y), "foreground");
-		add(crowd);
-	    }
-
-	    dataList = levelData.objects.backgroundCrowd;
-	    for each(dataElement in dataList) {
-		crowd = new Crowd(int(dataElement.@x), int(dataElement.@y), "background");
-		add(crowd);
 	    }
 
 	    skyBackground = new SkyBackground(0, FP.height, 2, 2);
@@ -92,10 +83,21 @@ package worlds
 		player.setControllable(true);
 	    }
 
-	    if (player.x > FP.width+CAM_X_OFFSET) {
-		var transitionOut:TransitionOut = new TransitionOut(new Intro3());
-		add(transitionOut);
+	    if (SO.x > 500) {
+		SO.running = false;
+		SO.playFaceLeft();
 	    }
+
+	    // TODO: replace distance with distance where SO takes off.
+	    if (player.x > SO_TAKEOFF_DISTANCE) {
+		soUpTween = new VarTween();
+		// use 100 because the hitbox has been adjusted to be 
+		// small on the SO so we can't use that.
+		soUpTween.tween(SO, "y", -100, SO_TAKEOFF_TIME);
+		addTween(soUpTween);
+	    }
+
 	}
+
     }
 }
