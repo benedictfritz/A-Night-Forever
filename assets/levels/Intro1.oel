@@ -1,5 +1,5 @@
 <level>
-  <width>800</width>
+  <width>832</width>
   <height>600</height>
   <tiles set="tiles">
     <tile tx="448" ty="64" x="64" y="512"/>
@@ -14,7 +14,6 @@
     <tile tx="256" ty="64" x="576" y="512"/>
     <tile tx="448" ty="64" x="640" y="512"/>
     <tile tx="256" ty="64" x="704" y="512"/>
-    <tile tx="256" ty="64" x="768" y="512"/>
     <tile tx="0" ty="64" x="0" y="576"/>
     <tile tx="0" ty="64" x="64" y="576"/>
     <tile tx="0" ty="64" x="128" y="576"/>
@@ -28,6 +27,7 @@
     <tile tx="0" ty="64" x="640" y="576"/>
     <tile tx="0" ty="64" x="704" y="576"/>
     <tile tx="0" ty="64" x="768" y="576"/>
+    <tile tx="64" ty="64" x="768" y="512"/>
   </tiles>
   <objects>
     <player x="0" y="416"/>
