@@ -20,6 +20,9 @@ package entities
 	    PLAYER_BOUNCE_SPEED:Number = 1,
 	    TEXT_OFFSET:Number = -25;
 
+	public var
+	    running:Boolean = false;
+
 	private var
 	    pickingUp:Boolean = false,
 	    lifting:Boolean = false,
@@ -41,20 +44,23 @@ package entities
 	    if (pickingUp || lifting) 
 		return;
 
-	    var jumping:Boolean = collide("level", x, y+1) == null;
 
-	    vx = xSpeed;
-	    sprActor.play("run");
+	    if (running) {
+		var jumping:Boolean = collide("level", x, y+1) == null;
 
-	    if (collide("level", x+JUMP_LOOKAHEAD, y) && !jumping) {
-		vy = -JUMP_SPEED;
+		vx = xSpeed;
+		sprActor.play("run");
+
+		if (collide("level", x+JUMP_LOOKAHEAD, y) && !jumping) {
+		    vy = -JUMP_SPEED;
+		}
+		if (jumping) {
+		    vy > 0 ? sprActor.play("fall") : sprActor.play("jump");
+		    vy += GRAVITY * FP.elapsed;
+		}
+
+		moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
 	    }
-	    if (jumping) {
-		vy > 0 ? sprActor.play("fall") : sprActor.play("jump");
-		vy += GRAVITY * FP.elapsed;
-	    }
-
-	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
 	}
 
 	public function liftPlayer():void {
