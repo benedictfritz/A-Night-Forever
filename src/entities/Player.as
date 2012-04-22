@@ -33,6 +33,7 @@ package entities
 
 	    // adjust the y position so the player doesn't fall after being
 	    // added to the world
+	    this.x -= hitboxXBuffer;
 	    this.y += hitboxYBuffer;
 	    type = "player";
 	}
