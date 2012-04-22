@@ -10,18 +10,22 @@ package worlds
 	       mimeType="application/octet-stream")]
 	    private static const MAP_DATA:Class;
 
+	private static const
+	    CAM_X_OFFSET:Number = 64;
+
 	private var
 	    level:Level,
 	    player:RunningPlayer,
 	    SO:RunningSO,
-	    crowd:Crowd;
+	    crowd:Crowd,
+	    skyBackground:SkyBackground;
 
 	override public function begin():void {
 	    super.begin();
 
 	    // start off one tile to the right so we can spawn things off 
 	    // the screen and they can run in.
-	    FP.camera.x = 64;
+	    FP.camera.x = CAM_X_OFFSET;
 
 	    level = new Level(MAP_DATA);
 	    add(level);
@@ -47,6 +51,8 @@ package worlds
 		add(crowd);
 	    }
 
+	    skyBackground = new SkyBackground(0, FP.height, 2, 2);
+	    add(skyBackground);
 	}
 
 	override public function update():void {
