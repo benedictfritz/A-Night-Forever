@@ -2,6 +2,7 @@ package worlds
 {
     import net.flashpunk.World;
     import net.flashpunk.FP;
+    import net.flashpunk.tweens.misc.VarTween;
     
     import entities.*;
 	
@@ -10,14 +11,20 @@ package worlds
 	       mimeType="application/octet-stream")]
 	    private static const MAP_DATA:Class;
 
+	private static const
+	    PAN_TIME:Number = 3;
+
 	private var
 	    level:Level,
 	    player:RunningPlayer,
-	    SO:RunningSO;
+	    SO:RunningSO,
+	    panDownTween:VarTween;
 
 	override public function begin():void {
 	    super.begin();
 
+	    FP.camera.y = -400;
+	    
 	    level = new Level(MAP_DATA);
 	    add(level);
 
@@ -29,6 +36,7 @@ package worlds
 		player = new RunningPlayer(int(dataElement.@x), int(dataElement.@y));
 		add(player);
 	    }
+	    player.setControllable(false);
 
 	    dataList = levelData.objects.so;
 	    for each(dataElement in dataList) {
@@ -42,6 +50,14 @@ package worlds
 	    if (player.x > FP.width) {
 		FP.world = new Intro2();
 	    }
+
+	    panDownTween = new VarTween(finishPanning);
+	    panDownTween.tween(FP.camera, "y", 0, PAN_TIME);
+	    FP.world.addTween(panDownTween);
+	}
+
+	private function finishPanning():void {
+	    player.setControllable(true);
 	}
 
     }

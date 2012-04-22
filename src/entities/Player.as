@@ -30,6 +30,10 @@ package entities
 	    this.graphic = sprActor;
 	    setHitbox(sprActor.width - hitboxXBuffer*2, sprActor.height-hitboxYBuffer, 
 		      -hitboxXBuffer, 0);
+
+	    // adjust the y position so the player doesn't fall after being
+	    // added to the world
+	    this.y += hitboxYBuffer;
 	    type = "player";
 	}
 
