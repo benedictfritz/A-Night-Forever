@@ -1,9 +1,11 @@
 package worlds
 {
-    import net.flashpunk.World;
     import net.flashpunk.FP;
+    import net.flashpunk.World;
+    import net.flashpunk.utils.Key;
+    import net.flashpunk.utils.Input;
     import net.flashpunk.tweens.misc.VarTween;
-    
+
     import entities.*;
 	
     public class Intro1 extends World {
@@ -45,13 +47,17 @@ package worlds
 		add(SO);
 	    }
 
-
 	    skyBackground = new SkyBackground(0, FP.height, 1, 3);
 	    add(skyBackground);
 	}
 
 	override public function update():void {
 	    super.update();
+
+	    // run SO off screen as soon as the player 
+	    // moves right
+	    if (Input.check(Key.D)) { SO.running = true; }
+
 	    if (player.x > FP.width) {
 		FP.world = new Intro2();
 	    }
