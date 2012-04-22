@@ -53,14 +53,13 @@ package worlds
 
 	    skyBackground = new SkyBackground(0, FP.height, 2, 2);
 	    add(skyBackground);
+
+	    var transitionIn:TransitionIn = new TransitionIn(0.02, 0x000000);
+	    add(transitionIn);
 	}
 
 	override public function update():void {
 	    super.update();
-	    if (player.x > FP.width) {
-		FP.world = new Intro2();
-	    }
 	}
-
     }
 }

@@ -28,7 +28,7 @@ package entities
 	override public function render():void {
 	    Draw.rect(FP.camera.x, FP.camera.y, FP.width, FP.height, colour, alpha);
 
-	    alpha += 0.01;
+	    alpha += 0.02;
 
 	    if (alpha > 1) {
 		FP.world = transitionToWorld;

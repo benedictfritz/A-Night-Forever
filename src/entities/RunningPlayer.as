@@ -40,8 +40,6 @@ package entities
 
 	    if(vx != 0) { vx < 0 ? flip(true) : flip(false); }
 
-	    FP.console.log(vx);
-
 	    if (Math.abs(vx) < MIN_SPEED) {
 		sprActor.play("stand");
 	    }
