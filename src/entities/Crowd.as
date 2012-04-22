@@ -25,7 +25,6 @@ package entities
 		FP.console.log("Invalid position string passed. Must be 'foreground' or 'background'.");
 	    }
 
-
 	    this.graphic = new Image(CROWD_IMAGE);
 	    this.y += yOffset;
 	}
