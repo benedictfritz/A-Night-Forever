@@ -18,7 +18,8 @@ package worlds
 	    level:Level,
 	    player:RunningPlayer,
 	    SO:RunningSO,
-	    panDownTween:VarTween;
+	    panDownTween:VarTween,
+	    skyBackground:SkyBackground;
 
 	override public function begin():void {
 	    super.begin();
@@ -43,6 +44,10 @@ package worlds
 		SO = new RunningSO(int(dataElement.@x), int(dataElement.@y));
 		add(SO);
 	    }
+
+
+	    skyBackground = new SkyBackground(0, FP.height, 1, 3);
+	    add(skyBackground);
 	}
 
 	override public function update():void {
