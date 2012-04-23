@@ -9,7 +9,7 @@ package entities
 	[Embed(source = '../../assets/images/so.png')]
 	    private const SO_SPRITE:Class;
 
-	private var
+	public var
 	    hitboxXBuffer:Number = 35,
 	    hitboxYBuffer:Number = 20;
 

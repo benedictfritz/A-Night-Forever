@@ -19,7 +19,8 @@ package worlds
 	private var
 	    level:Level,
 	    player:RunningPlayer,
-	    SO:RunningSO,
+	    runningSO:RunningSO,
+	    flyingSO:FlyingSO,
 	    skyBackground:SkyBackground,
 	    transitionIn:TransitionIn,
 	    playerEntering:Boolean=false,
@@ -47,8 +48,8 @@ package worlds
 
 	    dataList = levelData.objects.so;
 	    for each(dataElement in dataList) {
-		SO = new RunningSO(int(dataElement.@x), int(dataElement.@y));
-		add(SO);
+		runningSO = new RunningSO(int(dataElement.@x), int(dataElement.@y));
+		add(runningSO);
 	    }
 
 	    skyBackground = new SkyBackground(0, FP.height, 2, 2);
@@ -64,12 +65,12 @@ package worlds
 	    // yo dawg i heard you like working with lots of state
 
 	    if (transitionIn.done) {
-		if (!SO.running) {
-		    SO.running = true;
+		if (!runningSO.running) {
+		    runningSO.running = true;
 		}
 	    }
 
-	    if (SO.x > 200 && !playerEntering && player.x < CAM_X_OFFSET) {
+	    if (runningSO.x > 200 && !playerEntering && player.x < CAM_X_OFFSET) {
 		playerEntering = true;
 	    }
 
@@ -83,20 +84,31 @@ package worlds
 		player.setControllable(true);
 	    }
 
-	    if (SO.x > 500) {
-		SO.running = false;
-		SO.playFaceLeft();
+	    if (runningSO.x > 500) {
+		runningSO.running = false;
+		runningSO.playFaceLeft();
 	    }
 
-	    // TODO: replace distance with distance where SO takes off.
-	    if (player.x > SO_TAKEOFF_DISTANCE) {
-		soUpTween = new VarTween();
+	    // TODO: replace distance with distance where runningSO takes off.
+	    if (player.x > SO_TAKEOFF_DISTANCE && flyingSO == null) {
+		// subtract off the hitbox buffers since the creation will account for them again
+		flyingSO = new FlyingSO(runningSO.x + runningSO.hitboxXBuffer, runningSO.y - runningSO.hitboxYBuffer);
+		flyingSO.flying = false;
+		flyingSO.goingLeft = true;
+		add(flyingSO);
+		remove(runningSO);
+
+		soUpTween = new VarTween(makePlayerFly);
 		// use 100 because the hitbox has been adjusted to be 
-		// small on the SO so we can't use that.
-		soUpTween.tween(SO, "y", -100, SO_TAKEOFF_TIME);
+		// small on the runningSO so we can't use that. just need to move
+		// her offscreen.
+		soUpTween.tween(flyingSO, "y", -100, SO_TAKEOFF_TIME);
 		addTween(soUpTween);
 	    }
+	}
 
+	private function makePlayerFly():void {
+	    FP.world = new Chase();
 	}
 
     }

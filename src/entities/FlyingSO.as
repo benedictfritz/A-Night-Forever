@@ -16,19 +16,21 @@ package entities
 
 	public var
 	    minX:Number,
-	    maxX:Number;
+	    maxX:Number,
+	    flying:Boolean=true,
+	    goingLeft:Boolean;
 	
 	private var
 	    nextX:Number,
-	    swerveTween:VarTween,
-	    goingLeft:Boolean;
+	    swerveTween:VarTween;
 
 	public function FlyingSO(x:int=0, y:int=0) {
 	    super(x, y);
 
 	    sprActor = new Spritemap(COUPLE_SPRITE, 96, 96);
-	    sprActor.add("slow", [0, 1], 8, true);
-	    sprActor.add("fast", [0, 1], 16, true);
+	    sprActor.add("slow", [6, 7], 8, true);
+	    sprActor.add("fast", [6, 7], 16, true);
+	    sprActor.play("slow");
 	    this.graphic = sprActor;
 
 	    vy = -500;
@@ -37,11 +39,13 @@ package entities
 	override public function update():void {
 	    super.update();
 
-	    if (!nextX) { resetNextX(); };
-	    move();
-
 	    (goingLeft) ? flip(true) : flip(false);
-	    adjustHair();
+
+	    if (flying) {
+		if (!nextX) { resetNextX(); };
+		move();
+		adjustHair();
+	    }
 	}
 
 	private function move():void {
