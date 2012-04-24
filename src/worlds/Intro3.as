@@ -111,8 +111,13 @@ package worlds
 
 	    if (flyingSO != null && flyingPlayer == null) {
 		if (Input.check(Key.W)) {
-		    flyingPlayer = new FlyingPlayer(runningPlayer.x + runningPlayer.hitboxXBuffer, 
-						    runningPlayer.y - runningPlayer.hitboxYBuffer);
+		    // okay, initializing like this is a disaster. basically, the origin on the flying
+		    // player is at the feet, so we need to account for that when we init the flying player.
+		    // if this ever needs to be changed and you can't figure it out, just switch the running
+		    // player to having its origin at its feet.
+		    flyingPlayer = new FlyingPlayer(runningPlayer.x + runningPlayer.hitboxXBuffer + 
+						    (runningPlayer.width+runningPlayer.hitboxXBuffer*2)/2, 
+						    runningPlayer.y - runningPlayer.hitboxYBuffer + runningPlayer.height);
 		    add(flyingPlayer);
 		    flyingPlayer.xAcceleration = 20;
 		    flyingPlayer.yAcceleration = 5;
@@ -120,7 +125,7 @@ package worlds
 		}
 	    }
 
-	    if (flyingPlayer != null && flyingPlayer.y < -100) {
+	    if (flyingPlayer != null && flyingPlayer.y < -5) {
 		FP.world = new Chase(flyingPlayer.x);
 	    }
 	}
