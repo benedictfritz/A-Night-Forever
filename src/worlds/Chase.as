@@ -44,6 +44,9 @@ package worlds
 	override public function begin():void {
 	    super.begin();
 	    initLevel();
+
+	    var transitionIn:TransitionIn = new TransitionIn(0.1, 0xFFFFFF);
+	    add(transitionIn);
 	}
 
 	private function initLevel():void {
