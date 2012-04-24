@@ -29,9 +29,15 @@ package worlds
 	    spawnedSlowingClouds:Boolean = false,
 	    skyBackground:SkyBackground;
 
-	public function Chase():void {
+	public function Chase(playerX:Number):void {
 	    super();
 	    player = new FlyingPlayer();
+	    player.x = playerX;
+	    player.minX = 0;
+	    player.maxX = FP.width;
+	    player.maxY = player.y;
+	    add(player);
+
 	    sO = new FlyingSO();
 	}
 
@@ -45,14 +51,11 @@ package worlds
 	    add(level);
 
 	    var levelData:XML = level.getLevelData();
-	    var dataList:XMLList = levelData.objects.player;
-	    for each(var dataElement:XML in dataList) {	    
-		player = new FlyingPlayer(int(dataElement.@x), int(dataElement.@y));
+	    var dataList:XMLList = levelData.objects.so;
+	    dataList = levelData.objects.player;
+	    for each(var dataElement:XML in dataList) {
+		player.y = int(dataElement.@y);
 	    }
-	    player.minX = 0;
-	    player.maxX = FP.width;
-	    player.maxY = player.y;
-	    add(player);
 
 	    dataList = levelData.objects.so;
 	    for each(dataElement in dataList) {

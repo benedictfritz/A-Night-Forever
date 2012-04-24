@@ -121,7 +121,7 @@ package worlds
 	    }
 
 	    if (flyingPlayer != null && flyingPlayer.y < -100) {
-		FP.world = new Chase();
+		FP.world = new Chase(flyingPlayer.x);
 	    }
 	}
     }
