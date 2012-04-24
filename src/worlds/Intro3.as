@@ -18,12 +18,13 @@ package worlds
 
 	private var
 	    level:Level,
-	    player:RunningPlayer,
+	    runningPlayer:RunningPlayer,
+	    flyingPlayer:FlyingPlayer,
 	    runningSO:RunningSO,
 	    flyingSO:FlyingSO,
 	    skyBackground:SkyBackground,
 	    transitionIn:TransitionIn,
-	    playerEntering:Boolean=false,
+	    runningPlayerEntering:Boolean=false,
 	    soUpTween:VarTween;
 
 	override public function begin():void {
@@ -41,10 +42,10 @@ package worlds
 	    var dataElement:XML;
 	    var dataList:XMLList = levelData.objects.player;
 	    for each(dataElement in dataList) {
-		player = new RunningPlayer(int(dataElement.@x), int(dataElement.@y));
-		add(player);
+		runningPlayer = new RunningPlayer(int(dataElement.@x), int(dataElement.@y));
+		add(runningPlayer);
 	    }
-	    player.setControllable(false);
+	    runningPlayer.setControllable(false);
 
 	    dataList = levelData.objects.so;
 	    for each(dataElement in dataList) {
@@ -70,18 +71,18 @@ package worlds
 		}
 	    }
 
-	    if (runningSO.x > 200 && !playerEntering && player.x < CAM_X_OFFSET) {
-		playerEntering = true;
+	    if (runningSO.x > 200 && !runningPlayerEntering && runningPlayer.x < CAM_X_OFFSET) {
+		runningPlayerEntering = true;
 	    }
 
-	    if (playerEntering) {
-		player.playRight();
-		player.x += 2;
+	    if (runningPlayerEntering) {
+		runningPlayer.playRight();
+		runningPlayer.x += 2;
 	    }
 
-	    if (player.x > CAM_X_OFFSET) {
-		playerEntering = false;
-		player.setControllable(true);
+	    if (runningPlayer.x > CAM_X_OFFSET) {
+		runningPlayerEntering = false;
+		runningPlayer.setControllable(true);
 	    }
 
 	    if (runningSO.x > 500) {
@@ -90,7 +91,7 @@ package worlds
 	    }
 
 	    // TODO: replace distance with distance where runningSO takes off.
-	    if (player.x > SO_TAKEOFF_DISTANCE && flyingSO == null) {
+	    if (runningPlayer.x > SO_TAKEOFF_DISTANCE && flyingSO == null) {
 		// subtract off the hitbox buffers since the creation will account for them again
 		flyingSO = new FlyingSO(runningSO.x + runningSO.hitboxXBuffer, runningSO.y - runningSO.hitboxYBuffer);
 		flyingSO.flying = false;
@@ -98,7 +99,7 @@ package worlds
 		add(flyingSO);
 		remove(runningSO);
 
-		soUpTween = new VarTween(makePlayerFly);
+		soUpTween = new VarTween(makeRunningPlayerFly);
 		// use 100 because the hitbox has been adjusted to be 
 		// small on the runningSO so we can't use that. just need to move
 		// her offscreen.
@@ -107,8 +108,12 @@ package worlds
 	    }
 	}
 
-	private function makePlayerFly():void {
-	    FP.world = new Chase();
+	private function makeRunningPlayerFly():void {
+	    flyingPlayer = new FlyingPlayer(runningPlayer.x + runningPlayer.hitboxXBuffer, 
+	    				    runningPlayer.y - runningPlayer.hitboxYBuffer);
+	    add(flyingPlayer);
+	    remove(runningPlayer);
+	    flyingPlayer.setControllable(false);
 	}
 
     }

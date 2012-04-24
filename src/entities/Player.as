@@ -12,7 +12,7 @@ package entities
 	[Embed(source = '../../assets/images/player.png')]
 	    private const PLAYER_SPRITE:Class;
 
-	private var
+	public var
 	    hitboxXBuffer:Number = 35,
 	    hitboxYBuffer:Number = 20;
 
