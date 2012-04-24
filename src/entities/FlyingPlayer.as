@@ -33,7 +33,16 @@ package entities
 	    sprActor.add("slow", [0, 1], 8, true);
 	    sprActor.add("fast", [0, 1], 16, true);
 	    sprActor.play("slow");
+
 	    graphic = sprActor;
+
+	    var hitboxWidth:Number = sprActor.width - hitboxYBuffer*2;
+	    var hitboxHeight:Number = sprActor.height - hitboxYBuffer;
+	    // need to center origin on bottom of hitbox so we can do rotations on graphic
+	    // that feel as if you're directing the head in the direction you want to go.
+	    sprActor.centerOO();
+	    sprActor.originY += hitboxHeight/2;
+	    setHitbox(hitboxWidth, hitboxHeight, hitboxWidth/2, hitboxHeight);
 	}
 
 	override public function update():void {
@@ -81,6 +90,11 @@ package entities
 
 	private function move():void {
 	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
+
+	    // rotate the player's head in the direction they want to go
+	    var scaledVx:Number = FP.scale(Math.abs(vx), 0, 720, 0, 10);
+	    FP.console.log(scaledVx);
+	    sprActor.angle = -FP.sign(vx) * scaledVx;
 
 	    // constrain player within limits
 	    if (left < minX) { x = minX + originX; }
