@@ -15,13 +15,13 @@ package entities
 	    private const COUPLE_SPRITE:Class;
 
 	public var
+	    yAcceleration:Number = 20,
+	    xAcceleration:Number = 80,
 	    minX:Number,
 	    maxX:Number,
 	    maxY:Number;
 
 	private var
-	    yAcceleration:Number = 20,
-	    xAcceleration:Number = 80,
 	    xFriction:Number = 0.1,
 	    yFriction:Number = 0.04,
 	    windBoost:Number = 12;

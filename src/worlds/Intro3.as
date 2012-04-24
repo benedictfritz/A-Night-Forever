@@ -2,6 +2,8 @@ package worlds
 {
     import net.flashpunk.FP;
     import net.flashpunk.World;
+    import net.flashpunk.utils.Key;
+    import net.flashpunk.utils.Input;
     import net.flashpunk.tweens.misc.VarTween;
 
     import entities.*;
@@ -99,22 +101,28 @@ package worlds
 		add(flyingSO);
 		remove(runningSO);
 
-		soUpTween = new VarTween(makeRunningPlayerFly);
+		soUpTween = new VarTween();
 		// use 100 because the hitbox has been adjusted to be 
 		// small on the runningSO so we can't use that. just need to move
 		// her offscreen.
 		soUpTween.tween(flyingSO, "y", -100, SO_TAKEOFF_TIME);
 		addTween(soUpTween);
 	    }
-	}
 
-	private function makeRunningPlayerFly():void {
-	    flyingPlayer = new FlyingPlayer(runningPlayer.x + runningPlayer.hitboxXBuffer, 
-	    				    runningPlayer.y - runningPlayer.hitboxYBuffer);
-	    add(flyingPlayer);
-	    remove(runningPlayer);
-	    flyingPlayer.setControllable(false);
-	}
+	    if (flyingSO != null && flyingPlayer == null) {
+		if (Input.check(Key.W)) {
+		    flyingPlayer = new FlyingPlayer(runningPlayer.x + runningPlayer.hitboxXBuffer, 
+						    runningPlayer.y - runningPlayer.hitboxYBuffer);
+		    add(flyingPlayer);
+		    flyingPlayer.xAcceleration = 20;
+		    flyingPlayer.yAcceleration = 5;
+		    remove(runningPlayer);
+		}
+	    }
 
+	    if (flyingPlayer != null && flyingPlayer.y < -100) {
+		FP.world = new Chase();
+	    }
+	}
     }
 }
