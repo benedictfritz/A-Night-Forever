@@ -145,7 +145,8 @@ package worlds
 	}
 
 	private function checkCatchingPlayer():void {
-	    if (player.y <= sO.y) {
+	    // player's origin is at the feet, so we need to subtract off height
+	    if (player.y-player.height <= sO.y) {
 		FP.world = new Interlude(player.x, player.y);
 	    }
 	}
