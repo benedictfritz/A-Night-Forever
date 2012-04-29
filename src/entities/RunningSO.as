@@ -18,7 +18,8 @@ package entities
 	    JUMP_LOOKAHEAD:Number = 64,
 	    PLAYER_PICKUP_TIME:Number = 3,
 	    PLAYER_BOUNCE_SPEED:Number = 1,
-	    TEXT_OFFSET:Number = -25;
+	    TEXT_OFFSET:Number = -25,
+	    MONSTER_SPAWN_TIME:Number = 2;
 
 	public var
 	    running:Boolean = false;
@@ -31,7 +32,8 @@ package entities
 	    floatDownTween:VarTween,
 	    text:Text,
 	    textEntity:Entity,
-	    textOptions:Object;
+	    textOptions:Object,
+	    spawnTimer:Number = 0;
 
 	public function RunningSO(x:int=0, y:int=0) {
 	    super(x, y);
@@ -46,6 +48,8 @@ package entities
 
 
 	    if (running) {
+		checkSpawnTimer();
+
 		var jumping:Boolean = collide("level", x, y+1) == null;
 
 		vx = xSpeed;
@@ -60,6 +64,15 @@ package entities
 		}
 
 		moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
+	    }
+	}
+
+	private function checkSpawnTimer():void {
+	    spawnTimer += FP.elapsed;
+	    if (spawnTimer > MONSTER_SPAWN_TIME) {
+		var newMonster:MonsterFish = new MonsterFish(x, y);
+		FP.world.add(newMonster);
+		spawnTimer = 0;
 	    }
 	}
 
