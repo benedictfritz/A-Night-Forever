@@ -70,7 +70,15 @@ package entities
 	private function checkSpawnTimer():void {
 	    spawnTimer += FP.elapsed;
 	    if (spawnTimer > MONSTER_SPAWN_TIME) {
-		var newMonster:MonsterFish = new MonsterFish(x, y);
+		var newMonster:Monster;
+
+		if (FP.random < 0.5) {
+		    newMonster = new MonsterFish(x, y);
+		}
+		else {
+		    newMonster = new MonsterMouth(x, y);		    
+		}
+		
 		FP.world.add(newMonster);
 		spawnTimer = 0;
 	    }
