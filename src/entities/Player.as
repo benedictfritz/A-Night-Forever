@@ -25,11 +25,12 @@ package entities
 	    sprActor.add("stand", [0], 1, true);
 	    sprActor.add("jump", [5], 1, true);
 	    sprActor.add("fall", [7], 1, true);
+	    sprActor.add("sit", [9], 1, true);
 	    sprActor.add("run", [1, 2, 3, 4, 5, 6, 7, 8], 10, true);
 	    sprActor.color = color;
 	    this.graphic = sprActor;
-	    setHitbox(sprActor.width - hitboxXBuffer*2, sprActor.height-hitboxYBuffer, 
-		      -hitboxXBuffer, 0);
+	    setHitbox(sprActor.width - hitboxXBuffer*2, 
+		      sprActor.height-hitboxYBuffer, -hitboxXBuffer, 0);
 
 	    // adjust the y position so the player doesn't fall after being
 	    // added to the world
@@ -59,6 +60,11 @@ package entities
 	override public function playFaceLeft():void {
 	    sprActor.play("stand");
 	    flip(true);
+	}
+
+	public function playSitRight():void {
+	    sprActor.play("sit");
+	    flip(false);
 	}
     }
 }

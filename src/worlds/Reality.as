@@ -41,6 +41,7 @@ package worlds
                 player = new RunningPlayer(int(dataElement.@x), int(dataElement.@y));
                 add(player);
             }
+
             dataList = levelData.objects.so;
             for each(dataElement in dataList) {	    
                 SO = new RunningSO(int(dataElement.@x), int(dataElement.@y));
@@ -51,10 +52,6 @@ package worlds
         override public function update():void {
             super.update();
             
-            if (pickingUp) {
-                return;
-            }
-          
 	    updateCamera();
         }
 	
