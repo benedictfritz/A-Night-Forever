@@ -20,6 +20,8 @@ package entities
 	}
 
 	override public function update():void {
+	    super.update();
+
 	    // the only time the anim will be complete is after spawning
 	    if (monsterSprite.complete) {
 		monsterSprite.play("biting");
