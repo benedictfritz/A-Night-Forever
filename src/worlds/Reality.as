@@ -16,6 +16,9 @@ package worlds
            mimeType="application/octet-stream")]
         private static const MAP_DATA:Class;
 
+	private static const
+	    SO_CAM_BUFF:Number = 40;
+
         private var
           player:RunningPlayer,
           SO:RunningSO,
@@ -47,6 +50,8 @@ package worlds
                 SO = new RunningSO(int(dataElement.@x), int(dataElement.@y));
                 add(SO);
             }
+
+	    SO.running = true;
         }
 
         override public function update():void {
@@ -56,11 +61,12 @@ package worlds
         }
 	
 	private function updateCamera():void {
-	    if (FP.camera.x <= 64) {
+	    var soCamX:Number = SO.right + SO_CAM_BUFF - FP.width;
+	    if (soCamX <= 64) {
 		FP.camera.x = 64;
 	    }
 	    else {
-		FP.camera.x = SO.x - FP.width + SO.width;	    
+		FP.camera.x = soCamX;
 	    }
 	}
     }
