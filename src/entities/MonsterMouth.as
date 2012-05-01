@@ -8,6 +8,9 @@ package entities
 	[Embed(source = '../../assets/images/monstermouth.png')]
 	    private const MONSTER_SPRITE:Class;
 
+	private static var
+	    hitboxBuffer:Number=26;
+
 	private var
 	    monsterSprite:Spritemap = new Spritemap(MONSTER_SPRITE, 64, 64);
 
@@ -15,6 +18,9 @@ package entities
 	    monsterSprite.add("spawn", [0, 1, 2, 3, 4, 5], 12, false);
 	    monsterSprite.add("biting", [4, 5], 5, true);
 	    monsterSprite.play("spawn");
+
+	    setHitbox(monsterSprite.width-hitboxBuffer, monsterSprite.height-hitboxBuffer,
+		      -hitboxBuffer/2, -hitboxBuffer/2);
 
 	    super(x, y, monsterSprite);
 	}
