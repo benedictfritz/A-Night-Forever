@@ -9,7 +9,7 @@ package entities
 	    private const MONSTER_SPRITE:Class;
 
 	private static var
-	    hitboxBuffer:Number=26;
+	    HITBOX_BUFF:Number=26;
 
 	private var
 	    monsterSprite:Spritemap = new Spritemap(MONSTER_SPRITE, 64, 64);
@@ -19,8 +19,8 @@ package entities
 	    monsterSprite.add("biting", [4, 5], 5, true);
 	    monsterSprite.play("spawn");
 
-	    setHitbox(monsterSprite.width-hitboxBuffer, monsterSprite.height-hitboxBuffer,
-		      -hitboxBuffer/2, -hitboxBuffer/2);
+	    setHitbox(monsterSprite.width-HITBOX_BUFF, monsterSprite.height-HITBOX_BUFF,
+		      -HITBOX_BUFF/2, -HITBOX_BUFF/2);
 
 	    super(x, y, monsterSprite);
 	}
