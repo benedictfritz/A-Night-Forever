@@ -18,8 +18,7 @@ package entities
 	    JUMP_LOOKAHEAD:Number = 64,
 	    PLAYER_PICKUP_TIME:Number = 3,
 	    PLAYER_BOUNCE_SPEED:Number = 1,
-	    TEXT_OFFSET:Number = -25,
-	    MONSTER_SPAWN_TIME:Number = 2;
+	    TEXT_OFFSET:Number = -25;
 
 	public var
 	    running:Boolean = false;
@@ -33,7 +32,8 @@ package entities
 	    text:Text,
 	    textEntity:Entity,
 	    textOptions:Object,
-	    spawnTimer:Number = 0;
+	    spawnTimer:Number = 0,
+	    monsterSpawnTime:Number=2;
 
 	public function RunningSO(x:int=0, y:int=0) {
 	    super(x, y);
@@ -69,7 +69,7 @@ package entities
 
 	private function checkSpawnTimer():void {
 	    spawnTimer += FP.elapsed;
-	    if (spawnTimer > MONSTER_SPAWN_TIME) {
+	    if (spawnTimer > monsterSpawnTime) {
 		var newMonster:Monster;
 
 		if (FP.random < 0.5) {
@@ -81,6 +81,9 @@ package entities
 		
 		FP.world.add(newMonster);
 		spawnTimer = 0;
+
+		// set random time for next spawn
+		monsterSpawnTime = (FP.random * 2) + 2;
 	    }
 	}
 
