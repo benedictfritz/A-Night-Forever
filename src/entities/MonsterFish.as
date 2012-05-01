@@ -1,5 +1,6 @@
 package entities
 {
+    import net.flashpunk.FP;
     import net.flashpunk.Entity;
     import net.flashpunk.Graphic;
     import net.flashpunk.graphics.Spritemap;
@@ -16,6 +17,7 @@ package entities
 
 	public function MonsterFish(x:int=0, y:int=0):void {
 	    monsterSprite.add("spawn", [0, 1, 2, 3, 4], 12, false);
+	    monsterSprite.add("despawn", [4, 3, 2, 1, 0], 12, false);
 	    monsterSprite.add("biting", [3, 4], 5, true);
 	    monsterSprite.play("spawn");
 
@@ -28,9 +30,17 @@ package entities
 	    super.update();
 	    
 	    // the only time the anim will be complete is after spawning
-	    if (monsterSprite.complete) {
+	    if (monsterSprite.currentAnim == "spawn" && monsterSprite.complete) {
 		monsterSprite.play("biting");
 	    }
+	    if (monsterSprite.currentAnim == "despawn" && monsterSprite.complete) {
+		FP.world.recycle(this);
+	    }
+	}
+
+	override public function despawn():void {
+	    monsterSprite.play("despawn");
+	    this.setHitbox(0, 0, 0, 0);
 	}
     }
 }
