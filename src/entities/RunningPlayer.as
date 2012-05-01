@@ -8,6 +8,8 @@ package entities
     import net.flashpunk.graphics.Spritemap;
     import net.flashpunk.tweens.misc.VarTween;
 
+    import entities.Monster;
+
     public class RunningPlayer extends Player {
 
 	private const 
@@ -27,6 +29,7 @@ package entities
 	override public function update():void {
 	    super.update();
 	    if (controllable) { checkKeyPresses(); }
+	    checkMonsterCollisions();
 	}
 
 	private function checkKeyPresses():void {
@@ -58,6 +61,16 @@ package entities
 	    }
 
 	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
+	}
+
+	private function checkMonsterCollisions():void {
+	    var monster:Monster = collide("monster", x, y) as Monster;
+	    if (monster != null) {
+		xFriction = 0.2;
+		monster.despawn();
+		FP.alarm(1, function():void { xFriction = 0.1; });
+	    }
+
 	}
 
     }
