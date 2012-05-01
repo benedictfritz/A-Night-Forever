@@ -15,7 +15,8 @@ package entities
 	private const 
 	    JUMP_SPEED:Number = 230,
 	    MIN_SPEED:Number = 10.0,
-	    MAX_SPEED:Number = 170;
+	    MAX_SPEED:Number = 170,
+	    COLLISION_TIME:Number = 1;
 
 	private var
 	    gravity:Number = 400,
@@ -28,6 +29,7 @@ package entities
 
 	override public function update():void {
 	    super.update();
+
 	    if (controllable) { checkKeyPresses(); }
 	    checkMonsterCollisions();
 	}
@@ -67,10 +69,20 @@ package entities
 	    var monster:Monster = collide("monster", x, y) as Monster;
 	    if (monster != null) {
 		xFriction = 0.2;
-		monster.despawn();
-		FP.alarm(1, function():void { xFriction = 0.1; });
-	    }
 
+		var alphaTween:VarTween = new VarTween(fadeIn);
+		alphaTween.tween(sprActor, "alpha", 0.4, COLLISION_TIME/2);
+		addTween(alphaTween);
+
+		monster.despawn();
+		FP.alarm(COLLISION_TIME, function():void { xFriction = 0.1; });
+	    }
+	}
+
+	private function fadeIn():void {
+	    var alphaTween:VarTween = new VarTween();
+	    alphaTween.tween(sprActor, "alpha", 1, COLLISION_TIME/2);
+	    addTween(alphaTween);
 	}
 
     }
