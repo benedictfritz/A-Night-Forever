@@ -8,6 +8,9 @@ package entities
 	[Embed(source = '../../assets/images/monsterfish.png')]
 	    private const MONSTER_SPRITE:Class;
 
+	private static var
+	    HITBOX_BUFF:Number=26;
+
 	private var
 	    monsterSprite:Spritemap = new Spritemap(MONSTER_SPRITE, 64, 64);
 
@@ -15,6 +18,8 @@ package entities
 	    monsterSprite.add("spawn", [0, 1, 2, 3, 4], 12, false);
 	    monsterSprite.add("biting", [3, 4], 5, true);
 	    monsterSprite.play("spawn");
+
+	    setHitbox(30, 64, 0, 0);
 
 	    super(x, y, monsterSprite);
 	}
