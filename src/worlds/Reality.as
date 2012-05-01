@@ -20,10 +20,11 @@ package worlds
 	    SO_CAM_BUFF:Number = 40;
 
         private var
-          player:RunningPlayer,
-          SO:RunningSO,
-          pickingUp:Boolean,
-          level:Level;
+	    player:RunningPlayer,
+	    SO:RunningSO,
+	    pickingUp:Boolean,
+	    level:Level,
+	    skyBackground:SkyBackground;
 
         public function Reality():void {
             super();
@@ -50,8 +51,11 @@ package worlds
                 SO = new RunningSO(int(dataElement.@x), int(dataElement.@y));
                 add(SO);
             }
-
 	    SO.running = true;
+
+	    skyBackground = new SkyBackground(0, FP.height, 5, 1);
+	    add(skyBackground);
+
         }
 
         override public function update():void {
