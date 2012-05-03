@@ -35,10 +35,8 @@ package entities
 	    this.y = y;
 
 	    sprCouple = new Spritemap(COUPLE_SPRITE, 96, 96);
-	    sprCouple.add("downSlow", [2,3], 8, true);
-	    sprCouple.add("downFast", [2, 3], 16, true);
-	    sprCouple.add("upSlow", [4, 5], 8, true);
-	    sprCouple.add("upFast", [4, 5], 16, true);
+	    sprCouple.add("down", [2,3], 14, true);
+	    sprCouple.add("up", [4, 5], 14, true);
 	    sprCouple.add("stand", [4], 1, true);
 	    this.graphic = sprCouple;
 
@@ -52,8 +50,8 @@ package entities
 
 	    if (controllable) { checkKeyPresses(); }
 	    else {
-		if (tweeningUp) { sprCouple.play("upSlow"); }
-		else { sprCouple.play("downSlow"); }
+		if (tweeningUp) { sprCouple.play("up"); }
+		else { sprCouple.play("down"); }
 	    }
 	}
 
@@ -81,10 +79,9 @@ package entities
 
 	    if (vy > MAX_VY) { vy = MAX_VY; }
 
-	    if (vy <= -500) { sprCouple.play("upFast"); }
-	    else if (vy < 0) { sprCouple.play("upSlow"); }
-	    else if (vy > 500) { sprCouple.play("downFast"); }
-	    else { sprCouple.play("downSlow"); }
+	    if (vy < 0) { sprCouple.play("up"); }
+	    else { sprCouple.play("down"); }
+	    sprCouple.rate = FP.scale(Math.abs(vy), 0, MAX_VY, 0, 1);
 
 	    var collisionCloud:LandingCloud = 
 		collide("landingCloud", x, y) as LandingCloud;
