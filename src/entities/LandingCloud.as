@@ -11,7 +11,8 @@ package entities
 	private var
 	    sprCloud:Spritemap,
 	    hitboxLeeway:Number = 15,
-	    destructionCountdown:Number = 3;
+	    destructionCountdown:Number = 3,
+	    vx:Number = -10 - Math.random()*5;
 
 	public var
 	    doomed:Boolean = false;
@@ -49,6 +50,8 @@ package entities
 		    FP.world.remove(this);
 		}
 	    }
+
+	    moveBy(vx*FP.elapsed, 0);
 	}
     }
 
