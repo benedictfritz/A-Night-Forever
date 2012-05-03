@@ -92,9 +92,13 @@ package entities
 
 		// after moving, check if we landed on cloud
 		var doomCloud:LandingCloud = 
-		    collide("landingCloud", x, y+1) as LandingCloud;	    
+		    collide("landingCloud", x, y+1) as LandingCloud;
 		if (doomCloud != null && !doomCloud.doomed) {
 		    doomCloud.doomed = true;
+		}
+		if (doomCloud) {
+		    // if we're on a cloud, stand on it
+		    sprCouple.play("stand");
 		}
 	    }
 	    else {
