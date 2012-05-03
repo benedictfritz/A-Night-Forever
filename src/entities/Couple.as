@@ -6,6 +6,8 @@ package entities
     import net.flashpunk.utils.Input;
     import net.flashpunk.graphics.Spritemap;
 
+    import entities.LandingCloud;
+
     public class Couple extends Entity
     {
 	private static const
@@ -37,9 +39,10 @@ package entities
 	    sprCouple.add("downFast", [2, 3], 16, true);
 	    sprCouple.add("upSlow", [4, 5], 8, true);
 	    sprCouple.add("upFast", [4, 5], 16, true);
+	    sprCouple.add("stand", [4], 1, true);
 	    this.graphic = sprCouple;
 
-	    setHitbox(sprCouple.width, sprCouple.height);
+	    setHitbox(65, sprCouple.height, -15);
 	    type = "couple";
 	    layer = 0;
 	}
@@ -75,11 +78,22 @@ package entities
 	    if (vy > MAX_VY) { vy = MAX_VY; }
 
 	    if (vy <= -500) { sprCouple.play("upFast"); }
-	    else if (vy <= 0) { sprCouple.play("upSlow"); }
+	    else if (vy < 0) { sprCouple.play("upSlow"); }
 	    else if (vy > 500) { sprCouple.play("downFast"); }
 	    else { sprCouple.play("downSlow"); }
 
-	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "landingCloud");
+	    if (vy > 0) {
+		moveBy(vx * FP.elapsed, vy * FP.elapsed, "landingCloud");
+	    }
+	    else {
+		moveBy(vx * FP.elapsed, vy * FP.elapsed);
+	    }
+
+	    var collisionCloud:LandingCloud = 
+		collide("landingCloud", x, y+1) as LandingCloud;
+	    if (collisionCloud != null && !collisionCloud.doomed) {
+		collisionCloud.doomed = true;
+	    }
 
 	    if (y < MIN_Y) { y = MIN_Y; }
 	}

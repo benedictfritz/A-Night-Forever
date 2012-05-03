@@ -5,6 +5,8 @@ package worlds
     import net.flashpunk.masks.Grid;
     import net.flashpunk.graphics.Tilemap;
 
+    import flash.geom.Point;
+
     import entities.*;
     import util.Util;
 
@@ -22,8 +24,9 @@ package worlds
 	    currSector:Sector,
 	    couple:Couple,
 	    minStars:Number = 4,
-	    chanceOfClouds:Number = 4;
-	    transitionIn:TransitionIn;
+	    chanceOfClouds:Number = 5,
+	    transitionIn:TransitionIn,
+	    cloudPoints:Array = new Array();
 
 	public function Falling():void {
 	}
@@ -157,16 +160,20 @@ package worlds
 		add(newStar);
 	    }
 
-
 	    var cloudX:Number, cloudY:Number;
 	    var numClouds:Number = int(FP.random * chanceOfClouds);
 	    
 	    for (i=0; i < numClouds; i++) {
-		cloudX = FP.random * Sector.WIDTH + sector.minX();
-		cloudY = FP.random * Sector.HEIGHT + sector.minY();
-		
-		var newCloud:LandingCloud = new LandingCloud(starX, starY);
-		add(newCloud);
+		var newCloudPoint:Point = 
+		    new Point(Math.random() * Sector.WIDTH + sector.minX(),
+			      Math.random() * Sector.HEIGHT + sector.minY());
+
+		if (cloudPoints.indexOf(newCloudPoint) == -1) {
+		    cloudPoints.push(newCloudPoint);
+		    var newCloud:LandingCloud = new LandingCloud(newCloudPoint.x,
+								 newCloudPoint.y);
+		    add(newCloud);
+		}
 	    }
 	    
 	}

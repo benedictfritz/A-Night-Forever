@@ -10,10 +10,11 @@ package entities
 
 	private var
 	    sprCloud:Spritemap,
-	    hitboxLeeway:Number = 15;
+	    hitboxLeeway:Number = 15,
+	    destructionCountdown:Number = 3;
 
 	public var
-	    slowingVelocity:Number = 15;
+	    doomed:Boolean = false;
 
 	public function LandingCloud(x:int=0, y:int=0, scale:Number=1) {
 	    this.x = x;
@@ -34,8 +35,20 @@ package entities
 	}
 
 	override public function update():void {
+	    if (doomed) {
+		destructionCountdown -= FP.elapsed
+	    }
+	    
+	    if (doomed && destructionCountdown < 0) {
+		sprCloud.play("burst");
+		doomed = false;
+	    }
+
 	    if (sprCloud.currentAnim == "burst") {
-		if (sprCloud.complete) FP.world.remove(this);
+		if (sprCloud.complete) {
+		    FP.console.log("Removing");
+		    FP.world.remove(this);
+		}
 	    }
 	}
     }
