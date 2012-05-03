@@ -79,7 +79,7 @@ package entities
 	    else if (vy > 500) { sprCouple.play("downFast"); }
 	    else { sprCouple.play("downSlow"); }
 
-	    moveBy(vx * FP.elapsed, vy * FP.elapsed);
+	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "landingCloud");
 
 	    if (y < MIN_Y) { y = MIN_Y; }
 	}

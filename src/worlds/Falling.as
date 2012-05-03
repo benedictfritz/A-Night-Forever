@@ -22,6 +22,7 @@ package worlds
 	    currSector:Sector,
 	    couple:Couple,
 	    minStars:Number = 4,
+	    chanceOfClouds:Number = 4;
 	    transitionIn:TransitionIn;
 
 	public function Falling():void {
@@ -126,6 +127,7 @@ package worlds
 					      1, 1);
 			add(newSectorBackground);
 			minStars -= 0.1;
+			chanceOfClouds -= 0.1;
 		    }
 		}
 	    }
@@ -154,6 +156,19 @@ package worlds
 		sector.addStar(newStar);
 		add(newStar);
 	    }
+
+
+	    var cloudX:Number, cloudY:Number;
+	    var numClouds:Number = int(FP.random * chanceOfClouds);
+	    
+	    for (i=0; i < numClouds; i++) {
+		cloudX = FP.random * Sector.WIDTH + sector.minX();
+		cloudY = FP.random * Sector.HEIGHT + sector.minY();
+		
+		var newCloud:LandingCloud = new LandingCloud(starX, starY);
+		add(newCloud);
+	    }
+	    
 	}
     }
 }
