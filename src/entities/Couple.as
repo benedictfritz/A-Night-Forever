@@ -14,7 +14,8 @@ package entities
 	    GRAVITY:Number = 700,
 	    MAX_VY:Number = 500,
 	    MIN_Y:Number = 0,
-	    X_ACCEL:Number = 30,
+	    X_AIR_ACCEL:Number = 30,
+	    X_CLOUD_ACCEL:Number = 15,
 	    X_FRICTION:Number = 0.05,
 	    MAX_VX:Number = 300;
 
@@ -68,9 +69,18 @@ package entities
 	    }
 	    else {
 		/* standard left / right movement */
-		if (Input.check(Key.D)) { vx -= -X_ACCEL; }
-		else if (Input.check(Key.A)) { vx -= X_ACCEL; }
+		var onCloud:Boolean = 
+		    collide("landingCloud", x, y+1) as LandingCloud != null;
+
+		if (Input.check(Key.D)) { 
+		    vx += (onCloud) ? X_CLOUD_ACCEL : X_AIR_ACCEL;
+		}
+		else if (Input.check(Key.A)) { 
+		    vx -= (onCloud) ? X_CLOUD_ACCEL : X_AIR_ACCEL;
+		}
+
 		vx -= vx*X_FRICTION;
+
 		if (MAX_VX < Math.abs(vx)) { vx = FP.sign(vx)*MAX_VX; }
 		vy += GRAVITY * FP.elapsed;
 	    }
