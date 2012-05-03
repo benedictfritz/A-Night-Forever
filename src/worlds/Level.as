@@ -45,9 +45,11 @@ package worlds
 	private function placeTiles():void {
 	    var dataList:XMLList = levelData.tiles.tile;
 	    for each(var dataElement:XML in dataList) {
+		var tileImageIndex:Number = tiles.getIndex(int(dataElement.@tx)/TILE_WIDTH, 
+						int(dataElement.@ty)/TILE_HEIGHT);
 		tiles.setTile(int(dataElement.@x)/TILE_WIDTH,
 			       int(dataElement.@y)/TILE_HEIGHT,
-			       int(dataElement.@tx)/TILE_WIDTH);
+			       tileImageIndex);
 		// all tiles are solid
 		grid.setTile(int(dataElement.@x)/TILE_WIDTH,
 			      int(dataElement.@y)/TILE_HEIGHT,
