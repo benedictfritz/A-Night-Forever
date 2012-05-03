@@ -18,7 +18,7 @@ package entities
 	public function MonsterMouth(x:int=0, y:int=0):void {
 	    monsterSprite.add("spawn", [0, 1, 2, 3, 4, 5], 12, false);
 	    monsterSprite.add("despawn", [5, 4, 3, 2, 1, 0], 12, false);
-	    monsterSprite.add("biting", [4, 5], 5, true);
+	    monsterSprite.add("biting", [5, 4, 3, 4], 10, true);
 	    monsterSprite.play("spawn");
 
 	    setHitbox(monsterSprite.width-HITBOX_BUFF, monsterSprite.height-HITBOX_BUFF,
