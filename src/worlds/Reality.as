@@ -52,6 +52,7 @@ package worlds
                 add(SO);
             }
 	    SO.running = true;
+	    SO.spawningMonsters = true;
 
 	    skyBackground = new SkyBackground(0, FP.height, 5, 1);
 	    add(skyBackground);

@@ -21,7 +21,8 @@ package entities
 	    TEXT_OFFSET:Number = -25;
 
 	public var
-	    running:Boolean = false;
+	    running:Boolean = false,
+	    spawningMonsters:Boolean = false;
 
 	private var
 	    pickingUp:Boolean = false,
@@ -46,10 +47,11 @@ package entities
 	    if (pickingUp || lifting) 
 		return;
 
+	    if (spawningMonsters) {
+		checkSpawnTimer();
+	    }
 
 	    if (running) {
-		checkSpawnTimer();
-
 		var jumping:Boolean = collide("level", x, y+1) == null;
 
 		vx = xSpeed;
