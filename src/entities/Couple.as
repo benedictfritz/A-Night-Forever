@@ -40,7 +40,7 @@ package entities
 	    sprCouple.add("stand", [4], 1, true);
 	    this.graphic = sprCouple;
 
-	    setHitbox(65, sprCouple.height, -15);
+	    setHitbox(50, 15, -20, -80);
 	    type = "couple";
 	    layer = 0;
 	}

@@ -25,8 +25,7 @@ package entities
 	    sprCloud.add("burst", [0, 1, 2, 3], 12, false);
 	    sprCloud.scale = scale;
 	    this.graphic = sprCloud;
-	    setHitbox(sprCloud.width*scale - hitboxLeeway*2*scale, 
-		      sprCloud.height*scale - hitboxLeeway*2*scale, -hitboxLeeway*scale, - hitboxLeeway*scale);
+	    setHitbox(sprCloud.width-8, 4, -5, -40);
 	    type="landingCloud";
 	}
 
