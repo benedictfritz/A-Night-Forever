@@ -59,22 +59,26 @@ package entities
 
 	private function checkKeyPresses():void {
 	    /* move-anywhere test code */
-	    // if (Input.check(Key.D)) { vx += 80; }
-	    // else if (Input.check(Key.A)) { vx -= 80; }
-	    // vx -= vx*0.1;
-	    // if (Input.check(Key.S)) { vy += 80; }
-	    // else if (Input.check(Key.W)) { vy -= 80; }
-	    // vy -= vy*0.1;
-	    // moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
+	    var debugMovement:Boolean = false;
+	    if (debugMovement) {
+		if (Input.check(Key.D)) { vx += 80; }
+		else if (Input.check(Key.A)) { vx -= 80; }
+		vx -= vx*0.1;
+		if (Input.check(Key.S)) { vy += 80; }
+		else if (Input.check(Key.W)) { vy -= 80; }
+		vy -= vy*0.1;
+	    }
+	    else {
+		/* standard left / right movement */
+		if (Input.check(Key.D)) { vx -= -X_ACCEL; }
+		else if (Input.check(Key.A)) { vx -= X_ACCEL; }
+		vx -= vx*X_FRICTION;
+		if (MAX_VX < Math.abs(vx)) { vx = FP.sign(vx)*MAX_VX; }
+		vy += GRAVITY * FP.elapsed;
+	    }
 
-	    /* standard left / right movement */
-	    if (Input.check(Key.D)) { vx -= -X_ACCEL; }
-	    else if (Input.check(Key.A)) { vx -= X_ACCEL; }
-	    vx -= vx*X_FRICTION;
-	    if (MAX_VX < Math.abs(vx)) { vx = FP.sign(vx)*MAX_VX; }
 	    if(vx != 0) { vx < 0 ? flip(true) : flip(false); }
 
-	    vy += GRAVITY * FP.elapsed;
 	    if (vy > MAX_VY) { vy = MAX_VY; }
 
 	    if (vy <= -500) { sprCouple.play("upFast"); }
@@ -82,17 +86,22 @@ package entities
 	    else if (vy > 500) { sprCouple.play("downFast"); }
 	    else { sprCouple.play("downSlow"); }
 
-	    if (vy > 0) {
+	    var collisionCloud:LandingCloud = 
+		collide("landingCloud", x, y) as LandingCloud;
+	    // couple can only land on cloud if they are heading down and 
+	    // aren't already in a cloud
+	    if (vy > 0 && !collisionCloud) {
 		moveBy(vx * FP.elapsed, vy * FP.elapsed, "landingCloud");
+
+		// after moving, check if we landed on cloud
+		var doomCloud:LandingCloud = 
+		    collide("landingCloud", x, y+1) as LandingCloud;	    
+		if (doomCloud != null && !doomCloud.doomed) {
+		    doomCloud.doomed = true;
+		}
 	    }
 	    else {
 		moveBy(vx * FP.elapsed, vy * FP.elapsed);
-	    }
-
-	    var collisionCloud:LandingCloud = 
-		collide("landingCloud", x, y+1) as LandingCloud;
-	    if (collisionCloud != null && !collisionCloud.doomed) {
-		collisionCloud.doomed = true;
 	    }
 
 	    if (y < MIN_Y) { y = MIN_Y; }
