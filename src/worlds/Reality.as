@@ -56,7 +56,6 @@ package worlds
 
 	    skyBackground = new SkyBackground(0, FP.height, 5, 1);
 	    add(skyBackground);
-
         }
 
         override public function update():void {
@@ -72,6 +71,20 @@ package worlds
 	    }
 	    else {
 		FP.camera.x = soCamX;
+	    }
+
+	    if (player.right < FP.camera.x) {
+		SO.running = false;
+		SO.playFaceLeft();
+		SO.spawningMonsters = false;
+		player.playSitRight();
+
+		// remove all monsters when picking up
+		var allMonsters:Array = new Array();
+		getType("monster", allMonsters);
+		for each (var monster:Monster in allMonsters) {
+		    monster.despawn();
+		}
 	    }
 	}
     }
