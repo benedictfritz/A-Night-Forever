@@ -123,7 +123,7 @@ package entities
 	private function floatUp():void {
 	    floatUpTween = new VarTween(floatDown);
 	    var distanceToTopOfScreen:Number = Math.abs(this.y - FP.camera.y);
-	    floatUpTween.tween(this, "y", this.y - distanceToTopOfScreen + 30, 
+	    floatUpTween.tween(this, "y", this.y - distanceToTopOfScreen + 60, 
 			       PLAYER_PICKUP_TIME/2, Ease.sineInOut);
 	    FP.world.addTween(floatUpTween, true);
 	}
