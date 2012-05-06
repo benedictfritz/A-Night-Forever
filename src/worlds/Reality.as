@@ -4,7 +4,9 @@ package worlds
     import net.flashpunk.World;
     import net.flashpunk.Entity;
     import net.flashpunk.masks.Grid;
+    import net.flashpunk.utils.Ease;
     import net.flashpunk.graphics.Tilemap;
+    import net.flashpunk.tweens.misc.VarTween;
 
     import entities.*;
     import worlds.*;
@@ -65,27 +67,43 @@ package worlds
         }
 	
 	private function updateCamera():void {
-	    var soCamX:Number = SO.right + SO_CAM_BUFF - FP.width;
-	    if (soCamX <= 64) {
-		FP.camera.x = 64;
-	    }
-	    else {
-		FP.camera.x = soCamX;
-	    }
+	    if (!pickingUp) {
+		var soCamX:Number = SO.right + SO_CAM_BUFF - FP.width;
+		if (soCamX <= 64 ) {
+		    FP.camera.x = 64;
+		}
+		else {
+		    FP.camera.x = soCamX;
+		}
 
-	    if (player.right < FP.camera.x) {
-		SO.running = false;
-		SO.playFaceLeft();
-		SO.spawningMonsters = false;
-		player.playSitRight();
+		if (player.right < FP.camera.x) {
+		    pickingUp = true;
 
-		// remove all monsters when picking up
-		var allMonsters:Array = new Array();
-		getType("monster", allMonsters);
-		for each (var monster:Monster in allMonsters) {
-		    monster.despawn();
+		    SO.running = false;
+		    SO.playFaceLeft();
+		    SO.spawningMonsters = false;
+
+
+		    // remove all monsters when picking up
+		    var allMonsters:Array = new Array();
+		    getType("monster", allMonsters);
+		    for each (var monster:Monster in allMonsters) {
+			    monster.despawn();
+			}
+
+		    var panBackTween:VarTween = new VarTween(pickUpPlayer);
+		    var camPannedX:Number = FP.camera.x - 100;
+		    panBackTween.tween(FP.camera, "x", camPannedX, 2, Ease.sineInOut);
+		    addTween(panBackTween);
 		}
 	    }
+	    else {
+		player.playSitRight();
+	    }
+	}
+
+	private function pickUpPlayer():void {
+
 	}
     }
 }
