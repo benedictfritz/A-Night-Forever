@@ -61,7 +61,8 @@ package worlds
 	}
 
 	private function initLevel():void {
-	    FP.camera.y = couple.y - FP.height + couple.height;
+	    // can't use couple's height because the hitbox is really small
+	    FP.camera.y = couple.y - FP.height + 96;
 
 	    for (var i:Number=-FP.width; i < FP.width*2; i+=256) {
 		var newCloudLayer1:CloudLayer = new CloudLayer(i, CLOUD_Y, 1);
@@ -119,7 +120,7 @@ package worlds
 		addGraphic(moon, 3, moonX + moonScrollXAdjust, CLOUD_Y-moon.height);
 		FP.console.log(cameraDelta);
 
-		camXTween.tween(FP.camera, "x", camCenterX, TO_CLOUD_TIME);
+		camXTween.tween(FP.camera, "x", camCenterX, TO_CLOUD_TIME/2.5);
 		FP.world.addTween(camXTween);
 	    }
 	}
