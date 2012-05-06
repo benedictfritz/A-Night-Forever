@@ -101,8 +101,8 @@ package entities
 	    sprActor.play("jump");
 
 	    playerY = this.player.y - TOUCHDOWN_DISTANCE;
-	    floatLeft(this.player.x+40);
-	    floatUp();
+	    floatLeftToPlayer(this.player.x+40);
+	    floatUpToPlayer();
 	    tiltLeft();
 	}
 
@@ -113,22 +113,22 @@ package entities
 	/*
 	 * Picking up player float
 	 */
-	private function floatLeft(endX:Number):void {
+	private function floatLeftToPlayer(endX:Number):void {
 	    var floatLeftTween:VarTween = new VarTween();
 	    floatLeftTween.tween(this, "x", endX + this.width, 
 				 PLAYER_PICKUP_TIME, Ease.sineInOut);
 	    FP.world.addTween(floatLeftTween, true);
 	}
 
-	private function floatUp():void {
-	    floatUpTween = new VarTween(floatDown);
+	private function floatUpToPlayer():void {
+	    floatUpTween = new VarTween(floatDownToPlayer);
 	    var distanceToTopOfScreen:Number = Math.abs(this.y - FP.camera.y);
 	    floatUpTween.tween(this, "y", this.y - distanceToTopOfScreen + 60, 
 			       PLAYER_PICKUP_TIME/2, Ease.sineInOut);
 	    FP.world.addTween(floatUpTween, true);
 	}
 
-	private function floatDown():void {
+	private function floatDownToPlayer():void {
 	    floatDownTween = new VarTween(touchDown);
 	    floatDownTween.tween(this, "y", playerY, PLAYER_PICKUP_TIME/2,
 				 Ease.sineInOut);
@@ -136,12 +136,12 @@ package entities
 	}
 
 	private function tiltLeft():void {
-	    var tiltLeftTween:VarTween = new VarTween(tiltRight);
+	    var tiltLeftTween:VarTween = new VarTween(tiltUpRight);
 	    tiltLeftTween.tween(sprActor, "angle", 45, PLAYER_PICKUP_TIME/2);
 	    FP.world.addTween(tiltLeftTween, true);
 	}
 
-	private function tiltRight():void {
+	private function tiltUpRight():void {
 	    var tiltRightTween:VarTween = new VarTween();
 	    tiltRightTween.tween(sprActor, "angle", 0, PLAYER_PICKUP_TIME/2);
 	    FP.world.addTween(tiltRightTween, true);
@@ -162,6 +162,10 @@ package entities
 	    this.player.pickingUp = true;
 	    this.player.liftUp();
 	}
+
+	/*
+	 * flying back after picking up player
+	 */
 
     }
 }
