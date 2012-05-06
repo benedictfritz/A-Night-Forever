@@ -21,12 +21,15 @@ package worlds
 	private static const
 	    SO_CAM_BUFF:Number = 40;
 
+	public var
+	    pickingUp:Boolean;
+
         private var
 	    player:RunningPlayer,
 	    SO:RunningSO,
-	    pickingUp:Boolean,
 	    level:Level,
-	    skyBackground:SkyBackground;
+	    skyBackground:SkyBackground,
+	    cameraMinX:Number = 64;
 
         public function Reality():void {
             super();
@@ -69,8 +72,8 @@ package worlds
 	private function updateCamera():void {
 	    if (!pickingUp) {
 		var soCamX:Number = SO.right + SO_CAM_BUFF - FP.width;
-		if (soCamX <= 64 ) {
-		    FP.camera.x = 64;
+		if (soCamX <= cameraMinX) {
+		    FP.camera.x = cameraMinX;
 		}
 		else {
 		    FP.camera.x = soCamX;
@@ -93,17 +96,27 @@ package worlds
 			    monster.despawn();
 			}
 
-		    var panBackTween:VarTween = new VarTween(pickUpPlayer);
+		    var panBackTween:VarTween = new VarTween();
 		    var camPannedX:Number = FP.camera.x - 100;
 		    panBackTween.tween(FP.camera, "x", camPannedX, 2, Ease.sineInOut);
 		    addTween(panBackTween);
+		    cameraMinX = camPannedX;
 
 		    SO.pickUpPlayer(player);
 		}
 	    }
 	}
 
-	private function pickUpPlayer():void {
+	public function firstSolidGroundY(xLoc:Number):Number {
+	    var solidY:Number = -1;
+
+	    for (var i:Number = 0; i < FP.height/64; i++) {
+		if (level.grid.getTile(xLoc/64, i)) {
+		    solidY = i * 64;
+		    break;
+		}
+	    }
+	    return solidY;
 	}
     }
 }

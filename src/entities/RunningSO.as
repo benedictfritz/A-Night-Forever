@@ -11,6 +11,7 @@ package entities
     import net.flashpunk.tweens.misc.VarTween;
 
     import entities.*;
+    import worlds.*;
 
     public class RunningSO extends SO {
 	private const 
@@ -21,7 +22,8 @@ package entities
 	    PLAYER_PICKUP_TIME:Number = 4,
 	    PLAYER_BOUNCE_SPEED:Number = 1,
 	    TEXT_OFFSET:Number = -25,
-	    TOUCHDOWN_DISTANCE:Number = 96;
+	    TOUCHDOWN_DISTANCE:Number = 96,
+	    RETURN_DISTANCE:Number = 400;
 
 	public var
 	    running:Boolean = false,
@@ -29,7 +31,7 @@ package entities
 
 	private var
 	    flyingBackToPlayer:Boolean = false,
-	    lifting:Boolean = false,
+	    flyingAwayFromPlayer:Boolean = false,
 	    playerY:Number = 0,
 	    floatUpTween:VarTween,
 	    floatDownTween:VarTween,
@@ -48,8 +50,16 @@ package entities
 	}
 
 	override public function update():void {
-	    if (flyingBackToPlayer || lifting) 
+	    if (flyingBackToPlayer) {
+		sprActor.play("jump");
+		flip(true);
 		return;
+	    }
+	    else if (flyingAwayFromPlayer) {
+		sprActor.play("jump");
+		flip(false);
+		return;
+	    }
 
 	    if (spawningMonsters) {
 		checkSpawnTimer();
@@ -95,10 +105,7 @@ package entities
 
 	public function pickUpPlayer(fallenPlayer:RunningPlayer):void {
 	    this.player = fallenPlayer;
-
 	    flyingBackToPlayer = true;
-	    flip(true);
-	    sprActor.play("jump");
 
 	    playerY = this.player.y - TOUCHDOWN_DISTANCE;
 	    floatLeftToPlayer(this.player.x+40);
@@ -155,17 +162,49 @@ package entities
 
 	private function liftPlayer():void {
 	    flyingBackToPlayer = false;
-	    lifting = true;
+	    flyingAwayFromPlayer = true;
 	    
 	    // adjust player state
 	    this.player.fallen = false;
 	    this.player.pickingUp = true;
 	    this.player.liftUp();
+	    
+	    floatRightAwayFromPlayer();
+	    floatUpAwayFromPlayer();
 	}
 
 	/*
 	 * flying back after picking up player
 	 */
+	private function floatRightAwayFromPlayer():void {
+	    var floatRight:VarTween = new VarTween(resumeRunning);
+	    floatRight.tween(this, "x", 
+			     this.x + RETURN_DISTANCE, 
+			     PLAYER_PICKUP_TIME);
+	    FP.world.addTween(floatRight);
+	}
+
+	private function floatUpAwayFromPlayer():void {
+	    var endX:Number = this.x + RETURN_DISTANCE;
+	    // adjust where we're checking to return the SO to account for the
+	    // difference between hitbox and position
+	    var endY:Number = Reality(FP.world).firstSolidGroundY(endX+hitboxXBuffer) - this.height;
+
+	    var floatUp:VarTween = new VarTween();
+	    floatUp.tween(this, "y", endY, PLAYER_PICKUP_TIME);
+	    FP.world.addTween(floatUp);
+	}
+
+	private function resumeRunning():void {
+	    this.player.pickingUp = false;
+	    this.player.setControllable(true);
+	    
+	    flyingAwayFromPlayer = false;
+	    running = true;
+	    spawningMonsters = true;
+
+	    Reality(FP.world).pickingUp = false;
+	}
 
     }
 }

@@ -12,8 +12,10 @@ package worlds
     public class Level extends Entity {
 	private var 
 	    tiles:Tilemap,
-	    grid:Grid,
 	    levelData:XML;
+
+	public var 
+	    grid:Grid;
 	
 	private static const
 	    TILE_WIDTH:Number = 64,
