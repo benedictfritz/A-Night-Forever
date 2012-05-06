@@ -18,7 +18,8 @@ package entities
 	    JUMP_LOOKAHEAD:Number = 64,
 	    PLAYER_PICKUP_TIME:Number = 4,
 	    PLAYER_BOUNCE_SPEED:Number = 1,
-	    TEXT_OFFSET:Number = -25;
+	    TEXT_OFFSET:Number = -25,
+	    TOUCHDOWN_DISTANCE:Number = 96;
 
 	public var
 	    running:Boolean = false,
@@ -92,7 +93,7 @@ package entities
 	public function liftPlayer():void {
 	    pickingUp = false;
 	    lifting = true;
-	    bounceUp();
+	    
 	}
 
 	public function pickUpPlayer(x:Number, y:Number):void {
@@ -100,7 +101,7 @@ package entities
 	    flip(true);
 	    sprActor.play("jump");
 
-	    playerY = y;
+	    playerY = y - TOUCHDOWN_DISTANCE;
 	    floatLeft(x+40);
 	    floatUp();
 	    tiltLeft();
@@ -129,7 +130,7 @@ package entities
 	}
 
 	private function floatDown():void {
-	    floatDownTween = new VarTween();
+	    floatDownTween = new VarTween(touchDown);
 	    floatDownTween.tween(this, "y", playerY, PLAYER_PICKUP_TIME/2,
 				 Ease.sineInOut);
 	    FP.world.addTween(floatDownTween, true);
@@ -147,20 +148,12 @@ package entities
 	    FP.world.addTween(tiltRightTween, true);
 	}
 
-	/*
-	 * Bounce
-	 */
-	private function bounceUp():void {
-	    var bounceUpTween:VarTween = new VarTween(bounceDown);
-	    bounceUpTween.tween(this, "y", this.y - 10, PLAYER_BOUNCE_SPEED);
-	    FP.world.addTween(bounceUpTween, true);
+	private function touchDown():void {
+	    var touchdownTween:VarTween = new VarTween();
+	    touchdownTween.tween(this, "y", this.y + TOUCHDOWN_DISTANCE, 4);
+	    FP.world.addTween(touchdownTween, true);
 	}
 
-	private function bounceDown():void {
-	    var bounceDownTween:VarTween = new VarTween(bounceUp);
-	    bounceDownTween.tween(this, "y", this.y + 10, PLAYER_BOUNCE_SPEED);
-	    FP.world.addTween(bounceDownTween, true);
-	}
 
     }
 }
