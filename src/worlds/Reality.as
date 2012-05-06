@@ -95,6 +95,8 @@ package worlds
 		    var camPannedX:Number = FP.camera.x - 100;
 		    panBackTween.tween(FP.camera, "x", camPannedX, 2, Ease.sineInOut);
 		    addTween(panBackTween);
+
+		    SO.pickUpPlayer(player.x, player.y);
 		}
 	    }
 	    else {
@@ -103,7 +105,6 @@ package worlds
 	}
 
 	private function pickUpPlayer():void {
-
 	}
     }
 }

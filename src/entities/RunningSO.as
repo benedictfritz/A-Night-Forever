@@ -16,7 +16,7 @@ package entities
 	    GRAVITY:Number = 400,
 	    // how far the SO looks ahead to see whether or not to jump
 	    JUMP_LOOKAHEAD:Number = 64,
-	    PLAYER_PICKUP_TIME:Number = 3,
+	    PLAYER_PICKUP_TIME:Number = 4,
 	    PLAYER_BOUNCE_SPEED:Number = 1,
 	    TEXT_OFFSET:Number = -25;
 
@@ -93,14 +93,6 @@ package entities
 	    pickingUp = false;
 	    lifting = true;
 	    bounceUp();
-	    
-	    textOptions = new Object();
-	    textOptions["wordWrap"] = true;
-	    textOptions["size"] = 8;
-	    text = new Text("Don't give up.", 
-			    0, TEXT_OFFSET, textOptions);
-	    textEntity = new Entity(this.x, this.y, text);
-	    FP.world.add(textEntity);
 	}
 
 	public function pickUpPlayer(x:Number, y:Number):void {
@@ -109,7 +101,7 @@ package entities
 	    sprActor.play("jump");
 
 	    playerY = y;
-	    floatLeft(x);
+	    floatLeft(x+40);
 	    floatUp();
 	    tiltLeft();
 	}
@@ -130,7 +122,8 @@ package entities
 
 	private function floatUp():void {
 	    floatUpTween = new VarTween(floatDown);
-	    floatUpTween.tween(this, "y", this.y - 40, 
+	    var distanceToTopOfScreen:Number = Math.abs(this.y - FP.camera.y);
+	    floatUpTween.tween(this, "y", this.y - distanceToTopOfScreen + 30, 
 			       PLAYER_PICKUP_TIME/2, Ease.sineInOut);
 	    FP.world.addTween(floatUpTween, true);
 	}
