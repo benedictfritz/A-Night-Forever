@@ -13,7 +13,7 @@ package worlds
     public class Falling extends World
     {
 	private const
-	    STAR_RANGE:Number = 4,
+	    STAR_RANGE:Number = 6,
 	    FALLING_GRAVITY:Number = 0.2,
 	    WORLD_CHANGE_BUFFER:Number = 3,
 	    CLOUD_LAYER_HEIGHT:Number = 64,
@@ -23,7 +23,7 @@ package worlds
 	    sectors:Array,
 	    currSector:Sector,
 	    couple:Couple,
-	    minStars:Number = 4,
+	    minStars:Number = 5,
 	    chanceOfClouds:Number = 4,
 	    transitionIn:TransitionIn,
 	    cloudPoints:Array = new Array();
