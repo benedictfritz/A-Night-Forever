@@ -79,10 +79,11 @@ package worlds
 		if (player.right < FP.camera.x) {
 		    pickingUp = true;
 
+		    player.fallen = true;
+
 		    SO.running = false;
 		    SO.playFaceLeft();
 		    SO.spawningMonsters = false;
-
 
 		    // remove all monsters when picking up
 		    var allMonsters:Array = new Array();
@@ -96,11 +97,8 @@ package worlds
 		    panBackTween.tween(FP.camera, "x", camPannedX, 2, Ease.sineInOut);
 		    addTween(panBackTween);
 
-		    SO.pickUpPlayer(player.x, player.y);
+		    SO.pickUpPlayer(player);
 		}
-	    }
-	    else {
-		player.playSitRight();
 	    }
 	}
 

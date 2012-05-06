@@ -10,6 +10,8 @@ package entities
     import net.flashpunk.graphics.Spritemap;
     import net.flashpunk.tweens.misc.VarTween;
 
+    import entities.*;
+
     public class RunningSO extends SO {
 	private const 
 	    JUMP_SPEED:Number = 230,
@@ -26,7 +28,7 @@ package entities
 	    spawningMonsters:Boolean = false;
 
 	private var
-	    pickingUp:Boolean = false,
+	    flyingBackToPlayer:Boolean = false,
 	    lifting:Boolean = false,
 	    playerY:Number = 0,
 	    floatUpTween:VarTween,
@@ -35,7 +37,8 @@ package entities
 	    textEntity:Entity,
 	    textOptions:Object,
 	    spawnTimer:Number = 0,
-	    monsterSpawnTime:Number=2;
+	    monsterSpawnTime:Number=2,
+	    player:RunningPlayer;
 
 	public function RunningSO(x:int=0, y:int=0) {
 	    super(x, y);
@@ -45,7 +48,7 @@ package entities
 	}
 
 	override public function update():void {
-	    if (pickingUp || lifting) 
+	    if (flyingBackToPlayer || lifting) 
 		return;
 
 	    if (spawningMonsters) {
@@ -90,19 +93,15 @@ package entities
 	    }
 	}
 
-	public function liftPlayer():void {
-	    pickingUp = false;
-	    lifting = true;
-	    
-	}
+	public function pickUpPlayer(fallenPlayer:RunningPlayer):void {
+	    this.player = fallenPlayer;
 
-	public function pickUpPlayer(x:Number, y:Number):void {
-	    pickingUp = true;
+	    flyingBackToPlayer = true;
 	    flip(true);
 	    sprActor.play("jump");
 
-	    playerY = y - TOUCHDOWN_DISTANCE;
-	    floatLeft(x+40);
+	    playerY = this.player.y - TOUCHDOWN_DISTANCE;
+	    floatLeft(this.player.x+40);
 	    floatUp();
 	    tiltLeft();
 	}
@@ -115,7 +114,7 @@ package entities
 	 * Picking up player float
 	 */
 	private function floatLeft(endX:Number):void {
-	    var floatLeftTween:VarTween = new VarTween(liftPlayer);
+	    var floatLeftTween:VarTween = new VarTween();
 	    floatLeftTween.tween(this, "x", endX + this.width, 
 				 PLAYER_PICKUP_TIME, Ease.sineInOut);
 	    FP.world.addTween(floatLeftTween, true);
@@ -149,11 +148,19 @@ package entities
 	}
 
 	private function touchDown():void {
-	    var touchdownTween:VarTween = new VarTween();
-	    touchdownTween.tween(this, "y", this.y + TOUCHDOWN_DISTANCE, 4);
+	    var touchdownTween:VarTween = new VarTween(liftPlayer);
+	    touchdownTween.tween(this, "y", this.y + TOUCHDOWN_DISTANCE, 2);
 	    FP.world.addTween(touchdownTween, true);
 	}
 
+	private function liftPlayer():void {
+	    flyingBackToPlayer = false;
+	    lifting = true;
+	    
+	    // adjust player state
+	    this.player.fallen = false;
+	    this.player.pickingUp = true;
+	}
 
     }
 }

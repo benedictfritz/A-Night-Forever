@@ -23,6 +23,10 @@ package entities
 	    xAcceleration:Number = 20,
 	    xFriction:Number = 0.1;
 
+	public var
+	    fallen:Boolean = false,
+	    pickingUp:Boolean = false;
+
 	public function RunningPlayer(x:int=0, y:int=0) {
 	    super(x, y);
 	}
@@ -31,6 +35,8 @@ package entities
 	    super.update();
 
 	    if (controllable) { checkKeyPresses(); }
+	    if (fallen) { sprActor.play("sit"); }
+	    if (pickingUp) { sprActor.play("jump"); }
 	    checkMonsterCollisions();
 	}
 
@@ -83,6 +89,10 @@ package entities
 	    var alphaTween:VarTween = new VarTween();
 	    alphaTween.tween(sprActor, "alpha", 1, COLLISION_TIME/2);
 	    addTween(alphaTween);
+	}
+
+	public function liftUp():void {
+	    
 	}
 
     }
