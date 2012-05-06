@@ -8,10 +8,13 @@ package entities
 	[Embed(source="../../assets/images/star_background.png")]
 	    private const SKY_TILE:Class;
 
-	private var
-	    tiles:Tilemap,
+	public static var
 	    TILE_WIDTH:Number = 800,
-	    TILE_HEIGHT:Number = 600;
+	    TILE_HEIGHT:Number = 600,
+	    SCROLL_Y:Number = 0.2;
+
+	private var
+	    tiles:Tilemap;
 
 	public function SkyBackground(x:Number, y:Number, 
 				      numHorizontal:Number, 
@@ -21,7 +24,7 @@ package entities
 
 	    tiles = new Tilemap(SKY_TILE, TILE_WIDTH*numHorizontal, 
 				TILE_HEIGHT*numVertical, TILE_WIDTH, TILE_HEIGHT);
-	    tiles.scrollX = 0.2;
+	    tiles.scrollX = SCROLL_Y;
 	    tiles.scrollY = 0.2;
 	    graphic = tiles;
 

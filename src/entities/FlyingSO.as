@@ -30,21 +30,34 @@ package entities
 	    sprActor = new Spritemap(COUPLE_SPRITE, 96, 96);
 	    sprActor.add("slow", [6, 7], 8, true);
 	    sprActor.add("fast", [6, 7], 16, true);
+	    sprActor.add("stop", [6], 1, true);
 	    sprActor.play("slow");
 	    this.graphic = sprActor;
 
 	    vy = -500;
 	}
 
+	public function goFast():void {
+	    vy = -500;
+	}
+
+	public function goSlow():void {
+	    vy = -100;
+	}
+
+	public function stop():void {
+	    vy = 0;
+	}
+
 	override public function update():void {
 	    super.update();
 
 	    (goingLeft) ? flip(true) : flip(false);
+	    adjustHair();
 
 	    if (flying) {
 		if (!nextX) { resetNextX(); };
 		move();
-		adjustHair();
 	    }
 	}
 
@@ -53,10 +66,11 @@ package entities
 	}
 
 	private function adjustHair():void {
-	    if (vy > -500) { sprActor.play("slow"); }
+	    if (!flying) { sprActor.play("stop"); }
+	    else if (vy > -500) { sprActor.play("slow"); }
 	    else { sprActor.play("fast"); }
 	}
-	
+
 	private function resetNextX():void {
 	    var range:Number = maxX - minX;
 	    var numInRange:Number = FP.random * range;

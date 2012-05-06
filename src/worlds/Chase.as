@@ -19,9 +19,13 @@ package worlds
 	       mimeType="application/octet-stream")]
 	    private static const MAP_DATA:Class;
 
+	private static var
+	    GIVE_UP_BUFFER:Number = 1000;
+
 	private var
 	    player:FlyingPlayer,
 	    sO:FlyingSO,
+	    startingY:Number,
 	    level:Level,
 	    levelHeight:Number = 100000,
 	    spawnSectorHeight:Number = 500,
@@ -59,6 +63,7 @@ package worlds
 	    for each(var dataElement:XML in dataList) {
 		player.y = int(dataElement.@y);
 	    }
+	    startingY = player.y;
 
 	    dataList = levelData.objects.so;
 	    for each(dataElement in dataList) {
@@ -68,12 +73,11 @@ package worlds
 	    sO.maxX = FP.width;
 	    add(sO);
 
-	    skyBackground = new SkyBackground(0, FP.height, 1, 5);
+	    skyBackground = new SkyBackground(0, FP.height, 1, levelHeight/SkyBackground.TILE_HEIGHT);
 	    add(skyBackground);
 	}
 
 	private function spawnWindTunnels():void {
-	    var startingY:Number = player.y;
 	    var i:Number = startingY;
 
 	    for (i; i > startingY - levelHeight; i -= spawnSectorHeight) {
@@ -85,7 +89,6 @@ package worlds
 	}
 
 	private function spawnSlowingClouds():void {
-	    var startingY:Number = player.y;
 	    var i:Number = startingY;
 	    for (i; i > startingY - levelHeight; i -= spawnSectorHeight) {
 		var slowingCloud:SlowingCloud = spawnIndividualCloud(i);
@@ -124,11 +127,19 @@ package worlds
 	    lameSpawnStuff();
 	    updateCamera();
 	    checkCatchingPlayer();
+	    
+	    if (sO.distanceFrom(player, true) > 700) { sO.goSlow(); }
+	    else { sO.goFast(); }
+
+	    var stoppingPoint:Number = -Math.abs(startingY - levelHeight);
+	    if (sO.y < stoppingPoint) {
+		sO.stop();
+	    }
 	}
 
 	private function lameSpawnStuff():void {
 	    // the world's entity list is only updated after an update loop.
-	    // this is a really ugly way to fix this problem. ask online if there's
+	    // this is a really ugly way to fix this problem. askonline if there's
 	    // a better way.
 	    if (spawnedWindTunnels && !spawnedSlowingClouds) {
 		spawnedSlowingClouds = true;
