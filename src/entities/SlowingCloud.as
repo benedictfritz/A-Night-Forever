@@ -37,6 +37,9 @@ package entities
 	    if (sprCloud.currentAnim == "burst") {
 		if (sprCloud.complete) FP.world.remove(this);
 	    }
+	    if (y > FP.camera.y + FP.height*2) {
+		FP.world.recycle(this);
+	    }
 	}
     }
 
