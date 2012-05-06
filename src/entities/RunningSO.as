@@ -180,19 +180,32 @@ package entities
 	    var floatRight:VarTween = new VarTween(resumeRunning);
 	    floatRight.tween(this, "x", 
 			     this.x + RETURN_DISTANCE, 
-			     PLAYER_PICKUP_TIME);
+			     PLAYER_PICKUP_TIME, Ease.sineInOut);
 	    FP.world.addTween(floatRight);
 	}
 
 	private function floatUpAwayFromPlayer():void {
-	    var endX:Number = this.x + RETURN_DISTANCE;
+	    var floatUp:VarTween = new VarTween(floatDownAwayFromPlayer);
+	    var distanceToTopOfScreen:Number = Math.abs(this.y - FP.camera.y);
+	    floatUp.tween(this, "y", this.y - distanceToTopOfScreen + 60, 
+			       PLAYER_PICKUP_TIME/2, Ease.sineInOut);
+	    FP.world.addTween(floatUp, true);
+
+
+	}
+
+	private function floatDownAwayFromPlayer():void {
+	    // we should already be half way to the destination by the
+	    // time this tween kicks in
+	    var endX:Number = this.x + RETURN_DISTANCE/2;
+
 	    // adjust where we're checking to return the SO to account for the
 	    // difference between hitbox and position
 	    var endY:Number = Reality(FP.world).firstSolidGroundY(endX+hitboxXBuffer) - this.height;
 
-	    var floatUp:VarTween = new VarTween();
-	    floatUp.tween(this, "y", endY, PLAYER_PICKUP_TIME);
-	    FP.world.addTween(floatUp);
+	    var floatDown:VarTween = new VarTween();
+	    floatDown.tween(this, "y", endY, PLAYER_PICKUP_TIME/2, Ease.sineInOut);
+	    FP.world.addTween(floatDown);
 	}
 
 	private function resumeRunning():void {
