@@ -16,7 +16,8 @@ package entities
 	    JUMP_SPEED:Number = 230,
 	    MIN_SPEED:Number = 10.0,
 	    MAX_SPEED:Number = 170,
-	    COLLISION_TIME:Number = 1;
+	    COLLISION_TIME:Number = 1,
+	    PICKUP_DISTANCE:Number = 30;
 
 	private var
 	    gravity:Number = 400,
@@ -34,10 +35,12 @@ package entities
 	override public function update():void {
 	    super.update();
 
-	    if (controllable) { checkKeyPresses(); }
+	    if (controllable) { 
+	    	checkMonsterCollisions();
+	    	checkKeyPresses(); 
+	    }
 	    if (fallen) { sprActor.play("sit"); }
 	    if (pickingUp) { sprActor.play("jump"); }
-	    checkMonsterCollisions();
 	}
 
 	private function checkKeyPresses():void {
@@ -91,8 +94,22 @@ package entities
 	    addTween(alphaTween);
 	}
 
+	/*
+	 * picking up
+	 */ 
+
 	public function liftUp():void {
-	    
+	    var upTween:VarTween = new VarTween(liftDown);
+	    var blah:Number = this.y - PICKUP_DISTANCE;
+	    upTween.tween(this, "y", blah, 1);
+	    FP.world.addTween(upTween);
+	}
+
+	private function liftDown():void {
+	    var downTween:VarTween = new VarTween();
+	    var blah:Number = this.y + PICKUP_DISTANCE;
+	    downTween.tween(this, "y", blah, 1);
+	    FP.world.addTween(downTween);
 	}
 
     }

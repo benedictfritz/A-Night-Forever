@@ -80,6 +80,7 @@ package worlds
 		    pickingUp = true;
 
 		    player.fallen = true;
+		    player.setControllable(false);
 
 		    SO.running = false;
 		    SO.playFaceLeft();

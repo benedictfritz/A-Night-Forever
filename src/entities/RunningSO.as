@@ -160,6 +160,7 @@ package entities
 	    // adjust player state
 	    this.player.fallen = false;
 	    this.player.pickingUp = true;
+	    this.player.liftUp();
 	}
 
     }
