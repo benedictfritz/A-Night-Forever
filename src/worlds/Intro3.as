@@ -16,7 +16,8 @@ package worlds
 	private static const
 	    CAM_X_OFFSET:Number = 64,
 	    SO_TAKEOFF_DISTANCE:Number = 300,
-	    SO_TAKEOFF_TIME:Number = 3;
+	    SO_TAKEOFF_TIME:Number = 3,
+	    NUM_CLOUDS:Number = 4;
 
 	private var
 	    level:Level,
@@ -53,6 +54,12 @@ package worlds
 	    for each(dataElement in dataList) {
 		runningSO = new RunningSO(int(dataElement.@x), int(dataElement.@y));
 		add(runningSO);
+	    }
+
+	    for (var i:int = 0; i < NUM_CLOUDS; i++) {
+		var randCloudX:Number = Math.random()*(FP.width-VisualCloud.IMG_WIDTH);
+		var randCloudY:Number = Math.random()*(FP.halfHeight);
+		add(new VisualCloud(randCloudX, randCloudY, Math.random()*2+1));
 	    }
 
 	    skyBackground = new SkyBackground(0, FP.height, 2, 2);
@@ -125,7 +132,7 @@ package worlds
 		}
 	    }
 
-	    if (flyingPlayer != null && flyingPlayer.y < -5) {
+	    if (flyingPlayer != null && flyingPlayer.y < -11) {
 		FP.world = new Chase(flyingPlayer.x);
 	    }
 	}

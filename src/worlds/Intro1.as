@@ -15,7 +15,9 @@ package worlds
 	    private static const MAP_DATA:Class;
 
 	private static const
-	    PAN_TIME:Number = 3;
+	    PAN_TIME:Number = 3,
+	    CAMERA_START_Y:Number = -400,
+	    NUM_CLOUDS:Number = 5;
 
 	private var
 	    level:Level,
@@ -28,7 +30,7 @@ package worlds
 	override public function begin():void {
 	    super.begin();
 
-	    FP.camera.y = -400;
+	    FP.camera.y = CAMERA_START_Y;
 	    
 	    level = new Level(MAP_DATA);
 	    add(level);
@@ -47,6 +49,12 @@ package worlds
 	    for each(dataElement in dataList) {
 		SO = new RunningSO(int(dataElement.@x), int(dataElement.@y));
 		add(SO);
+	    }
+
+	    for (var i:int = 0; i < NUM_CLOUDS; i++) {
+		var randCloudX:Number = Math.random()*(FP.width-VisualCloud.IMG_WIDTH);
+		var randCloudY:Number = Math.random()*(FP.halfHeight - CAMERA_START_Y) + CAMERA_START_Y;
+		add(new VisualCloud(randCloudX, randCloudY, Math.random()*1.5+1));
 	    }
 
 	    skyBackground = new SkyBackground(0, FP.height, 1, 3);
