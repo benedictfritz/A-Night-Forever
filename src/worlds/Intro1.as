@@ -21,9 +21,11 @@ package worlds
 
 	private var
 	    level:Level,
+	    titleScreen:TitleScreen,
 	    player:RunningPlayer,
 	    SO:RunningSO,
 	    panDownTween:VarTween,
+	    inMenu:Boolean=true,
 	    panning:Boolean=true,
 	    skyBackground:SkyBackground;
 
@@ -31,6 +33,9 @@ package worlds
 	    super.begin();
 
 	    FP.camera.y = CAMERA_START_Y;
+
+	    titleScreen = new TitleScreen(0, CAMERA_START_Y);
+	    add(titleScreen);
 	    
 	    level = new Level(MAP_DATA);
 	    add(level);
@@ -52,8 +57,10 @@ package worlds
 	    }
 
 	    for (var i:int = 0; i < NUM_CLOUDS; i++) {
-		var randCloudX:Number = Math.random()*(FP.width-VisualCloud.IMG_WIDTH);
-		var randCloudY:Number = Math.random()*(FP.halfHeight - CAMERA_START_Y) + CAMERA_START_Y;
+		var randCloudX:Number = 
+		    Math.random()*(FP.width-VisualCloud.IMG_WIDTH);
+		var randCloudY:Number = 
+		    Math.random()*(FP.halfHeight - CAMERA_START_Y) + CAMERA_START_Y;
 		add(new VisualCloud(randCloudX, randCloudY, Math.random()*1.5+1));
 	    }
 
@@ -63,6 +70,15 @@ package worlds
 
 	override public function update():void {
 	    super.update();
+
+	    if (!inMenu) {
+		panDownTween = new VarTween(finishPanning);
+		panDownTween.tween(FP.camera, "y", 0, PAN_TIME);
+		FP.world.addTween(panDownTween);
+	    }
+	    else {
+		if (Input.check(Key.DOWN)) { inMenu = false; }
+	    }
 
 	    // run SO off screen as soon as the player 
 	    // moves right
@@ -74,10 +90,6 @@ package worlds
 		var transitionOut:TransitionOut = new TransitionOut(new Intro2());
 		add(transitionOut);
 	    }
-
-	    panDownTween = new VarTween(finishPanning);
-	    panDownTween.tween(FP.camera, "y", 0, PAN_TIME);
-	    FP.world.addTween(panDownTween);
 	}
 
 	private function finishPanning():void {
