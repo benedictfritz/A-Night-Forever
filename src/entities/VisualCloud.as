@@ -14,11 +14,13 @@ package entities
 
 	private var
 	    sprCloud:Spritemap,
-	    vx:Number = -10 - Math.random()*10;
+	    vx:Number = -10 - Math.random()*10,
+	    scale:Number;
 
 	public function VisualCloud(x:int=0, y:int=0, scale:Number=1) {
 	    this.x = x;
 	    this.y = y;
+	    this.scale = scale;
 
 	    sprCloud = new Spritemap(SLOWING_CLOUD_SPRITE, IMG_WIDTH, IMG_HEIGHT);
 	    sprCloud.add("default", [0], 1, false);
@@ -30,6 +32,10 @@ package entities
 
 	override public function update():void {
 	    moveBy(vx*FP.elapsed, 0);
+
+	    if ((x + sprCloud.width*scale) < FP.camera.x) {
+		x = FP.camera.x + FP.width + 30;
+	    }
 	}
     }
 
