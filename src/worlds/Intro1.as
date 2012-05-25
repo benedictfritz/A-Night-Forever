@@ -71,13 +71,15 @@ package worlds
 	override public function update():void {
 	    super.update();
 
-	    if (!inMenu) {
-		panDownTween = new VarTween(finishPanning);
-		panDownTween.tween(FP.camera, "y", 0, PAN_TIME);
-		FP.world.addTween(panDownTween);
+	    if (inMenu) {
+		if (Input.check(Key.DOWN)) { inMenu = false; }
 	    }
 	    else {
-		if (Input.check(Key.DOWN)) { inMenu = false; }
+		if (!panDownTween) {
+		    panDownTween = new VarTween(finishPanning);
+		    panDownTween.tween(FP.camera, "y", 0, PAN_TIME);
+		    FP.world.addTween(panDownTween);
+		}
 	    }
 
 	    // run SO off screen as soon as the player 
