@@ -17,7 +17,7 @@ package worlds
 	    CAM_X_OFFSET:Number = 64,
 	    SO_TAKEOFF_DISTANCE:Number = 300,
 	    SO_TAKEOFF_TIME:Number = 3,
-	    NUM_CLOUDS:Number = 8;
+	    NUM_CLOUDS:Number = 5;
 
 	private var
 	    level:Level,
@@ -59,7 +59,7 @@ package worlds
 	    for (var i:int = 0; i < NUM_CLOUDS; i++) {
 		var randCloudX:Number = Math.random()*(FP.width+FP.halfWidth);
 		var randCloudY:Number = Math.random()*(FP.halfHeight);
-		add(new VisualCloud(randCloudX, randCloudY, Math.random()*2+1));
+		add(new SlowingCloud(randCloudX, randCloudY, Math.random()*2+1));
 	    }
 
 	    skyBackground = new SkyBackground(0, FP.height, 2, 2);

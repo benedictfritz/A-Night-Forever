@@ -10,7 +10,8 @@ package entities
 
 	private var
 	    sprCloud:Spritemap,
-	    hitboxLeeway:Number = 15;
+	    hitboxLeeway:Number = 15,
+	    vx:Number = -30 - Math.random()*30;
 
 	public var
 	    slowingVelocity:Number = 15;
@@ -34,6 +35,12 @@ package entities
 	}
 
 	override public function update():void {
+	    moveBy(vx*FP.elapsed, 0);
+
+	    if ((right+width/5) < FP.camera.x) {
+		x = FP.camera.x + FP.width + width/5;
+	    }
+
 	    if (sprCloud.currentAnim == "burst") {
 		if (sprCloud.complete) FP.world.remove(this);
 	    }

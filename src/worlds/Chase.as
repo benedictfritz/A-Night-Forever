@@ -116,7 +116,7 @@ package worlds
 	}
 
 	private function randomSpawnPoint(yStart:Number):Point {
-	    var x:Number = (FP.random * FP.width) - 50;
+	    var x:Number = FP.random * FP.width;
 	    var y:Number = yStart + FP.random * spawnSectorHeight;
 	    return new Point(x, y);
 	}
