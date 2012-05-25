@@ -12,7 +12,7 @@ package worlds
 
 	private static const
 	    CAM_X_OFFSET:Number = 64,
-	    NUM_CLOUDS:Number = 4;
+	    NUM_CLOUDS:Number = 8;
 
 	private var
 	    level:Level,
@@ -62,7 +62,7 @@ package worlds
 	    }
 
 	    for (var i:int = 0; i < NUM_CLOUDS; i++) {
-		var randCloudX:Number = Math.random()*(FP.width-VisualCloud.IMG_WIDTH);
+		var randCloudX:Number = Math.random()*(FP.width+FP.halfWidth);
 		var randCloudY:Number = Math.random()*(FP.halfHeight);
 		add(new VisualCloud(randCloudX, randCloudY, Math.random()*2+1));
 	    }

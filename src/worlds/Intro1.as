@@ -17,7 +17,7 @@ package worlds
 	private static const
 	    PAN_TIME:Number = 3,
 	    CAMERA_START_Y:Number = -400,
-	    NUM_CLOUDS:Number = 5;
+	    NUM_CLOUDS:Number = 10;
 
 	private var
 	    level:Level,
@@ -57,8 +57,7 @@ package worlds
 	    }
 
 	    for (var i:int = 0; i < NUM_CLOUDS; i++) {
-		var randCloudX:Number = 
-		    Math.random()*(FP.width-VisualCloud.IMG_WIDTH);
+		var randCloudX:Number = Math.random()*(FP.width + FP.halfWidth);
 		var randCloudY:Number = 
 		    Math.random()*(FP.halfHeight - CAMERA_START_Y) + CAMERA_START_Y;
 		add(new VisualCloud(randCloudX, randCloudY, Math.random()*1.5+1));
