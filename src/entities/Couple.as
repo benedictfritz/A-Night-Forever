@@ -41,7 +41,8 @@ package entities
 	    sprCouple.add("stand", [4], 1, true);
 	    this.graphic = sprCouple;
 
-	    setHitbox(50, 15, -20, -80);
+	    setHitbox(50, 15, 25, -30);
+	    sprCouple.centerOO();
 	    type = "couple";
 	    layer = 0;
 	}
@@ -53,6 +54,15 @@ package entities
 	    else {
 		if (tweeningUp) { sprCouple.play("up"); }
 		else { sprCouple.play("down"); }
+	    }
+
+	    if (vy < 0) {
+		// rotate the player's head in the direction they want to go
+		var scaledVx:Number = FP.scale(Math.abs(vx), 0, 720, 0, 10);
+		sprCouple.angle = -FP.sign(vx) * scaledVx;
+	    }
+	    else {
+		sprCouple.angle = 0;
 	    }
 	}
 
