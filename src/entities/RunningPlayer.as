@@ -47,8 +47,8 @@ package entities
 	    var jumping:Boolean = collide("level", x, y+1) == null;
 
 	    // left / right movement
-	    if (Input.check(Key.D)) { vx += xAcceleration; }
-	    else if (Input.check(Key.A)) { vx -= xAcceleration; }
+	    if (Input.check(Key.RIGHT)) { vx += xAcceleration; }
+	    else if (Input.check(Key.LEFT)) { vx -= xAcceleration; }
 	    vx -= vx * xFriction;
 	    if (Math.abs(vx) > MAX_SPEED) { vx = FP.sign(vx)*MAX_SPEED; }
 
@@ -63,7 +63,7 @@ package entities
 	    }
 	    
 	    // jumping movement
-	    if (Input.check(Key.W)) {
+	    if (Input.check(Key.UP)) {
 		if (!jumping) { vy = -JUMP_SPEED }
 	    }
 	    if (jumping) {

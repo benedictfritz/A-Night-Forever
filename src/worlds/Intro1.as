@@ -91,7 +91,7 @@ package worlds
 
 	    // run SO off screen as soon as the player 
 	    // moves right
-	    if (!panning && Input.check(Key.D)) {
+	    if (!panning && Input.check(Key.RIGHT)) {
 		SO.running = true;
 	    }
 	    

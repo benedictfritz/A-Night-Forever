@@ -60,11 +60,11 @@ package entities
 	    /* move-anywhere test code */
 	    var debugMovement:Boolean = false;
 	    if (debugMovement) {
-		if (Input.check(Key.D)) { vx += 80; }
-		else if (Input.check(Key.A)) { vx -= 80; }
+		if (Input.check(Key.RIGHT)) { vx += 80; }
+		else if (Input.check(Key.LEFT)) { vx -= 80; }
 		vx -= vx*0.1;
-		if (Input.check(Key.S)) { vy += 80; }
-		else if (Input.check(Key.W)) { vy -= 80; }
+		if (Input.check(Key.DOWN)) { vy += 80; }
+		else if (Input.check(Key.UP)) { vy -= 80; }
 		vy -= vy*0.1;
 	    }
 	    else {
@@ -72,10 +72,10 @@ package entities
 		var onCloud:Boolean = 
 		    collide("landingCloud", x, y+1) as LandingCloud != null;
 
-		if (Input.check(Key.D)) { 
+		if (Input.check(Key.RIGHT)) { 
 		    vx += (onCloud) ? X_CLOUD_ACCEL : X_AIR_ACCEL;
 		}
-		else if (Input.check(Key.A)) { 
+		else if (Input.check(Key.LEFT)) { 
 		    vx -= (onCloud) ? X_CLOUD_ACCEL : X_AIR_ACCEL;
 		}
 
