@@ -1,6 +1,7 @@
 package worlds
 {
     import net.flashpunk.FP;
+    import net.flashpunk.Sfx;
     import net.flashpunk.World;
     import net.flashpunk.utils.Key;
     import net.flashpunk.utils.Input;
@@ -14,6 +15,9 @@ package worlds
 	       mimeType="application/octet-stream")]
 	    private static const MAP_DATA:Class;
 
+	[Embed(source = "../../assets/sounds/music.swf#intro")]
+	    static public const FLASH_MUSIC:Class;
+
 	private static const
 	    PAN_TIME:Number = 3,
 	    CAMERA_START_Y:Number = -400,
@@ -21,6 +25,7 @@ package worlds
 
 	private var
 	    level:Level,
+	    music:Sfx,
 	    titleScreen:TitleScreen,
 	    player:RunningPlayer,
 	    SO:RunningSO,
@@ -31,6 +36,9 @@ package worlds
 
 	override public function begin():void {
 	    super.begin();
+
+	    music = new Sfx(FLASH_MUSIC);
+	    music.loop();
 
 	    FP.camera.y = CAMERA_START_Y;
 
