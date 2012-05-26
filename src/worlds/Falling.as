@@ -23,7 +23,7 @@ package worlds
 	    sectors:Array,
 	    currSector:Sector,
 	    couple:Couple,
-	    minStars:Number = 5,
+	    minStars:Number = 8,
 	    chanceOfClouds:Number = 4,
 	    transitionIn:TransitionIn,
 	    cloudPoints:Array = new Array();
