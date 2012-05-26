@@ -94,7 +94,6 @@ package entities
 
 	    // rotate the player's head in the direction they want to go
 	    var scaledVx:Number = FP.scale(Math.abs(vx), 0, 720, 0, 10);
-	    FP.console.log(scaledVx);
 	    sprActor.angle = -FP.sign(vx) * scaledVx;
 
 	    // constrain player within limits

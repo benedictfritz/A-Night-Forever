@@ -118,7 +118,6 @@ package worlds
 		    couple.x + couple.width/2 + arcRadius - FP.halfWidth;
 
 		addGraphic(moon, 3, moonX + moonScrollXAdjust, CLOUD_Y-moon.height);
-		FP.console.log(cameraDelta);
 
 		camXTween.tween(FP.camera, "x", camCenterX, TO_CLOUD_TIME/2.5);
 		FP.world.addTween(camXTween);

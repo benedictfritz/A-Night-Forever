@@ -45,10 +45,7 @@ package entities
 	    }
 
 	    if (sprCloud.currentAnim == "burst") {
-		if (sprCloud.complete) {
-		    FP.console.log("Removing");
-		    FP.world.remove(this);
-		}
+		if (sprCloud.complete) { FP.world.remove(this); }
 	    }
 
 	    moveBy(vx*FP.elapsed, 0);
