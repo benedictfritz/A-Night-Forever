@@ -38,8 +38,9 @@ package entities
 
 	    var hitboxWidth:Number = sprActor.width - hitboxYBuffer*2;
 	    var hitboxHeight:Number = sprActor.height - hitboxYBuffer;
-	    // need to center origin on bottom of hitbox so we can do rotations on graphic
-	    // that feel as if you're directing the head in the direction you want to go.
+	    // need to center origin on bottom of hitbox so we can do rotations 
+	    // on graphic that feel as if you're directing the head in the 
+	    // direction you want to go.
 	    sprActor.centerOO();
 	    sprActor.originY += hitboxHeight/2;
 	    setHitbox(hitboxWidth, hitboxHeight, hitboxWidth/2, hitboxHeight);
