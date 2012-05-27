@@ -19,7 +19,8 @@ package worlds
         private static const MAP_DATA:Class;
 
 	private static const
-	    SO_CAM_BUFF:Number = 40;
+	    SO_CAM_BUFF:Number = 40,
+	    CLOUD_Y:Number = 40;
 
 	public var
 	    pickingUp:Boolean;
@@ -61,6 +62,16 @@ package worlds
 
 	    skyBackground = new SkyBackground(0, FP.height, 5, 1);
 	    add(skyBackground);
+
+	    for (var i:Number=-FP.width; i < level.width; i+=256) {
+		var newCloudLayer3:CloudLayer = new CloudLayer(i, CLOUD_Y, 3);
+		add(newCloudLayer3);
+		var newCloudLayer2:CloudLayer = new CloudLayer(i, CLOUD_Y-32, 2);
+		add(newCloudLayer2);
+		var newCloudLayer1:CloudLayer = new CloudLayer(i, CLOUD_Y-64, 1);
+		add(newCloudLayer1);
+	    }
+
         }
 
         override public function update():void {
