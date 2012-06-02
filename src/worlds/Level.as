@@ -45,6 +45,7 @@ package worlds
 	}
 
 	private function placeTiles():void {
+	    // tiles layer holds visuals
 	    var dataList:XMLList = levelData.tiles.tile;
 	    for each(var dataElement:XML in dataList) {
 		var tileImageIndex:Number = tiles.getIndex(int(dataElement.@tx)/TILE_WIDTH, 
@@ -52,7 +53,11 @@ package worlds
 		tiles.setTile(int(dataElement.@x)/TILE_WIDTH,
 			       int(dataElement.@y)/TILE_HEIGHT,
 			       tileImageIndex);
-		// all tiles are solid
+	    }
+
+	    // solids layer holds collidable information
+	    dataList = levelData.solids.tile;
+	    for each(dataElement in dataList) {
 		grid.setTile(int(dataElement.@x)/TILE_WIDTH,
 			      int(dataElement.@y)/TILE_HEIGHT,
 			      true);

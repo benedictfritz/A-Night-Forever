@@ -13,6 +13,7 @@
 
   <tilesets>
     <tileset name="tiles" image="tiles.png" tileHeight="64" tileWidth="64"/>
+    <tileset name="solids" image="solid_tile.png" tileHeight="64" tileWidth="64"/>
   </tilesets>
 
   <objects>
@@ -31,6 +32,7 @@
 
   <layers>
     <tiles name="tiles" gridSize="64"/>
+    <tiles name="solids" gridSize="64"/>
     <objects name="objects" gridSize="32"/>
   </layers>
 </project>
