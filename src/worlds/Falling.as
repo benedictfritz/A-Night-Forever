@@ -67,8 +67,20 @@ package worlds
 	}
 
 	private function updateCamera():void {
-	    camera.x = couple.x - FP.halfWidth + (couple.width / 2);
-	    camera.y = couple.y - FP.halfHeight + couple.height;
+	    var xShake:Number = 0;
+	    var yShake:Number = 0;
+	    
+	    if (couple.vy > Couple.MIN_SHAKE_VY) {
+		var intensity:Number = FP.scale(couple.vy, Couple.MIN_SHAKE_VY, 
+						Couple.MIN_SHAKE_VY*1.5,
+						0, 0.05);
+		xShake = 
+		    (Math.random()*intensity*FP.width*2-intensity*FP.width)*0.1;
+		yShake = 
+		    (Math.random()*intensity*FP.height*2-intensity*FP.height)*0.1;
+	    }
+	    camera.x = couple.x - FP.halfWidth + (couple.width / 2) + xShake;
+	    camera.y = couple.y - FP.halfHeight + couple.height + yShake;
 
 	    if (camera.y < 0) { camera.y = 0; }
 	}

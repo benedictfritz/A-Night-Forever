@@ -10,6 +10,9 @@ package entities
 
     public class Couple extends Entity
     {
+	public static const
+	    MIN_SHAKE_VY:Number = 1000;
+	
 	private static const
 	    GRAVITY:Number = 700,
 	    MAX_GRAVITY:Number = 200,
@@ -18,15 +21,15 @@ package entities
 	    X_CLOUD_ACCEL:Number = 15,
 	    X_FRICTION:Number = 0.05,
 	    MAX_VX:Number = 300,
-	    MIN_SHAKE_VY:Number = 500;
+	    MAX_NORM_GRAV_VY:Number = 500;
 
 	public var 
 	    controllable:Boolean = true,
-	    tweeningUp:Boolean;
+	    tweeningUp:Boolean,
+	    vx:Number = 0,
+	    vy:Number = 0;
 
 	private var
-	    vx:Number = 0,
-	    vy:Number = 0,
 	    sprCouple:Spritemap;
 
 	[Embed(source="../../assets/images/couple.png")]
@@ -94,7 +97,7 @@ package entities
 
 		if (MAX_VX < Math.abs(vx)) { vx = FP.sign(vx)*MAX_VX; }
 
-		if (vy > MIN_SHAKE_VY) { vy += MAX_GRAVITY * FP.elapsed; }
+		if (vy > MAX_NORM_GRAV_VY) { vy += MAX_GRAVITY * FP.elapsed; }
 		else { vy += GRAVITY * FP.elapsed; }
 	    }
 
@@ -102,7 +105,8 @@ package entities
 
 	    if (vy < 0) { sprCouple.play("up"); }
 	    else { sprCouple.play("down"); }
-	    sprCouple.rate = FP.scale(Math.abs(vy), 0, MIN_SHAKE_VY, 0, 1);
+	    sprCouple.rate = FP.scale(Math.abs(vy), 0, MAX_NORM_GRAV_VY, 0, 1);
+
 
 	    var collisionCloud:LandingCloud = 
 		collide("landingCloud", x, y) as LandingCloud;
