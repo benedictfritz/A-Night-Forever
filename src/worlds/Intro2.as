@@ -51,13 +51,15 @@ package worlds
 
 	    dataList = levelData.objects.foregroundCrowd;
 	    for each(dataElement in dataList) {
-		crowd = new Crowd(int(dataElement.@x), int(dataElement.@y), "foreground");
+		crowd = new Crowd(int(dataElement.@x), int(dataElement.@y), 
+				  "foreground");
 		add(crowd);
 	    }
 
 	    dataList = levelData.objects.backgroundCrowd;
 	    for each(dataElement in dataList) {
-		crowd = new Crowd(int(dataElement.@x), int(dataElement.@y), "background");
+		crowd = new Crowd(int(dataElement.@x), int(dataElement.@y), 
+				  "background");
 		add(crowd);
 	    }
 
