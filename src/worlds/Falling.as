@@ -141,7 +141,7 @@ package worlds
 			    new SkyBackground(newSector.minX(), newSector.maxY(), 
 					      1, 1);
 			add(newSectorBackground);
-			minStars -= 0.1;
+			minStars -= 0.2;
 			chanceOfClouds -= 0.1;
 		    }
 		}
