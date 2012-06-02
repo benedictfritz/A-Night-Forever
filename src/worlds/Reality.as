@@ -26,6 +26,7 @@ package worlds
 	    pickingUp:Boolean;
 
         private var
+	    transitionIn:TransitionIn,
 	    player:RunningPlayer,
 	    SO:RunningSO,
 	    level:Level,
@@ -72,6 +73,8 @@ package worlds
 		add(newCloudLayer1);
 	    }
 
+	    transitionIn = new TransitionIn(0.02, 0x000000);
+	    add(transitionIn);
         }
 
         override public function update():void {
