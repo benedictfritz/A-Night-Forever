@@ -107,9 +107,14 @@ package entities
 	    else { sprCouple.play("down"); }
 	    sprCouple.rate = FP.scale(Math.abs(vy), 0, MAX_NORM_GRAV_VY, 0, 1);
 
-
 	    var collisionCloud:LandingCloud = 
 		collide("landingCloud", x, y) as LandingCloud;
+
+	    // need this so we're not accumulating vy while standing on cloud
+	    if (collisionCloud) {
+		vy = 0;
+	    }
+
 	    // couple can only land on cloud if they are heading down and 
 	    // aren't already in a cloud
 	    if (vy > 0 && !collisionCloud) {
