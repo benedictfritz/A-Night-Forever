@@ -26,7 +26,8 @@ package worlds
 	    minStars:Number = 8,
 	    chanceOfClouds:Number = 4,
 	    transitionIn:TransitionIn,
-	    cloudPoints:Array = new Array();
+	    cloudPoints:Array = new Array(),
+	    darkness:Darkness;
 
 	public function Falling():void {
 	}
@@ -61,9 +62,20 @@ package worlds
 		updateSectors();
 
 		if (minStars < -STAR_RANGE - WORLD_CHANGE_BUFFER) {
-		    FP.world = new Reality();
+		    if (!darkness) { 
+			darkness = new Darkness();
+			add(darkness);
+		    }
 		}
 	    }
+
+	    if (darkness && darkness.done) {
+		FP.alarm(2, goToReality);
+	    }
+	}
+
+	private function goToReality():void {
+	    FP.world = new Reality();
 	}
 
 	private function updateCamera():void {
@@ -73,7 +85,7 @@ package worlds
 	    if (couple.vy > Couple.MIN_SHAKE_VY) {
 		var intensity:Number = FP.scale(couple.vy, Couple.MIN_SHAKE_VY, 
 						Couple.MIN_SHAKE_VY*1.5,
-						0, 0.05);
+						0, 0.03);
 		xShake = 
 		    (Math.random()*intensity*FP.width*2-intensity*FP.width)*0.1;
 		yShake = 
