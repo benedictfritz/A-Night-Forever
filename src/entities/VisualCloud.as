@@ -14,20 +14,22 @@ package entities
 
 	private var
 	    sprCloud:Spritemap,
-	    vx:Number = -10 - Math.random()*10,
+	    vx:Number,
 	    scale:Number;
 
-	public function VisualCloud(x:int=0, y:int=0, scale:Number=1) {
+	public function VisualCloud(x:int=0, y:int=0) {
 	    this.x = x;
 	    this.y = y;
-	    this.scale = scale;
+	    this.scale = Math.random()*1.5+1;
+
+	    // smaller clouds are faster and in the front	    
+	    this.vx = FP.scale(scale, 1, 2.5, -30, -10);
+	    layer = vx + 40;
 
 	    sprCloud = new Spritemap(SLOWING_CLOUD_SPRITE, IMG_WIDTH, IMG_HEIGHT);
 	    sprCloud.add("default", [0], 1, false);
 	    sprCloud.scale = scale;
 	    this.graphic = sprCloud;
-
-	    layer = 50;
 	}
 
 	override public function update():void {

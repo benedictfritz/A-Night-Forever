@@ -68,7 +68,7 @@ package worlds
 		var randCloudX:Number = Math.random()*(FP.width + FP.halfWidth);
 		var randCloudY:Number = 
 		    Math.random()*(FP.halfHeight - CAMERA_START_Y) + CAMERA_START_Y;
-		add(new VisualCloud(randCloudX, randCloudY, Math.random()*1.5+1));
+		add(new VisualCloud(randCloudX, randCloudY));
 	    }
 
 	    skyBackground = new SkyBackground(0, FP.height, 1, 3);
