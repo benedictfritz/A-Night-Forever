@@ -12,12 +12,13 @@ package entities
     {
 	private static const
 	    GRAVITY:Number = 700,
-	    MAX_VY:Number = 500,
+	    MAX_GRAVITY:Number = 200,
 	    MIN_Y:Number = 0,
 	    X_AIR_ACCEL:Number = 30,
 	    X_CLOUD_ACCEL:Number = 15,
 	    X_FRICTION:Number = 0.05,
-	    MAX_VX:Number = 300;
+	    MAX_VX:Number = 300,
+	    MIN_SHAKE_VY:Number = 500;
 
 	public var 
 	    controllable:Boolean = true,
@@ -92,16 +93,16 @@ package entities
 		vx -= vx*X_FRICTION;
 
 		if (MAX_VX < Math.abs(vx)) { vx = FP.sign(vx)*MAX_VX; }
-		vy += GRAVITY * FP.elapsed;
+
+		if (vy > MIN_SHAKE_VY) { vy += MAX_GRAVITY * FP.elapsed; }
+		else { vy += GRAVITY * FP.elapsed; }
 	    }
 
 	    if(vx != 0) { vx < 0 ? flip(true) : flip(false); }
 
-	    if (vy > MAX_VY) { vy = MAX_VY; }
-
 	    if (vy < 0) { sprCouple.play("up"); }
 	    else { sprCouple.play("down"); }
-	    sprCouple.rate = FP.scale(Math.abs(vy), 0, MAX_VY, 0, 1);
+	    sprCouple.rate = FP.scale(Math.abs(vy), 0, MIN_SHAKE_VY, 0, 1);
 
 	    var collisionCloud:LandingCloud = 
 		collide("landingCloud", x, y) as LandingCloud;
