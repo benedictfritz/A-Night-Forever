@@ -35,7 +35,7 @@ package worlds
 	    tiles = new Tilemap(TILESET, this.width, this.height, 
 				TILE_WIDTH, TILE_HEIGHT);
 	    graphic = tiles;
-	    layer = 1;
+	    layer = 2;
 
 	    grid = new Grid(this.width, this.height, TILE_WIDTH, TILE_HEIGHT, 0, 0);
 	    mask = grid;
@@ -48,8 +48,9 @@ package worlds
 	    // tiles layer holds visuals
 	    var dataList:XMLList = levelData.tiles.tile;
 	    for each(var dataElement:XML in dataList) {
-		var tileImageIndex:Number = tiles.getIndex(int(dataElement.@tx)/TILE_WIDTH, 
-						int(dataElement.@ty)/TILE_HEIGHT);
+		var tileImageIndex:Number = 
+			    tiles.getIndex(int(dataElement.@tx)/TILE_WIDTH, 
+					   int(dataElement.@ty)/TILE_HEIGHT);
 		tiles.setTile(int(dataElement.@x)/TILE_WIDTH,
 			       int(dataElement.@y)/TILE_HEIGHT,
 			       tileImageIndex);

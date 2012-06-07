@@ -5,6 +5,7 @@ package worlds
     import net.flashpunk.Entity;
     import net.flashpunk.masks.Grid;
     import net.flashpunk.utils.Ease;
+    import net.flashpunk.graphics.Image;
     import net.flashpunk.graphics.Tilemap;
     import net.flashpunk.tweens.misc.VarTween;
 
@@ -16,7 +17,20 @@ package worlds
     {
         [Embed(source="../../assets/levels/Reality.oel", 
            mimeType="application/octet-stream")]
-        private static const MAP_DATA:Class;
+	    private static const MAP_DATA:Class;
+
+	[Embed(source = '../../assets/levels/images/stump.png')] 
+	    private static const STUMP:Class;
+	[Embed(source = '../../assets/levels/images/dead_tree.png')] 
+	    private static const DEAD_TREE:Class;
+	[Embed(source = '../../assets/levels/images/three_rocks.png')] 
+	    private static const THREE_ROCKS:Class;
+	[Embed(source = '../../assets/levels/images/big_rock.png')] 
+	    private static const BIG_ROCK:Class;
+	[Embed(source = '../../assets/levels/images/pointy_rock.png')] 
+	    private static const POINTY_ROCK:Class;
+	[Embed(source = '../../assets/levels/images/tiny_rocks.png')] 
+	    private static const TINY_ROCKS:Class;
 
 	private static const
 	    SO_CAM_BUFF:Number = 40,
@@ -60,6 +74,42 @@ package worlds
             }
 	    SO.running = true;
 	    SO.spawningMonsters = true;
+
+	    dataList = levelData.objects.stump;
+	    for each(dataElement in dataList) {
+		var stump:Image = new Image(STUMP);
+		addGraphic(stump, 1, int(dataElement.@x), int(dataElement.@y));
+	    }
+
+	    dataList = levelData.objects.deadTree;
+	    for each(dataElement in dataList) {
+		var deadTree:Image = new Image(DEAD_TREE);
+		addGraphic(deadTree, 1, int(dataElement.@x), int(dataElement.@y));
+	    }
+
+	    dataList = levelData.objects.threeRocks;
+	    for each(dataElement in dataList) {
+		var threeRocks:Image = new Image(THREE_ROCKS);
+		addGraphic(threeRocks, 1, int(dataElement.@x), int(dataElement.@y));
+	    }
+
+	    dataList = levelData.objects.bigRock;
+	    for each(dataElement in dataList) {
+		var bigRock:Image = new Image(BIG_ROCK);
+		addGraphic(bigRock, 1, int(dataElement.@x), int(dataElement.@y));
+	    }
+
+	    dataList = levelData.objects.pointyRock;
+	    for each(dataElement in dataList) {
+		var pointyRock:Image = new Image(POINTY_ROCK);
+		addGraphic(pointyRock, 1, int(dataElement.@x), int(dataElement.@y));
+	    }
+
+	    dataList = levelData.objects.tinyRocks;
+	    for each(dataElement in dataList) {
+		var tinyRocks:Image = new Image(TINY_ROCKS);
+		addGraphic(tinyRocks, 1, int(dataElement.@x), int(dataElement.@y));
+	    }
 
 	    skyBackground = new SkyBackground(0, FP.height, 5, 1);
 	    add(skyBackground);
