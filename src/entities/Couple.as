@@ -110,11 +110,6 @@ package entities
 	    var collisionCloud:LandingCloud = 
 		collide("landingCloud", x, y) as LandingCloud;
 
-	    // need this so we're not accumulating vy while standing on cloud
-	    if (collisionCloud) {
-		vy = 0;
-	    }
-
 	    // couple can only land on cloud if they are heading down and 
 	    // aren't already in a cloud
 	    if (vy > 0 && !collisionCloud) {
@@ -129,6 +124,8 @@ package entities
 		if (doomCloud) {
 		    // if we're on a cloud, stand on it
 		    sprCouple.play("stand");
+		    // need this so we're not accumulating vy while standing on cloud
+		    vy = 0;
 		}
 	    }
 	    else {
