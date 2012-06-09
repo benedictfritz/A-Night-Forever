@@ -3,11 +3,15 @@ package worlds
     import net.flashpunk.FP;
     import net.flashpunk.World;
     import net.flashpunk.Entity;
+    import net.flashpunk.utils.Key;
     import net.flashpunk.masks.Grid;
     import net.flashpunk.utils.Ease;
+    import net.flashpunk.utils.Input;
     import net.flashpunk.graphics.Image;
     import net.flashpunk.graphics.Tilemap;
     import net.flashpunk.tweens.misc.VarTween;
+
+
 
     import entities.*;
     import worlds.*;
@@ -37,7 +41,8 @@ package worlds
 	    CLOUD_Y:Number = 40;
 
 	public var
-	    pickingUp:Boolean;
+	    pickingUp:Boolean,
+	    sitting:Boolean;
 
         private var
 	    transitionIn:TransitionIn,
@@ -66,14 +71,15 @@ package worlds
                 player = new RunningPlayer(int(dataElement.@x), int(dataElement.@y));
                 add(player);
             }
+	    player.setControllable(false);
 
             dataList = levelData.objects.so;
             for each(dataElement in dataList) {	    
                 SO = new RunningSO(int(dataElement.@x), int(dataElement.@y));
                 add(SO);
             }
-	    SO.running = true;
-	    SO.spawningMonsters = true;
+	    SO.running = false;
+	    SO.spawningMonsters = false;
 
 	    dataList = levelData.objects.stump;
 	    for each(dataElement in dataList) {
@@ -125,11 +131,25 @@ package worlds
 
 	    transitionIn = new TransitionIn(0.02, 0x000000);
 	    add(transitionIn);
+
+	    sitting = true;
         }
 
         override public function update():void {
             super.update();
             
+	    if (sitting) {
+		player.playSitRight();
+		SO.playFaceLeft();
+
+		if (Input.check(Key.RIGHT)) {
+		    sitting = false;
+		    player.setControllable(true);
+		    SO.playFaceRight();
+		    SO.running = true;
+		    SO.spawningMonsters = true;
+		}
+	    }
 	    updateCamera();
         }
 	
