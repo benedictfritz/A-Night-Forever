@@ -15,8 +15,11 @@ package worlds
 	       mimeType="application/octet-stream")]
 	    private static const MAP_DATA:Class;
 
-	[Embed(source = "../../assets/sounds/music.swf#intro")]
-	    static public const FLASH_MUSIC:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol = 'scene_1_a')]
+	    static public const MUSIC_1_A:Class;
+
+	[Embed(source = '../../assets/sounds/music.swf', symbol = 'scene_1_b')]
+	    static public const MUSIC_1_B:Class;
 
 	private static const
 	    PAN_TIME:Number = 3,
@@ -25,7 +28,9 @@ package worlds
 
 	private var
 	    level:Level,
-	    music:Sfx,
+	    music_a:Sfx,
+	    music_b:Sfx,
+	    currentSong:Sfx,
 	    titleScreen:TitleScreen,
 	    player:RunningPlayer,
 	    SO:RunningSO,
@@ -37,8 +42,14 @@ package worlds
 	override public function begin():void {
 	    super.begin();
 
-	    music = new Sfx(FLASH_MUSIC);
-	    music.loop();
+	    music_a = new Sfx(MUSIC_1_A);
+	    music_b = new Sfx(MUSIC_1_B);
+	    // set the current song to the other song as soon 
+	    // as it completes
+	    music_a.complete = function():void { currentSong = music_b; };
+	    music_b.complete = function():void { currentSong = music_a; };
+	    music_a.play();
+	    currentSong = music_a;
 
 	    FP.camera.y = CAMERA_START_Y;
 
@@ -78,6 +89,8 @@ package worlds
 	override public function update():void {
 	    super.update();
 
+	    updateMusic();
+
 	    if (inMenu) {
 		if (Input.check(Key.DOWN)) { inMenu = false; }
 	    }
@@ -104,6 +117,24 @@ package worlds
 	private function finishPanning():void {
 	    panning = false;
 	    player.setControllable(true);
+	}
+
+	private function updateMusic():void {
+	    // the updating of the current song var
+	    // happens in the music's completion callback
+	    // set in the initialization
+	    if (currentSong == music_a) {
+		if (music_a.length - music_a.position < 8
+		    && !music_b.playing) {
+		    music_b.play();
+		}
+	    }
+	    if (currentSong == music_b) {
+		if (music_b.length - music_b.position < 8
+		    && !music_a.playing) {
+		    music_a.play();
+		}
+	    }
 	}
 
     }
