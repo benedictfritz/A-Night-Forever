@@ -1,7 +1,9 @@
 package worlds
 {
-    import net.flashpunk.World;
     import net.flashpunk.FP;
+    import net.flashpunk.Sfx;
+    import net.flashpunk.World;
+    import net.flashpunk.tweens.sound.SfxFader;
 
     import entities.*;
 	
@@ -9,6 +11,9 @@ package worlds
 	[Embed(source="../../assets/levels/Intro2.oel", 
 	       mimeType="application/octet-stream")]
 	    private static const MAP_DATA:Class;
+
+	[Embed(source = '../../assets/sounds/music.swf', symbol = 'scene_2')]
+	    static public const MUSIC:Class;
 
 	private static const
 	    CAM_X_OFFSET:Number = 64,
@@ -21,7 +26,11 @@ package worlds
 	    crowd:Crowd,
 	    skyBackground:SkyBackground,
 	    transitionIn:TransitionIn,
+	    transitionOut:TransitionOut,
 	    playerEntering:Boolean=false;
+
+	private var
+	    music:Sfx = new Sfx(MUSIC);
 
 	override public function begin():void {
 	    super.begin();
@@ -34,7 +43,6 @@ package worlds
 	    add(level);
 
 	    var levelData:XML = level.getLevelData();
-
 	    var dataElement:XML;
 	    var dataList:XMLList = levelData.objects.player;
 	    for each(dataElement in dataList) {
@@ -74,6 +82,11 @@ package worlds
 
 	    transitionIn = new TransitionIn(0.02, 0x000000);
 	    add(transitionIn);
+
+	    music.play(0);
+	    var fadeIn:SfxFader = new SfxFader(music);
+	    fadeIn.fadeTo(1, 2);
+	    this.addTween(fadeIn);
 	}
 
 	override public function update():void {
@@ -101,8 +114,12 @@ package worlds
 		player.setControllable(true);
 	    }
 
-	    if (player.x > FP.width+CAM_X_OFFSET) {
-		var transitionOut:TransitionOut = new TransitionOut(new Intro3());
+	    if (player.x > FP.width+CAM_X_OFFSET && !transitionOut) {
+		var fadeOut:SfxFader = new SfxFader(music);
+		fadeOut.fadeTo(0, 3);
+		FP.tweener.addTween(fadeOut);
+
+		transitionOut = new TransitionOut(new Intro3());
 		add(transitionOut);
 	    }
 	}
