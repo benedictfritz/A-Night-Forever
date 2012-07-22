@@ -6,6 +6,7 @@ package worlds
     import net.flashpunk.utils.Key;
     import net.flashpunk.utils.Input;
     import net.flashpunk.tweens.misc.VarTween;
+    import net.flashpunk.tweens.sound.SfxFader;
 
     import util.Util;
     import entities.*;
@@ -28,16 +29,21 @@ package worlds
 
 	private var
 	    level:Level,
-	    music_a:Sfx,
-	    music_b:Sfx,
-	    currentSong:Sfx,
 	    titleScreen:TitleScreen,
+	    transitionOut:TransitionOut,
 	    player:RunningPlayer,
 	    SO:RunningSO,
 	    panDownTween:VarTween,
 	    inMenu:Boolean=true,
 	    panning:Boolean=true,
 	    skyBackground:SkyBackground;
+
+	private var
+	    music_a:Sfx,
+	    music_b:Sfx,
+	    currentSong:Sfx,
+	    aFader:SfxFader,
+	    bFader:SfxFader;
 
 	override public function begin():void {
 	    super.begin();
@@ -89,8 +95,6 @@ package worlds
 	override public function update():void {
 	    super.update();
 
-	    updateMusic();
-
 	    if (inMenu) {
 		if (Input.check(Key.DOWN)) { inMenu = false; }
 	    }
@@ -109,8 +113,21 @@ package worlds
 	    }
 	    
 	    if (player.x > FP.width) {
-		var transitionOut:TransitionOut = new TransitionOut(new Intro2());
-		add(transitionOut);
+		if (!aFader || !bFader || !transitionOut) {
+		    // fade out the music
+		    aFader = new SfxFader(music_a);
+		    aFader.fadeTo(0, 3);
+		    FP.tweener.addTween(aFader);
+		    bFader = new SfxFader(music_b);
+		    bFader.fadeTo(0, 3);
+		    FP.tweener.addTween(bFader);
+
+		    transitionOut = new TransitionOut(new Intro2());
+		    add(transitionOut);
+		}
+	    }
+	    else {
+		updateMusic();
 	    }
 	}
 
