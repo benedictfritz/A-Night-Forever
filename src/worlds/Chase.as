@@ -1,11 +1,13 @@
 package worlds
 {
     import net.flashpunk.FP;
+    import net.flashpunk.Sfx;
     import net.flashpunk.World;
     import net.flashpunk.Entity;
     import net.flashpunk.masks.Grid;
     import net.flashpunk.utils.Draw;
     import net.flashpunk.graphics.Tilemap;
+    import net.flashpunk.tweens.sound.SfxFader;
 
     import entities.*;
     import worlds.Interlude;
@@ -19,20 +21,30 @@ package worlds
 	       mimeType="application/octet-stream")]
 	    private static const MAP_DATA:Class;
 
+	[Embed(source = '../../assets/sounds/music.swf', symbol = 'scene_4')]
+	    static public const MUSIC:Class;
+
 	private static var
 	    GIVE_UP_BUFFER:Number = 1000;
 
 	private var
 	    player:FlyingPlayer,
-	    sO:FlyingSO,
-	    startingY:Number,
-	    level:Level,
-	    levelHeight:Number = 100000,
-	    spawnSectorHeight:Number = 500,
-	    spawnedWindTunnels:Boolean = false,
-	    spawnedSlowingClouds:Boolean = false,
-	    skyBackground:SkyBackground;
+	    sO:FlyingSO;
 
+	private var
+	    startingY:Number,
+	    levelHeight:Number = 100000,
+	    spawnSectorHeight:Number = 500;
+
+	private var
+	    level:Level,
+	    skyBackground:SkyBackground,
+	    music:Sfx = new Sfx(MUSIC);
+
+	private var
+	    spawnedWindTunnels:Boolean = false,
+	    spawnedSlowingClouds:Boolean = false;
+	
 	public function Chase(playerX:Number):void {
 	    super();
 	    player = new FlyingPlayer();
@@ -51,6 +63,8 @@ package worlds
 
 	    var transitionIn:TransitionIn = new TransitionIn(0.1, 0xFFFFFF);
 	    add(transitionIn);
+
+	    music.loop();
 	}
 
 	private function initLevel():void {
@@ -159,6 +173,10 @@ package worlds
 	    // player's origin is at the feet, so we need to subtract off height
 	    if (player.y-player.height <= sO.y) {
 		FP.world = new Interlude(player.x, player.y);
+
+		var fadeOut:SfxFader = new SfxFader(music);
+		fadeOut.fadeTo(0, 0.5);
+		FP.tweener.addTween(fadeOut);
 	    }
 	}
 
