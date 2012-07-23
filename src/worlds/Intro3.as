@@ -45,14 +45,16 @@ package worlds
 	    var dataElement:XML;
 	    var dataList:XMLList = levelData.objects.player;
 	    for each(dataElement in dataList) {
-		runningPlayer = new RunningPlayer(int(dataElement.@x), int(dataElement.@y));
+		runningPlayer = new RunningPlayer(int(dataElement.@x), 
+						  int(dataElement.@y));
 		add(runningPlayer);
 	    }
 	    runningPlayer.setControllable(false);
 
 	    dataList = levelData.objects.so;
 	    for each(dataElement in dataList) {
-		runningSO = new RunningSO(int(dataElement.@x), int(dataElement.@y));
+		runningSO = new RunningSO(int(dataElement.@x), 
+					  int(dataElement.@y));
 		add(runningSO);
 	    }
 
@@ -80,7 +82,8 @@ package worlds
 		}
 	    }
 
-	    if (runningSO.x > 200 && !runningPlayerEntering && runningPlayer.x < CAM_X_OFFSET) {
+	    if (runningSO.x > 200 && !runningPlayerEntering 
+		&& runningPlayer.x < CAM_X_OFFSET) {
 		runningPlayerEntering = true;
 	    }
 
@@ -101,8 +104,10 @@ package worlds
 
 	    // TODO: replace distance with distance where runningSO takes off.
 	    if (runningPlayer.x > SO_TAKEOFF_DISTANCE && flyingSO == null) {
-		// subtract off the hitbox buffers since the creation will account for them again
-		flyingSO = new FlyingSO(runningSO.x + runningSO.hitboxXBuffer, runningSO.y - runningSO.hitboxYBuffer);
+		// subtract off the hitbox buffers since the creation 
+		// will account for them again
+		flyingSO = new FlyingSO(runningSO.x + runningSO.hitboxXBuffer, 
+					runningSO.y - runningSO.hitboxYBuffer);
 		flyingSO.flying = false;
 		flyingSO.goingLeft = true;
 		add(flyingSO);
@@ -118,13 +123,20 @@ package worlds
 
 	    if (flyingSO != null && flyingPlayer == null) {
 		if (Input.check(Key.UP)) {
-		    // okay, initializing like this is a disaster. basically, the origin on the flying
-		    // player is at the feet, so we need to account for that when we init the flying player.
-		    // if this ever needs to be changed and you can't figure it out, just switch the running
-		    // player to having its origin at its feet.
-		    flyingPlayer = new FlyingPlayer(runningPlayer.x + runningPlayer.hitboxXBuffer + 
-						    (runningPlayer.width+runningPlayer.hitboxXBuffer*2)/2, 
-						    runningPlayer.y - runningPlayer.hitboxYBuffer + runningPlayer.height);
+		    // okay, initializing like this is a disaster. basically, 
+		    // the origin on the flying player is at the feet, so we 
+		    // need to account for that when we init the flying player.
+		    // if this ever needs to be changed and you can't figure 
+		    // it out, just switch the running player to having its 
+		    // origin at its feet.
+		    flyingPlayer = 
+			new FlyingPlayer(runningPlayer.x + 
+					 runningPlayer.hitboxXBuffer + 
+					 (runningPlayer.width + 
+					  runningPlayer.hitboxXBuffer*2)/2, 
+					 runningPlayer.y - 
+					 runningPlayer.hitboxYBuffer + 
+					 runningPlayer.height);
 		    add(flyingPlayer);
 		    flyingPlayer.xAcceleration = 20;
 		    flyingPlayer.yAcceleration = 5;
