@@ -5,8 +5,12 @@ package entities
     import net.flashpunk.graphics.Spritemap;
 
     public class SlowingCloud extends Entity {
-	[Embed(source="../../assets/images/cloud.png")]
-	    private const SLOWING_CLOUD_SPRITE:Class;
+	[Embed(source="../../assets/images/cloud_small.png")]
+	    private const SMALL_CLOUD_SPRITE:Class;
+	[Embed(source="../../assets/images/cloud_med.png")]
+	    private const MEDIUM_CLOUD_SPRITE:Class;
+	[Embed(source="../../assets/images/cloud_large.png")]
+	    private const LARGE_CLOUD_SPRITE:Class;
 
 	private var
 	    sprCloud:Spritemap,
@@ -16,17 +20,31 @@ package entities
 	public var
 	    slowingVelocity:Number = 15;
 
-	public function SlowingCloud(x:int=0, y:int=0, scale:Number=1) {
+	public function SlowingCloud(x:int=0, y:int=0) {
 	    this.x = x;
 	    this.y = y;
 
-	    sprCloud = new Spritemap(SLOWING_CLOUD_SPRITE, 128, 64);
+	    var size:int = Math.random() * 3;
+	    FP.console.log(size);
+	    if (size == 0) {
+		sprCloud = new Spritemap(SMALL_CLOUD_SPRITE, 128, 64);
+	    }
+	    if (size == 1) {
+		sprCloud = new Spritemap(MEDIUM_CLOUD_SPRITE, 192, 96);
+	    }
+	    if (size == 2) {
+		sprCloud = new Spritemap(LARGE_CLOUD_SPRITE, 256, 128);
+	    }
+
 	    sprCloud.add("default", [0], 1, false);
 	    sprCloud.add("burst", [0, 1, 2, 3], 12, false);
-	    sprCloud.scale = scale;
 	    this.graphic = sprCloud;
+
+	    var scale:Number = Math.random()*0.8+0.6;
+	    sprCloud.scale = scale;
 	    setHitbox(sprCloud.width*scale - hitboxLeeway*2*scale, 
-		      sprCloud.height*scale - hitboxLeeway*2*scale, -hitboxLeeway*scale, - hitboxLeeway*scale);
+	    	      sprCloud.height*scale - hitboxLeeway*2*scale, 
+	    	      -hitboxLeeway*scale, - hitboxLeeway*scale);
 	    type="slowingCloud";
 	}
 

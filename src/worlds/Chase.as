@@ -124,8 +124,7 @@ package worlds
 	    var spawnPoint:Point = randomSpawnPoint(spawnSectorY);
 	    var cloudScale:Number = FP.random*2 + 1;
 	    var slowingCloud:SlowingCloud = new SlowingCloud(spawnPoint.x, 
-							     spawnPoint.y, 
-							     cloudScale);
+							     spawnPoint.y);
 	    return slowingCloud;
 	}
 

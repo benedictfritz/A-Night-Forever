@@ -5,7 +5,7 @@ package entities
     import net.flashpunk.graphics.Spritemap;
 
     public class LandingCloud extends Entity {
-	[Embed(source="../../assets/images/cloud.png")]
+	[Embed(source="../../assets/images/cloud_small.png")]
 	    private const LANDING_CLOUD_SPRITE:Class;
 
 	private var

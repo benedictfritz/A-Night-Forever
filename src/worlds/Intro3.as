@@ -59,7 +59,7 @@ package worlds
 	    for (var i:int = 0; i < NUM_CLOUDS; i++) {
 		var randCloudX:Number = Math.random()*(FP.width+FP.halfWidth);
 		var randCloudY:Number = Math.random()*(FP.halfHeight);
-		add(new SlowingCloud(randCloudX, randCloudY, Math.random()*2+1));
+		add(new SlowingCloud(randCloudX, randCloudY));
 	    }
 
 	    skyBackground = new SkyBackground(0, FP.height, 2, 2);
