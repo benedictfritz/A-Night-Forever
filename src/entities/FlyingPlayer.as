@@ -30,9 +30,8 @@ package entities
 	    super(x, y);
 
 	    sprActor = new Spritemap(COUPLE_SPRITE, 96, 96);
-	    sprActor.add("slow", [0, 1], 8, true);
-	    sprActor.add("fast", [0, 1], 16, true);
-	    sprActor.play("slow");
+	    sprActor.add("default", [0, 1], 8, true);
+	    sprActor.play("default");
 
 	    graphic = sprActor;
 
@@ -51,7 +50,6 @@ package entities
 	    if (controllable) { checkKeyPresses(); }
 	    checkWindTunnels();
 	    checkSlowingClouds();
-	    adjustHair();
 	    move();
 	}
 
@@ -84,13 +82,11 @@ package entities
 	    }
 	}
 
-	private function adjustHair():void {
-	    if (vy > -500) { sprActor.play("slow"); }
-	    else { sprActor.play("fast"); }
-	}
-
 	private function move():void {
 	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
+
+	    // scale hair movement speed
+	    sprActor.rate = FP.scale(Math.abs(vy), 0, 700, 0, 2);
 
 	    // rotate the player's head in the direction they want to go
 	    var scaledVx:Number = FP.scale(Math.abs(vx), 0, 720, 0, 10);
