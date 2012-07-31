@@ -7,7 +7,7 @@
     <defaultHeight>600</defaultHeight>
     <minWidth>800</minWidth>
     <minHeight>600</minHeight>
-    <maxWidth>6400</maxWidth>
+    <maxWidth>8064</maxWidth>
     <maxHeight>2400</maxHeight>
   </settings>
 
@@ -17,8 +17,8 @@
   </tilesets>
 
   <objects>
-    <object name="player" image="player.png" height="96" width="64" limit="1"/>
-    <object name="so" image="so.png" height="96" width="64" limit="1"/>
+    <object name="player" image="player.png" height="96" width="96" limit="1"/>
+    <object name="so" image="so.png" height="96" width="96" limit="1"/>
     <object name="cloudLayer1" image="cloud_layer_1.png" height="64" width="256"/>
     <object name="cloudLayer2" image="cloud_layer_2.png" height="64" width="256"/>
     <object name="cloudLayer3" image="cloud_layer_3.png" height="64" width="256"/>
