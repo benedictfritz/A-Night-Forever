@@ -40,9 +40,12 @@ package entities
 	    this.y = y;
 
 	    sprCouple = new Spritemap(COUPLE_SPRITE, 96, 96);
-	    sprCouple.add("down", [2,3], 14, true);
-	    sprCouple.add("up", [4, 5], 14, true);
-	    sprCouple.add("stand", [4], 1, true);
+	    sprCouple.add("down_left", [6,7], 14, true);
+	    sprCouple.add("down_right", [2,3], 14, true);
+	    sprCouple.add("up_left", [8, 9], 14, true);
+	    sprCouple.add("up_right", [4, 5], 14, true);
+	    sprCouple.add("stand_left", [11], 1, true);
+	    sprCouple.add("stand_right", [10], 1, true);
 	    this.graphic = sprCouple;
 
 	    setHitbox(50, 15, 25, -30);
@@ -56,8 +59,8 @@ package entities
 
 	    if (controllable) { checkKeyPresses(); }
 	    else {
-		if (tweeningUp) { sprCouple.play("up"); }
-		else { sprCouple.play("down"); }
+		if (tweeningUp) { sprCouple.play("up_right"); }
+		else { sprCouple.play("down_right"); }
 	    }
 
 	    if (vy < 0) {
@@ -101,10 +104,14 @@ package entities
 		else { vy += GRAVITY * FP.elapsed; }
 	    }
 
-	    if(vx != 0) { vx < 0 ? flip(true) : flip(false); }
-
-	    if (vy < 0) { sprCouple.play("up"); }
-	    else { sprCouple.play("down"); }
+	    if (vy < 0) {
+		(vx < 0) ? sprCouple.play("up_left") 
+		    : sprCouple.play("up_right");
+	    }
+	    else {
+		(vx < 0) ? sprCouple.play("down_left")
+		    : sprCouple.play("down_right");
+	    }
 	    sprCouple.rate = FP.scale(Math.abs(vy), 0, MAX_NORM_GRAV_VY, 0, 1);
 
 	    var collisionCloud:LandingCloud = 
@@ -123,8 +130,10 @@ package entities
 		}
 		if (doomCloud) {
 		    // if we're on a cloud, stand on it
-		    sprCouple.play("stand");
-		    // need this so we're not accumulating vy while standing on cloud
+		    (vx < 0) ? sprCouple.play("stand_left") 
+			: sprCouple.play("stand_right");
+
+		    // don't want vy accumulating while standing on cloud
 		    vy = 0;
 		}
 	    }

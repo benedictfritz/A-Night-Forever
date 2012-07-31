@@ -28,9 +28,9 @@ package entities
 	    super(x, y);
 
 	    sprActor = new Spritemap(COUPLE_SPRITE, 96, 96);
-	    sprActor.add("slow", [6, 7], 8, true);
-	    sprActor.add("fast", [6, 7], 16, true);
-	    sprActor.add("stop", [6], 1, true);
+	    sprActor.add("slow", [12, 13], 8, true);
+	    sprActor.add("fast", [12, 13], 16, true);
+	    sprActor.add("stop", [12], 1, true);
 	    sprActor.play("slow");
 	    this.graphic = sprActor;
 
