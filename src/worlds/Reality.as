@@ -42,15 +42,20 @@ package worlds
 
 	public var
 	    pickingUp:Boolean,
-	    sitting:Boolean;
+	    sitting:Boolean,
+	    inEndSequence:Boolean;
 
         private var
 	    transitionIn:TransitionIn,
 	    player:RunningPlayer,
 	    SO:RunningSO,
 	    level:Level,
-	    skyBackground:SkyBackground,
-	    cameraMinX:Number = 64;
+	    skyBackground:SkyBackground;
+
+	private var
+	    cameraMinX:Number = 64,
+	    cameraEndOfLevelX:Number,
+	    soEndOfLevelX:Number;
 
         public function Reality():void {
             super();
@@ -61,6 +66,12 @@ package worlds
 
             level = new Level(MAP_DATA);
             add(level);
+
+	    var endOfLevelBlocksWidth:Number = 3*64;
+	    var beginningOfLevelBlocksWidth:Number = 64;
+	    cameraEndOfLevelX = level.width - endOfLevelBlocksWidth -
+		beginningOfLevelBlocksWidth - FP.width;
+	    soEndOfLevelX = cameraEndOfLevelX + FP.width - 120;
 
             // should only have one couple, but with this code, 
             // only the last one will get added
@@ -140,21 +151,44 @@ package worlds
 
         override public function update():void {
             super.update();
-            
-	    if (sitting) {
-		player.playSitRight();
+
+	    if (inEndSequence) { 
+		endSequenceUpdate();
+		return;
+	    }
+
+	    if (SO.x >= soEndOfLevelX) {
+		SO.running = false;
 		SO.playFaceLeft();
 
-		if (Input.check(Key.RIGHT)) {
-		    sitting = false;
-		    player.setControllable(true);
-		    SO.playFaceRight();
-		    SO.running = true;
-		    SO.spawningMonsters = true;
-		}
+		var panToEndSequence:VarTween = new VarTween();
+		panToEndSequence.tween(FP.camera, "x",
+				       cameraEndOfLevelX, 2, Ease.sineInOut);
+		addTween(panToEndSequence);
+
+		inEndSequence = true;
 	    }
-	    updateCamera();
+	    else {
+		if (sitting) {
+		    player.playSitRight();
+		    SO.playFaceLeft();
+
+		    if (Input.check(Key.RIGHT)) {
+			sitting = false;
+			player.setControllable(true);
+			SO.playFaceRight();
+			SO.running = true;
+			SO.spawningMonsters = true;
+		    }
+		}
+		updateCamera();
+	    }
+
         }
+
+	private function endSequenceUpdate():void {
+	    
+	}
 	
 	private function updateCamera():void {
 	    if (!pickingUp) {
