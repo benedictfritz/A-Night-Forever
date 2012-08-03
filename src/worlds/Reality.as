@@ -190,7 +190,7 @@ package worlds
         }
 
 	private function endSequenceUpdate():void {
-	    
+	    if (player.x < FP.camera.x) { player.x = FP.camera.x; }
 	}
 	
 	private function updateCamera():void {
