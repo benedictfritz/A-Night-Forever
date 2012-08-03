@@ -191,6 +191,10 @@ package worlds
 
 	private function endSequenceUpdate():void {
 	    if (player.x < FP.camera.x) { player.x = FP.camera.x; }
+
+	    if (player.collide("SO", player.x, player.y) != null) {
+		FP.world = new Conclusion();
+	    }
 	}
 	
 	private function updateCamera():void {

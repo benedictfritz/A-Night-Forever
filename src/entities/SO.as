@@ -32,7 +32,7 @@ package entities
 		      -hitboxXBuffer, 0);
 	    this.x -= hitboxXBuffer;
 	    this.y += hitboxYBuffer;
-	    type = "player";
+	    type = "SO";
 	}
 
 	override public function playRight():void {
