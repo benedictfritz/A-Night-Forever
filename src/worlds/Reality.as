@@ -162,7 +162,7 @@ package worlds
 		SO.spawningMonsters = false;
 		SO.playFaceLeft();
 
-		player.goingFast = false;
+		player.goSlow();
 
 		var panToEndSequence:VarTween = new VarTween();
 		panToEndSequence.tween(FP.camera, "x",

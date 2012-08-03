@@ -15,23 +15,31 @@ package entities
 	private const 
 	    JUMP_SPEED:Number = 230,
 	    MIN_SPEED:Number = 10.0,
-	    FAST_MAX_SPEED:Number = 170,
-	    SLOW_MAX_SPEED:Number = 90,
 	    COLLISION_TIME:Number = 1,
 	    PICKUP_DISTANCE:Number = 30;
 
+	private const
+	    FAST_MAX_SPEED:Number = 170,
+	    MEDIUM_MAX_SPEED:Number = 110,
+	    SLOW_MAX_SPEED:Number = 60;
+
+	private const
+	    FAST_X_ACCEL:Number = 20,
+	    MEDIUM_X_ACCEL:Number = 15,
+	    SLOW_X_ACCEL:Number = 5;
+
 	private var
 	    gravity:Number = 400,
-	    fastXAcceleration:Number = 20,
-	    slowXAcceleration:Number = 10,
 	    xFriction:Number = 0.1;
 
 	public var
 	    fallen:Boolean = false,
 	    pickingUp:Boolean = false;
 
-	public var
-	    goingFast:Boolean = true;
+	private var
+	    goingFast:Boolean = true,
+	    goingMedium:Boolean = false,
+	    goingSlow:Boolean = false;
 
 	public function RunningPlayer(x:int=0, y:int=0) {
 	    super(x, y);
@@ -51,12 +59,20 @@ package entities
 	private function checkKeyPresses():void {
 	    var jumping:Boolean = collide("level", x, y+1) == null;
 
-	    
 	    var xAccel:Number;
-	    xAccel = (goingFast) ? fastXAcceleration : slowXAcceleration;
-
 	    var maxSpeed:Number;
-	    maxSpeed = (goingFast) ? FAST_MAX_SPEED : SLOW_MAX_SPEED;
+	    if (goingFast) {
+		xAccel = FAST_X_ACCEL;
+		maxSpeed = FAST_MAX_SPEED;
+	    }
+	    if (goingSlow) {
+		xAccel = SLOW_X_ACCEL;
+		maxSpeed = SLOW_MAX_SPEED;
+	    }
+	    if (goingMedium) {
+		xAccel = MEDIUM_X_ACCEL;
+		maxSpeed = MEDIUM_MAX_SPEED;
+	    }
 
 	    // left / right movement
 	    if (Input.check(Key.RIGHT)) { vx += xAccel; }
@@ -122,6 +138,28 @@ package entities
 	    var blah:Number = this.y + PICKUP_DISTANCE;
 	    downTween.tween(this, "y", blah, 1);
 	    FP.world.addTween(downTween);
+	}
+
+	/*
+	 * speed modification
+	 */
+
+	public function goFast():void {
+	    goingFast = true;
+	    goingMedium = false;
+	    goingSlow = false;
+	}
+
+	public function goMedium():void {
+	    goingFast = false;
+	    goingMedium = true;
+	    goingSlow = false;
+	}
+
+	public function goSlow():void {
+	    goingFast = false;
+	    goingMedium = false;
+	    goingSlow = true;
 	}
 
     }
