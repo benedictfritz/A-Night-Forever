@@ -68,7 +68,8 @@ package worlds
             var dataList:XMLList = levelData.objects.player;
             var dataElement:XML;
             for each(dataElement in dataList) {	    
-                player = new RunningPlayer(int(dataElement.@x), int(dataElement.@y));
+                player = new RunningPlayer(int(dataElement.@x),
+					   int(dataElement.@y));
                 add(player);
             }
 	    player.setControllable(false);
@@ -96,7 +97,8 @@ package worlds
 	    dataList = levelData.objects.threeRocks;
 	    for each(dataElement in dataList) {
 		var threeRocks:Image = new Image(THREE_ROCKS);
-		addGraphic(threeRocks, 1, int(dataElement.@x), int(dataElement.@y));
+		addGraphic(threeRocks, 1, int(dataElement.@x),
+			   int(dataElement.@y));
 	    }
 
 	    dataList = levelData.objects.bigRock;
@@ -108,7 +110,8 @@ package worlds
 	    dataList = levelData.objects.pointyRock;
 	    for each(dataElement in dataList) {
 		var pointyRock:Image = new Image(POINTY_ROCK);
-		addGraphic(pointyRock, 1, int(dataElement.@x), int(dataElement.@y));
+		addGraphic(pointyRock, 1, int(dataElement.@x),
+			   int(dataElement.@y));
 	    }
 
 	    dataList = levelData.objects.tinyRocks;
@@ -182,7 +185,8 @@ package worlds
 
 		    var panBackTween:VarTween = new VarTween();
 		    var camPannedX:Number = FP.camera.x - 100;
-		    panBackTween.tween(FP.camera, "x", camPannedX, 2, Ease.sineInOut);
+		    panBackTween.tween(FP.camera, "x",
+				       camPannedX, 2, Ease.sineInOut);
 		    addTween(panBackTween);
 		    cameraMinX = camPannedX;
 
