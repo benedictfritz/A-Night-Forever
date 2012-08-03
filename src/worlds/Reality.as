@@ -159,7 +159,10 @@ package worlds
 
 	    if (SO.x >= soEndOfLevelX) {
 		SO.running = false;
+		SO.spawningMonsters = false;
 		SO.playFaceLeft();
+
+		player.goingFast = false;
 
 		var panToEndSequence:VarTween = new VarTween();
 		panToEndSequence.tween(FP.camera, "x",
