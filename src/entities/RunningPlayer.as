@@ -15,18 +15,23 @@ package entities
 	private const 
 	    JUMP_SPEED:Number = 230,
 	    MIN_SPEED:Number = 10.0,
-	    MAX_SPEED:Number = 170,
+	    FAST_MAX_SPEED:Number = 170,
+	    SLOW_MAX_SPEED:Number = 120,
 	    COLLISION_TIME:Number = 1,
 	    PICKUP_DISTANCE:Number = 30;
 
 	private var
 	    gravity:Number = 400,
-	    xAcceleration:Number = 20,
+	    fastXAcceleration:Number = 20,
+	    slowXAcceleration:Number = 10,
 	    xFriction:Number = 0.1;
 
 	public var
 	    fallen:Boolean = false,
 	    pickingUp:Boolean = false;
+
+	public var
+	    goingFast:Boolean = true;
 
 	public function RunningPlayer(x:int=0, y:int=0) {
 	    super(x, y);
@@ -46,11 +51,18 @@ package entities
 	private function checkKeyPresses():void {
 	    var jumping:Boolean = collide("level", x, y+1) == null;
 
+	    
+	    var xAccel:Number;
+	    xAccel = (goingFast) ? fastXAcceleration : slowXAcceleration;
+
+	    var maxSpeed:Number;
+	    maxSpeed = (goingFast) ? FAST_MAX_SPEED : SLOW_MAX_SPEED;
+
 	    // left / right movement
-	    if (Input.check(Key.RIGHT)) { vx += xAcceleration; }
-	    else if (Input.check(Key.LEFT)) { vx -= xAcceleration; }
+	    if (Input.check(Key.RIGHT)) { vx += xAccel; }
+	    else if (Input.check(Key.LEFT)) { vx -= xAccel; }
 	    vx -= vx * xFriction;
-	    if (Math.abs(vx) > MAX_SPEED) { vx = FP.sign(vx)*MAX_SPEED; }
+	    if (Math.abs(vx) > maxSpeed) { vx = FP.sign(vx)*maxSpeed; }
 
 	    if(vx != 0) { vx < 0 ? flip(true) : flip(false); }
 
@@ -59,7 +71,7 @@ package entities
 	    }
 	    else {
 		sprActor.play("run");
-		sprActor.rate = FP.scale(Math.abs(vx), 0, MAX_SPEED, 0, 1);
+		sprActor.rate = FP.scale(Math.abs(vx), 0, maxSpeed, 0, 1);
 	    }
 	    
 	    // jumping movement
