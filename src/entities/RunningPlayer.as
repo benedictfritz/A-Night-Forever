@@ -16,7 +16,7 @@ package entities
 	    JUMP_SPEED:Number = 230,
 	    MIN_SPEED:Number = 10.0,
 	    FAST_MAX_SPEED:Number = 170,
-	    SLOW_MAX_SPEED:Number = 120,
+	    SLOW_MAX_SPEED:Number = 90,
 	    COLLISION_TIME:Number = 1,
 	    PICKUP_DISTANCE:Number = 30;
 
