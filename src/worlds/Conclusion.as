@@ -20,6 +20,8 @@ package worlds
 	    textEntity:Entity;
 
 	override public function begin():void {
+	    super.begin();
+
 	    whiteBackgroundEntity = new Entity(0, 0, new Image(BACKGROUND_IMAGE));
 	    add(whiteBackgroundEntity);
 
