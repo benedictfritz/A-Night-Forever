@@ -7,6 +7,7 @@ package worlds
     import net.flashpunk.tweens.misc.VarTween;
 
     import entities.*;
+    import worlds.EmptySpace;
 
     public class Conclusion extends World
     {
@@ -33,10 +34,14 @@ package worlds
 	}
 
 	private function fadeInText():void {
-	    var alphaTween:VarTween = new VarTween();
+	    var alphaTween:VarTween = new VarTween(goToEmpty);
 	    var textImage:Image = Image(textEntity.graphic);
 	    alphaTween.tween(textImage, "alpha", 1, 5);
 	    addTween(alphaTween);
+	}
+
+	private function goToEmpty():void {
+	    FP.world = new EmptySpace();
 	}
     }
 }

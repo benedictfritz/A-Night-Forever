@@ -8,8 +8,9 @@ package worlds
 
     import entities.*;
 
-    public class Empty extends World
+    public class EmptySpace extends World
     {
+	public function EmptySpace():void {}
 
 	override public function begin():void {
 	    super.begin()
