@@ -23,6 +23,8 @@ package worlds
 
 	[Embed(source = '../../assets/sounds/music.swf', symbol = 'scene_4')]
 	    static public const MUSIC:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol = 'scene_5')]
+	    static public const INTERLUDE_MUSIC:Class;
 
 	private static var
 	    GIVE_UP_BUFFER:Number = 1000;
@@ -39,7 +41,8 @@ package worlds
 	private var
 	    level:Level,
 	    skyBackground:SkyBackground,
-	    music:Sfx = new Sfx(MUSIC);
+	    music:Sfx = new Sfx(MUSIC),
+	    interludeMusic:Sfx = new Sfx(INTERLUDE_MUSIC);
 
 	private var
 	    spawnedWindTunnels:Boolean = false,
@@ -173,9 +176,9 @@ package worlds
 	    if (player.y-player.height <= sO.y) {
 		FP.world = new Interlude(player.x, player.y);
 
-		var fadeOut:SfxFader = new SfxFader(music);
-		fadeOut.fadeTo(0, 0.5);
-		FP.tweener.addTween(fadeOut);
+		var crossfade:SfxFader = new SfxFader(music);
+		crossfade.crossFade(interludeMusic, false, 1, 1);
+		FP.tweener.addTween(crossfade);
 	    }
 	}
 
