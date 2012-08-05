@@ -1,6 +1,7 @@
 package worlds
 {
     import net.flashpunk.FP;
+    import net.flashpunk.Sfx;
     import net.flashpunk.World;
     import net.flashpunk.masks.Grid;
     import net.flashpunk.graphics.Tilemap;
@@ -12,6 +13,9 @@ package worlds
 
     public class Falling extends World
     {
+	[Embed(source = '../../assets/sounds/music.swf', symbol = 'scene_6')]
+	    static public const MUSIC:Class;
+
 	private const
 	    STAR_RANGE:Number = 6,
 	    FALLING_GRAVITY:Number = 0.2,
@@ -29,11 +33,16 @@ package worlds
 	    cloudPoints:Array = new Array(),
 	    darkness:Darkness;
 
+	private var
+	    music:Sfx = new Sfx(MUSIC);
+
 	public function Falling():void {
 	}
 
 	override public function begin():void {
 	    super.begin();
+
+	    music.loop();
 
 	    couple = new Couple(0, 0);
 	    add(couple);
