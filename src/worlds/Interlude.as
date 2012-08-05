@@ -17,13 +17,17 @@ package worlds
 
     public class Interlude extends World
     {
+	[Embed(source="../../assets/levels/Interlude.oel", 
+	       mimeType="application/octet-stream")]
+	    private static const MAP_DATA:Class;
+
 	[Embed(source = '../../assets/images/moon.png')]
 	    private const MOON_IMAGE:Class;
 
 	private static const
 	    LEVEL_WIDTH:Number = 1600,
 	    LEVEL_HEIGHT:Number = 1600,
-	    TO_CLOUD_TIME:Number = 2,
+	    TO_CLOUD_TIME:Number = 5,
 	    HALF_ARC_TIME:Number = 2,
 	    CLOUD_Y:Number = -1024;
 
@@ -61,6 +65,10 @@ package worlds
 	}
 
 	private function initLevel():void {
+	    var level:Level = new Level(MAP_DATA);
+	    var levelData:XML = level.getLevelData();
+	    couple.y = levelData.objects.couple.@y;
+
 	    // can't use couple's height because the hitbox is really small
 	    FP.camera.y = couple.y - FP.height + 96;
 
@@ -76,7 +84,7 @@ package worlds
 	    moon = new Image(MOON_IMAGE);
 	    moon.scrollX = 0.2;
 
-	    skyBackground = new SkyBackground(-FP.halfWidth, FP.height, 4, 4);
+	    skyBackground = new SkyBackground(-FP.halfWidth, FP.height*3, 4, 6);
 	    add(skyBackground);
 	}
 
