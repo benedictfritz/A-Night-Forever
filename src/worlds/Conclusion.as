@@ -26,11 +26,13 @@ package worlds
 	    whiteBackgroundEntity = new Entity(0, 0, new Image(BACKGROUND_IMAGE));
 	    add(whiteBackgroundEntity);
 
-	    var textImage:Image = new Image(CONCLUSION_TEXT_1);
-	    textImage.alpha = 0;
-	    textEntity = new Entity(0, FP.halfHeight - textImage.height/2, textImage);
-	    add(textEntity);
-	    FP.alarm(2, fadeInText);
+	    FP.alarm(3, goToEmpty());
+
+	    // var textImage:Image = new Image(CONCLUSION_TEXT_1);
+	    // textImage.alpha = 0;
+	    // textEntity = new Entity(0, FP.halfHeight - textImage.height/2, textImage);
+	    // add(textEntity);
+	    // FP.alarm(2, fadeInText);
 	}
 
 	private function fadeInText():void {
