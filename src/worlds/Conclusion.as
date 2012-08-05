@@ -26,7 +26,7 @@ package worlds
 	    whiteBackgroundEntity = new Entity(0, 0, new Image(BACKGROUND_IMAGE));
 	    add(whiteBackgroundEntity);
 
-	    FP.alarm(3, goToEmpty());
+	    FP.alarm(3, goToEmpty);
 
 	    // var textImage:Image = new Image(CONCLUSION_TEXT_1);
 	    // textImage.alpha = 0;
