@@ -49,6 +49,7 @@ package worlds
 		player = new RunningPlayer(int(dataElement.@x), int(dataElement.@y));
 		add(player);
 	    }
+	    player.goMedium();
 	    player.setControllable(false);
 
 	    dataList = levelData.objects.so;
