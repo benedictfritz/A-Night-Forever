@@ -1,6 +1,6 @@
 <level>
   <width>1800</width>
-  <height>2000</height>
+  <height>2500</height>
   <objects>
     <cloudLayer3 x="0" y="448"/>
     <cloudLayer2 x="0" y="480"/>
@@ -23,9 +23,9 @@
     <cloudLayer1 x="1024" y="512"/>
     <cloudLayer1 x="1280" y="512"/>
     <cloudLayer1 x="1344" y="512"/>
-    <couple x="352" y="1888"/>
     <cloudLayer3 x="1536" y="448"/>
     <cloudLayer2 x="1536" y="480"/>
     <cloudLayer1 x="1536" y="512"/>
+    <couple x="360" y="2392"/>
   </objects>
 </level>
