@@ -6,6 +6,8 @@ package worlds
     import net.flashpunk.graphics.Image;
     import net.flashpunk.tweens.misc.VarTween;
 
+    import worlds.TheEnd;
+
     import entities.*;
 
     public class EmptySpace extends World
@@ -49,6 +51,12 @@ package worlds
 
 	    fusedPlayer = new FusedPlayer(FP.halfWidth, FP.halfHeight);
 	    add(fusedPlayer);
+
+	    FP.alarm(35, goToEnd);
+	}
+
+	private function goToEnd():void {
+	    FP.world = new TheEnd();
 	}
 
 	override public function update():void {
