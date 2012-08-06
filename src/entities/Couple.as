@@ -40,6 +40,7 @@ package entities
 	    this.y = y;
 
 	    sprCouple = new Spritemap(COUPLE_SPRITE, 96, 96);
+	    sprCouple.smooth = true;
 	    sprCouple.add("down_left", [6,7], 14, true);
 	    sprCouple.add("down_right", [2,3], 14, true);
 	    sprCouple.add("up_left", [8, 9], 14, true);

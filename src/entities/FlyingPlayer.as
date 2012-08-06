@@ -30,6 +30,7 @@ package entities
 	    super(x, y);
 
 	    sprActor = new Spritemap(COUPLE_SPRITE, 96, 96);
+	    sprActor.smooth = true;
 	    sprActor.add("default", [0, 1], 8, true);
 	    sprActor.play("default");
 

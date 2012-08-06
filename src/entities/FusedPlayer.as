@@ -26,7 +26,10 @@ package entities
 	public function FusedPlayer(x:int, y:int):void {
 	    super(x, y);
 	    centerOrigin();
+
+	    sprPlayer.smooth = true;
 	    sprPlayer.centerOO();
+	    sprSO.smooth = true;
 	    sprSO.centerOO();
 	}
 
