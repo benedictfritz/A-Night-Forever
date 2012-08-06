@@ -70,7 +70,8 @@ package worlds
 	    var dataElement:XML;
 	    var dataList:XMLList = levelData.objects.player;
 	    for each(dataElement in dataList) {
-		player = new RunningPlayer(int(dataElement.@x), int(dataElement.@y));
+		player = new RunningPlayer(int(dataElement.@x),
+					   int(dataElement.@y));
 		add(player);
 	    }
 	    player.goMedium();
@@ -85,7 +86,8 @@ package worlds
 	    for (var i:int = 0; i < NUM_CLOUDS; i++) {
 		var randCloudX:Number = Math.random()*(FP.width + FP.halfWidth);
 		var randCloudY:Number = 
-		    Math.random()*(FP.halfHeight - CAMERA_START_Y) + CAMERA_START_Y;
+		    Math.random()*(FP.halfHeight - CAMERA_START_Y)
+		    + CAMERA_START_Y;
 		add(new VisualCloud(randCloudX, randCloudY));
 	    }
 
