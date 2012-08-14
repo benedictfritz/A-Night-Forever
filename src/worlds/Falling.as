@@ -28,6 +28,10 @@ package worlds
 	private var
 	    sectors:Array,
 	    currSector:Sector,
+	    backgroundSectors:Array,
+	    currBackgroundSector:Sector;
+
+	private var
 	    couple:Couple,
 	    minStars:Number = 8,
 	    chanceOfClouds:Number = 4,
@@ -35,6 +39,9 @@ package worlds
 	    cloudPoints:Array = new Array(),
 	    darkness:Darkness,
 	    transitioning:Boolean = false;
+
+	private var
+	    scrollScale:Number;
 
 	private var
 	    music:Sfx = new Sfx(MUSIC);
@@ -45,6 +52,8 @@ package worlds
 	override public function begin():void {
 	    super.begin();
 
+	    scrollScale = SkyBackground.SCROLL_SCALE;
+
 	    music.loop();
 
 	    couple = new Couple(0, 0);
@@ -53,12 +62,17 @@ package worlds
 	    sectors = new Array();
 	    currSector = new Sector(0, 0);
 	    addCloudLayersToSector(0);
-	    var firstSectorBackground:SkyBackground = 
-	    	new SkyBackground(currSector.minX(), currSector.maxY(), 1, 1);
-	    add(firstSectorBackground);
-
 	    sectors.push(currSector);
 	    updateSectors();
+
+	    backgroundSectors = new Array();
+	    currBackgroundSector = new Sector(0, 0);
+	    sectors.push(currBackgroundSector);
+	    updateBackgroundSectors();
+	    var firstSectorBackground:SkyBackground =
+	    	new SkyBackground(currSector.minX(),
+				  currSector.maxY(), 1, 1);
+	    add(firstSectorBackground);
 
 	    var transitionIn:TransitionIn = new TransitionIn(0.1, 0xFFFFFF);
 	    add(transitionIn);
@@ -82,6 +96,15 @@ package worlds
 			add(darkness);
 		    }
 		}
+	    }
+
+	    // HORRIBLE FIX: all background generation seems to be off by
+	    // one vertical tile, so I pretend the couple's y is one tile down
+	    // to fix spawning. this is also used in pushNewBackgroundSector
+	    if (!currBackgroundSector.contains(couple.x*scrollScale,
+					       (couple.y*scrollScale)+FP.height)) {
+		pushNewBackgroundSector();
+		updateBackgroundSectors();
 	    }
 
 	    if (darkness && darkness.done && !transitioning) {
@@ -154,8 +177,8 @@ package worlds
 	    }
 	}
 
-	// make sure all sectors surrounding the current sector exist and are in the
-	// sectors array.
+	// make sure all sectors surrounding the current sector exist and
+	// are in the sectors array.
 	private function updateSectors():void {
 	    var sectorColumn:Number = currSector.column;
 	    var sectorRow:Number = currSector.row;
@@ -172,10 +195,6 @@ package worlds
 			sectors.push(newSector);
 			populateSector(newSector);
 
-			var newSectorBackground:SkyBackground = 
-			    new SkyBackground(newSector.minX(), newSector.maxY(), 
-					      1, 1);
-			add(newSectorBackground);
 			minStars -= 0.2;
 			chanceOfClouds -= 0.1;
 		    }
@@ -222,7 +241,68 @@ package worlds
 		    add(newCloud);
 		}
 	    }
-	    
+	}
+
+	/*
+	 * background sector functions
+	 * there is tons of duplication between this and the other sector functions
+	 * and I might not fix it but honestly I just want to finish this game
+	 * and this code will never have to be maintained.
+	 */
+
+	private function updateBackgroundSectors():void {
+	    var sectorColumn:Number = currBackgroundSector.column;
+	    var sectorRow:Number = currBackgroundSector.row;
+
+	    for (var column:Number = sectorColumn-1;
+		 column <= sectorColumn+1; column++) {
+		for (var row:Number = sectorRow-1; row <= sectorRow+1; row++) {
+		    if (!isInBackgroundSectorsArray(column, row)) {
+			var newSector:Sector = new Sector(column, row);
+			backgroundSectors.push(newSector);
+
+			// scale new background position by scrollX
+			var newSectorBackground:SkyBackground =
+			    new SkyBackground(newSector.minX(), newSector.minY(),
+					      1, 1);
+			add(newSectorBackground);
+		    }
+		}
+	    }
+	}
+
+	private function
+	    isInBackgroundSectorsArray(column:Number, row:Number):Sector {
+
+	    var numSectors:Number = backgroundSectors.length;
+	    for (var i:Number=0; i < numSectors; i++) {
+		if (backgroundSectors[i].column == column
+		    && backgroundSectors[i].row == row) {
+		    return backgroundSectors[i];
+		}
+	    }
+	    return null;
+	}
+
+	private function pushNewBackgroundSector():void {
+	    var scaledX:Number = couple.x*scrollScale;
+	    var scaledY:Number = couple.y*scrollScale + FP.height;
+
+	    var newSectorX:int = int(scaledX/Sector.WIDTH);
+	    var newSectorY:int = int(scaledY/Sector.HEIGHT);
+
+	    // need to round down for negatives
+	    if (scaledX < 0) { newSectorX--; }
+
+	    var newCurrBackgroundSector:Sector =
+		isInBackgroundSectorsArray(newSectorX, newSectorY);
+	    if (newCurrBackgroundSector) {
+		currBackgroundSector = newCurrBackgroundSector;
+	    }
+	    else {
+		currBackgroundSector = new Sector(newSectorX, newSectorY);
+		backgroundSectors.push(newCurrBackgroundSector);
+	    }
 	}
     }
 }
