@@ -27,7 +27,7 @@ package worlds
 	private static const
 	    LEVEL_WIDTH:Number = 1600,
 	    LEVEL_HEIGHT:Number = 1600,
-	    TO_CLOUD_TIME:Number = 5,
+	    TO_CLOUD_TIME:Number = 2.3,
 	    HALF_ARC_TIME:Number = 2,
 	    CLOUD_Y:Number = -1024;
 
