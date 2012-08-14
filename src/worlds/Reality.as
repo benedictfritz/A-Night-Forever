@@ -1,6 +1,7 @@
 package worlds
 {
     import net.flashpunk.FP;
+    import net.flashpunk.Sfx;
     import net.flashpunk.World;
     import net.flashpunk.Entity;
     import net.flashpunk.utils.Key;
@@ -10,8 +11,7 @@ package worlds
     import net.flashpunk.graphics.Image;
     import net.flashpunk.graphics.Tilemap;
     import net.flashpunk.tweens.misc.VarTween;
-
-
+    import net.flashpunk.tweens.sound.SfxFader;
 
     import entities.*;
     import worlds.*;
@@ -22,6 +22,9 @@ package worlds
         [Embed(source="../../assets/levels/Reality.oel", 
            mimeType="application/octet-stream")]
 	    private static const MAP_DATA:Class;
+
+	[Embed(source = '../../assets/sounds/music.swf', symbol = 'scene_7')]
+	    static public const MUSIC:Class;
 
 	[Embed(source = '../../assets/levels/images/stump.png')] 
 	    private static const STUMP:Class;
@@ -50,7 +53,8 @@ package worlds
 	    player:RunningPlayer,
 	    SO:RunningSO,
 	    level:Level,
-	    skyBackground:SkyBackground;
+	    skyBackground:SkyBackground,
+	    music:Sfx = new Sfx(MUSIC);
 
 	private var
 	    cameraMinX:Number = 64,
@@ -59,6 +63,7 @@ package worlds
 
         public function Reality():void {
             super();
+	    music.loop();
         }
 
         override public function begin():void {
@@ -152,7 +157,7 @@ package worlds
         override public function update():void {
             super.update();
 
-	    if (inEndSequence) { 
+	    if (inEndSequence) {
 		endSequenceUpdate();
 		return;
 	    }
@@ -161,6 +166,10 @@ package worlds
 		SO.running = false;
 		SO.spawningMonsters = false;
 		SO.playFaceLeft();
+
+		var fadeOut:SfxFader = new SfxFader(music);
+		fadeOut.fadeTo(0, 4);
+		FP.tweener.addTween(fadeOut);
 
 		player.goSlow();
 
