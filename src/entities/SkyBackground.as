@@ -11,7 +11,7 @@ package entities
 	public static var
 	    TILE_WIDTH:Number = 800,
 	    TILE_HEIGHT:Number = 600,
-	    SCROLL_Y:Number = 0.2;
+	    SCROLL_SCALE:Number = 0.2;
 
 	private var
 	    tiles:Tilemap;
@@ -24,8 +24,8 @@ package entities
 
 	    tiles = new Tilemap(SKY_TILE, TILE_WIDTH*numHorizontal, 
 				TILE_HEIGHT*numVertical, TILE_WIDTH, TILE_HEIGHT);
-	    tiles.scrollX = SCROLL_Y;
-	    tiles.scrollY = 0.2;
+	    tiles.scrollX = SCROLL_SCALE;
+	    tiles.scrollY = SCROLL_SCALE;
 	    graphic = tiles;
 
 	    // render in the background
