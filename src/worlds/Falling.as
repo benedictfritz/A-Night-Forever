@@ -3,8 +3,10 @@ package worlds
     import net.flashpunk.FP;
     import net.flashpunk.Sfx;
     import net.flashpunk.World;
+    import net.flashpunk.utils.Draw;
     import net.flashpunk.masks.Grid;
     import net.flashpunk.graphics.Tilemap;
+    import net.flashpunk.tweens.sound.SfxFader;
 
     import flash.geom.Point;
 
@@ -31,7 +33,8 @@ package worlds
 	    chanceOfClouds:Number = 4,
 	    transitionIn:TransitionIn,
 	    cloudPoints:Array = new Array(),
-	    darkness:Darkness;
+	    darkness:Darkness,
+	    transitioning:Boolean = false;
 
 	private var
 	    music:Sfx = new Sfx(MUSIC);
@@ -73,18 +76,29 @@ package worlds
 		if (minStars < -STAR_RANGE - WORLD_CHANGE_BUFFER) {
 		    if (!darkness) { 
 			darkness = new Darkness();
+			var fadeOut:SfxFader = new SfxFader(music);
+			fadeOut.fadeTo(0, 9);
+			addTween(fadeOut);
 			add(darkness);
 		    }
 		}
 	    }
 
-	    if (darkness && darkness.done) {
-		FP.alarm(2, goToReality);
+	    if (darkness && darkness.done && !transitioning) {
+		transitioning = true;
+		FP.alarm(4, goToReality);
 	    }
 	}
 
 	private function goToReality():void {
 	    FP.world = new Reality();
+	}
+
+	override public function render():void {
+	    super.render();
+	    if (transitioning) {
+		Draw.rect(FP.camera.x, FP.camera.y, FP.width, FP.height, 0x000000);
+	    }
 	}
 
 	private function updateCamera():void {
