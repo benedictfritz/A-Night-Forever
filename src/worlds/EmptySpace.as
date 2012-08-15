@@ -3,6 +3,8 @@ package worlds
     import net.flashpunk.FP;
     import net.flashpunk.World;
     import net.flashpunk.Entity;
+    import net.flashpunk.utils.Key;
+    import net.flashpunk.utils.Input;
     import net.flashpunk.graphics.Image;
     import net.flashpunk.tweens.misc.VarTween;
 
@@ -12,7 +14,7 @@ package worlds
 
     public class EmptySpace extends World
     {
-	[Embed(source="../../assets/images/star_background.png")]
+	[Embed(source="../../assets/images/moving_star_background.png")]
 	    private const SKY:Class;
 
 	private var fusedPlayer:FusedPlayer;
@@ -22,6 +24,20 @@ package worlds
 	    leftBackground:Vector.<Entity>,
 	    downBackground:Vector.<Entity>,
 	    upBackground:Vector.<Entity>;
+
+	private var
+	    right_v:Number = 200,
+	    left_v:Number = 200,
+	    down_v:Number = 200,
+	    up_v:Number = 200;
+
+	private static const
+	    DECEL:Number = 800,
+	    MAX_ACCEL:Number = 1500,
+	    MIN_ACCEL:Number = 200;
+
+	private var
+	    accel:Number = 400;
 
 	public function EmptySpace():void {}
 
@@ -62,6 +78,42 @@ package worlds
 	override public function update():void {
 	    super.update();
 
+	    if (Input.check(Key.RIGHT)) {
+		right_v += FP.elapsed*accel;
+		if (right_v > MAX_ACCEL) { right_v = MAX_ACCEL; }
+	    }
+	    else {
+		right_v -= FP.elapsed*DECEL;
+		if (right_v < MIN_ACCEL) { right_v = MIN_ACCEL; }
+	    }
+
+	    if (Input.check(Key.LEFT)) {
+		left_v += FP.elapsed*accel;
+		if (left_v > MAX_ACCEL) { left_v = MAX_ACCEL; }
+	    }
+	    else {
+		left_v -= FP.elapsed*DECEL;
+		if (left_v < MIN_ACCEL) { left_v = MIN_ACCEL; }
+	    }
+
+	    if (Input.check(Key.UP)) {
+		up_v += FP.elapsed*accel;
+		if (up_v > MAX_ACCEL) { up_v = MAX_ACCEL; }
+	    }
+	    else {
+		up_v -= FP.elapsed*DECEL;
+		if (up_v < MIN_ACCEL) { up_v = MIN_ACCEL; }
+	    }
+
+	    if (Input.check(Key.DOWN)) {
+		down_v += FP.elapsed*accel;
+		if (down_v > MAX_ACCEL) { down_v = MAX_ACCEL; }
+	    }
+	    else {
+		down_v -= FP.elapsed*DECEL;
+		if (down_v < MIN_ACCEL) { down_v = MIN_ACCEL; }
+	    }
+
 	    var background_1:Entity;
 	    var background_2:Entity;
 
@@ -69,8 +121,8 @@ package worlds
 	    FP.sortBy(rightBackground, "x");
 	    background_1 = rightBackground[0];
 	    background_2 = rightBackground[1];
-	    background_1.x += FP.elapsed * 200;
-	    background_2.x += FP.elapsed * 200;
+	    background_1.x += FP.elapsed * right_v;
+	    background_2.x += FP.elapsed * right_v;
 	    if (background_2.x >= FP.width) {
 	    	// weird off-by-one issues
 	    	background_2.x = background_1.x - FP.width - 1;
@@ -79,8 +131,8 @@ package worlds
 	    FP.sortBy(leftBackground, "x", false);
 	    background_1 = leftBackground[0];
 	    background_2 = leftBackground[1];
-	    background_1.x -= FP.elapsed * 200;
-	    background_2.x -= FP.elapsed * 200;
+	    background_1.x -= FP.elapsed * left_v;
+	    background_2.x -= FP.elapsed * left_v;
 	    if (background_2.x <= -FP.width) {
 	    	// weird off-by-one issues
 	    	background_2.x = background_1.x + FP.width + 1;
@@ -89,8 +141,8 @@ package worlds
 	    FP.sortBy(downBackground, "y");
 	    background_1 = downBackground[0];
 	    background_2 = downBackground[1];
-	    background_1.y += FP.elapsed * 200;
-	    background_2.y += FP.elapsed * 200;
+	    background_1.y += FP.elapsed * down_v;
+	    background_2.y += FP.elapsed * down_v;
 	    if (background_2.y >= FP.height) {
 	    	// weird off-by-one issues
 	    	background_2.y = background_1.y - FP.height - 1;
@@ -99,8 +151,8 @@ package worlds
 	    FP.sortBy(upBackground, "y", false);
 	    background_1 = upBackground[0];
 	    background_2 = upBackground[1];
-	    background_1.y -= FP.elapsed * 200;
-	    background_2.y -= FP.elapsed * 200;
+	    background_1.y -= FP.elapsed * up_v;
+	    background_2.y -= FP.elapsed * up_v;
 	    if (background_2.y <= -FP.height) {
 		// weird off-by-one issues
 		background_2.y = background_1.y + FP.height + 1;
