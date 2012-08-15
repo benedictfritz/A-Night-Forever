@@ -8,7 +8,7 @@ package worlds
 
     import entities.*;
 	
-    public class Intro3 extends World {
+    public class Intro3 extends Intro {
 	[Embed(source="../../assets/levels/Intro3.oel", 
 	       mimeType="application/octet-stream")]
 	    private static const MAP_DATA:Class;
