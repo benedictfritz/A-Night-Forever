@@ -16,7 +16,8 @@ package entities
 	    JUMP_SPEED:Number = 230,
 	    MIN_SPEED:Number = 10.0,
 	    COLLISION_TIME:Number = 1,
-	    PICKUP_DISTANCE:Number = 30;
+	    PICKUP_DISTANCE:Number = 30,
+	    PICKUP_TIME:Number = 4;
 
 	private const
 	    FAST_MAX_SPEED:Number = 170,
@@ -128,15 +129,15 @@ package entities
 
 	public function liftUp():void {
 	    var upTween:VarTween = new VarTween(liftDown);
-	    var blah:Number = this.y - PICKUP_DISTANCE;
-	    upTween.tween(this, "y", blah, 1);
+	    var endY:Number = this.y - PICKUP_DISTANCE;
+	    upTween.tween(this, "y", endY, PICKUP_TIME/2);
 	    FP.world.addTween(upTween);
 	}
 
 	private function liftDown():void {
 	    var downTween:VarTween = new VarTween();
-	    var blah:Number = this.y + PICKUP_DISTANCE;
-	    downTween.tween(this, "y", blah, 1);
+	    var endY:Number = this.y + PICKUP_DISTANCE;
+	    downTween.tween(this, "y", endY, PICKUP_TIME/2);
 	    FP.world.addTween(downTween);
 	}
 
