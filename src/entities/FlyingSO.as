@@ -7,8 +7,10 @@ package entities
     import net.flashpunk.graphics.Image;
     import net.flashpunk.graphics.Spritemap;
     import net.flashpunk.tweens.misc.VarTween;
+    import net.flashpunk.utils.Ease;
 
     import entities.*;
+
 
     public class FlyingSO extends SO {
 	[Embed(source = '../../assets/images/couple.png')]
@@ -19,6 +21,9 @@ package entities
 	    maxX:Number,
 	    flying:Boolean=true,
 	    goingLeft:Boolean;
+
+	private var
+	    accelTween:VarTween = null;
 	
 	private var
 	    nextX:Number,
@@ -34,15 +39,27 @@ package entities
 	    sprActor.play("slow");
 	    this.graphic = sprActor;
 
-	    vy = -500;
+	    vy = 500;
+	}
+
+	public function goUncatchable():void {
+	    if (!accelTween) {
+		accelTween = new VarTween(endAccelTween);
+		accelTween.tween(this, "vy", 1000, 1, Ease.sineInOut);
+		addTween(accelTween);
+	    }
+	}
+
+	private function endAccelTween():void {
+	    accelTween = null;
 	}
 
 	public function goFast():void {
-	    vy = -500;
+	    if (!accelTween) { vy = 500; }
 	}
 
 	public function goSlow():void {
-	    vy = -100;
+	    if (!accelTween) { vy = 100; }
 	}
 
 	public function stop():void {
@@ -62,12 +79,12 @@ package entities
 	}
 
 	private function move():void {
-	    moveBy(0, vy * FP.elapsed, "level", true);
+	    moveBy(0, -vy * FP.elapsed, "level", true);
 	}
 
 	private function adjustHair():void {
 	    if (!flying) { sprActor.play("stop"); }
-	    else if (vy > -500) { sprActor.play("slow"); }
+	    else if (vy < 500) { sprActor.play("slow"); }
 	    else { sprActor.play("fast"); }
 	}
 

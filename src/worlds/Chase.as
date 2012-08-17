@@ -45,6 +45,12 @@ package worlds
 	    interludeMusic:Sfx = new Sfx(INTERLUDE_MUSIC);
 
 	private var
+	    uncatchable:Boolean = true,
+	    uncatchableTimer:Number = 0;
+	private static var
+	    UNCATCHABLE_TIME:Number = 30;
+
+	private var
 	    spawnedWindTunnels:Boolean = false,
 	    spawnedSlowingClouds:Boolean = false;
 	
@@ -90,7 +96,9 @@ package worlds
 	    sO.maxX = FP.width;
 	    add(sO);
 
-	    skyBackground = new SkyBackground(0, FP.height, 1, levelHeight/SkyBackground.TILE_HEIGHT);
+	    skyBackground =
+		new SkyBackground(0, FP.height, 1,
+				  levelHeight/SkyBackground.TILE_HEIGHT);
 	    add(skyBackground);
 	}
 
@@ -144,7 +152,14 @@ package worlds
 	    updateCamera();
 	    checkCatchingPlayer();
 	    
-	    if (sO.distanceFrom(player, true) > 700) { sO.goSlow(); }
+	    if (uncatchable) {
+		uncatchableTimer += FP.elapsed;
+		if (uncatchableTimer > UNCATCHABLE_TIME) { uncatchable = false; }
+	    }
+
+	    var chaseDistance:Number = sO.distanceFrom(player, true);
+	    if (uncatchable && chaseDistance < 100) { sO.goUncatchable(); }
+	    else if (chaseDistance > 700) { sO.goSlow(); }
 	    else { sO.goFast(); }
 
 	    var stoppingPoint:Number = -Math.abs(startingY - levelHeight);

@@ -8,10 +8,12 @@ package entities
 	protected var
 	    xSpeed:Number,
 	    ySpeed:Number,
-	    vx:Number = 0,
-	    vy:Number = 0,
 	    controllable:Boolean = true,
 	    sprActor:Spritemap;
+
+	public var
+	    vx:Number = 0,
+	    vy:Number = 0;
 
 	public var
 	    isAdjusting:Boolean = false,
