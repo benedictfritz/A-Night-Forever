@@ -35,12 +35,18 @@ package entities
 	public function FlyingSO(x:int=0, y:int=0) {
 	    super(x, y);
 
+	    // make the hitbox shorter so the player has to get to head-level
+	    // to collide
+	    setHitbox(sprActor.width - hitboxXBuffer*2, 18, -hitboxXBuffer, 0);
+
 	    sprActor = new Spritemap(COUPLE_SPRITE, 96, 96);
 	    sprActor.add("slow", [12, 13], 8, true);
 	    sprActor.add("fast", [12, 13], 16, true);
 	    sprActor.add("stop", [12], 1, true);
 	    sprActor.play("slow");
 	    this.graphic = sprActor;
+
+
 
 	    vy = 500;
 	}

@@ -188,14 +188,23 @@ package worlds
 	}
 
 	private function checkCatchingPlayer():void {
+	    // if the sO has stopped, all the player needs to do is go past
+	    // the sO to trigger the next world.
 	    // player's origin is at the feet, so we need to subtract off height
-	    if (player.y-player.height <= sO.y) {
-		FP.world = new Interlude(player.x, player.y);
-
-		var crossfade:SfxFader = new SfxFader(music);
-		crossfade.crossFade(interludeMusic, false, 1, 1);
-		FP.tweener.addTween(crossfade);
+	    if (sO.stopped && player.y-player.height <= sO.y) {
+		transitionToInterlude();
 	    }
+	    else if (player.collide("SO", player.x, player.y) != null) {
+		transitionToInterlude();
+	    }
+	}
+
+	private function transitionToInterlude():void {
+	    FP.world = new Interlude(player.x, player.y);
+
+	    var crossfade:SfxFader = new SfxFader(music);
+	    crossfade.crossFade(interludeMusic, false, 1, 1);
+	    FP.tweener.addTween(crossfade);
 	}
 
     }
