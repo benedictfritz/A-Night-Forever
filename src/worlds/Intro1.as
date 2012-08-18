@@ -19,7 +19,8 @@ package worlds
 	private static const
 	    PAN_TIME:Number = 3,
 	    CAMERA_START_Y:Number = -1200,
-	    NUM_CLOUDS:Number = 10;
+	    NUM_TITLE_CLOUDS:Number = 10,
+	    NUM_PLAYING_CLOUDS:Number = 10;
 
 	private var
 	    level:Level,
@@ -116,16 +117,34 @@ package worlds
 		add(SO);
 	    }
 
-	    for (var i:int = 0; i < NUM_CLOUDS; i++) {
-		var randCloudX:Number = Math.random()*(FP.width + FP.halfWidth);
-		var randCloudY:Number = 
-		    Math.random()*(FP.halfHeight - CAMERA_START_Y)
-		    + CAMERA_START_Y;
-		add(new VisualCloud(randCloudX, randCloudY));
-	    }
+	    spawnClouds();
 
 	    skyBackground = new SkyBackground(0, FP.height, 1, 3);
 	    add(skyBackground);
+	}
+
+	private function spawnClouds():void {
+	    var i:int, j:int;
+
+	    var numHorizontalCloudSectors:int = 8;
+	    var numVerticalCloudSectors:int = 3;
+	    var sectorWidth:Number = FP.width*2/numHorizontalCloudSectors;
+	    var sectorHeight:Number = FP.height/numVerticalCloudSectors;
+
+	    // title screen
+	    for (i=0; i < numHorizontalCloudSectors; i++) {
+		for (j=0; j < numVerticalCloudSectors; j++) {
+		    // don't spawn clouds where title is
+		    if (j == 1) { continue; }
+
+		    var randCloudX:Number = Math.random()*sectorWidth
+			+ i*sectorWidth;
+		    // subtract 30 since big clouds have their origin high up
+		    var randCloudY:Number = Math.random()*sectorHeight
+			+ j*sectorHeight + FP.camera.y - 100;
+		    add(new VisualCloud(randCloudX, randCloudY));
+		}
+	    }
 	}
 
     }
