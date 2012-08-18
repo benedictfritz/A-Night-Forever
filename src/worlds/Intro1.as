@@ -5,6 +5,7 @@ package worlds
     import net.flashpunk.World;
     import net.flashpunk.utils.Key;
     import net.flashpunk.utils.Input;
+    import net.flashpunk.graphics.Text;
     import net.flashpunk.tweens.misc.VarTween;
     import net.flashpunk.tweens.sound.SfxFader;
 
@@ -31,6 +32,10 @@ package worlds
 	    skyBackground:SkyBackground;
 
 	private var
+	    storyTextArray:Array,
+	    storyText:Text;
+
+	private var
     	    inMenu:Boolean=true,
 	    inText:Boolean=false,
 	    playing:Boolean = false;
@@ -42,6 +47,7 @@ package worlds
 	override public function begin():void {
 	    super.begin();
 	    FP.camera.y = CAMERA_START_Y;
+	    initStoryTextArray();
 	    initLevel();
 	}
 
@@ -67,15 +73,30 @@ package worlds
 	}
 
 	private function inTextUpdate():void {
-	    if (Input.check(Key.DOWN)) {
-		inText = false;
+	    if (!storyText) {
+		storyText = new Text("", 100, 850, { size:30, align:"center",
+						     width:600, height:100,
+						     color:0x808080, wordWrap:true,
+						     smooth:true });
+		storyText.text = storyTextArray.shift();
+		addGraphic(storyText);
+	    }
 
-		panToPlayingTween = new VarTween(function():void {
-			playing = true;
-			player.setControllable(true);
-		    });
-		panToPlayingTween.tween(FP.camera, "y", FP.height*2, PAN_TIME);
-		addTween(panToPlayingTween);
+	    if (Input.pressed(Key.DOWN)) {
+		var nextText:String = storyTextArray.shift();
+		if (nextText) {
+		    storyText.text = nextText;
+		}
+		else {
+		    inText = false;
+
+		    panToPlayingTween = new VarTween(function():void {
+			    playing = true;
+			    player.setControllable(true);
+			});
+		    panToPlayingTween.tween(FP.camera, "y", FP.height*2, PAN_TIME);
+		    addTween(panToPlayingTween);
+		}
 	    }
 	}
 
@@ -132,6 +153,14 @@ package worlds
 
 	    skyBackground = new SkyBackground(0, FP.height*3, 1, 3);
 	    add(skyBackground);
+	}
+
+	private function initStoryTextArray():void {
+	    storyTextArray =
+		new Array(
+			  "The night numbly prods at my nerve endings.",
+			  "It has always been night; the warmth of the sun firmly tucked beyond the horizon.",
+			  "But I know its warmth is there. It must be there.");
 	}
 
     }
