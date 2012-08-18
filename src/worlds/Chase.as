@@ -164,7 +164,7 @@ package worlds
 	    else { sO.goFast(); }
 
 	    var stoppingPoint:Number = -Math.abs(startingY - levelHeight);
-	    if (sO.y < stoppingPoint) {
+	    if (sO.y < stoppingPoint && !sO.stopped) {
 		sO.stop();
 	    }
 	}

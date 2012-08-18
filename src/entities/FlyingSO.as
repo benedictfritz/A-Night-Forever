@@ -29,6 +29,9 @@ package entities
 	    nextX:Number,
 	    swerveTween:VarTween;
 
+	public var
+	    stopped:Boolean = false;
+
 	public function FlyingSO(x:int=0, y:int=0) {
 	    super(x, y);
 
@@ -67,6 +70,20 @@ package entities
 	}
 
 	public function stop():void {
+	    // stop anything that could mess with our moveToCenterTween
+	    FP.world.clearTweens();
+
+	    stopped = true;
+	    var moveToCenter:VarTween = new VarTween(stopCompletion);
+	    var centerX:Number = FP.halfWidth-this.width/2-this.hitboxXBuffer/2;
+	    FP.console.log(centerX);
+	    moveToCenter.tween(this, "x", centerX, 1);
+	    FP.world.addTween(moveToCenter);
+	    goingLeft = centerX < x;
+	}
+
+	private function stopCompletion():void {
+	    flying = false;
 	    vy = 0;
 	}
 
@@ -93,15 +110,17 @@ package entities
 	}
 
 	private function resetNextX():void {
-	    var range:Number = maxX - minX;
-	    var numInRange:Number = FP.random * range;
-	    nextX = numInRange + (minX + originX);
+	    if (flying) {
+		var range:Number = maxX - minX;
+		var numInRange:Number = FP.random * range;
+		nextX = numInRange + (minX + originX);
 
-	    (nextX < x) ? goingLeft = true : goingLeft = false;
+		(nextX < x) ? goingLeft = true : goingLeft = false;
 
-	    swerveTween = new VarTween(resetNextX);
-	    swerveTween.tween(this, "x", nextX, 3, Ease.sineOut);
-	    FP.world.addTween(swerveTween);
+		swerveTween = new VarTween(resetNextX);
+		swerveTween.tween(this, "x", nextX, 3, Ease.sineOut);
+		FP.world.addTween(swerveTween);
+	    }
 	}
     }
 }
