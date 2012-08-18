@@ -35,7 +35,7 @@ package worlds
 
 	private var
 	    startingY:Number,
-	    levelHeight:Number = 100000,
+	    levelHeight:Number = 40000,
 	    spawnSectorHeight:Number = 500;
 
 	private var
@@ -48,7 +48,7 @@ package worlds
 	    uncatchable:Boolean = true,
 	    uncatchableTimer:Number = 0;
 	private static var
-	    UNCATCHABLE_TIME:Number = 30;
+	    UNCATCHABLE_TIME:Number = 45;
 
 	private var
 	    spawnedWindTunnels:Boolean = false,
@@ -159,6 +159,7 @@ package worlds
 
 	    var chaseDistance:Number = sO.distanceFrom(player, true);
 	    if (uncatchable && chaseDistance < 100) { sO.goUncatchable(); }
+	    if (chaseDistance < 200) { sO.goFaster(); }
 	    else if (chaseDistance > 700) { sO.goSlow(); }
 	    else { sO.goFast(); }
 

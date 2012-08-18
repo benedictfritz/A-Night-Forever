@@ -45,13 +45,17 @@ package entities
 	public function goUncatchable():void {
 	    if (!accelTween) {
 		accelTween = new VarTween(endAccelTween);
-		accelTween.tween(this, "vy", 1000, 1, Ease.sineInOut);
+		accelTween.tween(this, "vy", 1200, 1, Ease.sineInOut);
 		addTween(accelTween);
 	    }
 	}
 
 	private function endAccelTween():void {
 	    accelTween = null;
+	}
+
+	public function goFaster():void {
+	    if (!accelTween) { vy = 700; }
 	}
 
 	public function goFast():void {
@@ -96,7 +100,7 @@ package entities
 	    (nextX < x) ? goingLeft = true : goingLeft = false;
 
 	    swerveTween = new VarTween(resetNextX);
-	    swerveTween.tween(this, "x", nextX, 3, Ease.sineInOut);
+	    swerveTween.tween(this, "x", nextX, 3, Ease.sineOut);
 	    FP.world.addTween(swerveTween);
 	}
     }
