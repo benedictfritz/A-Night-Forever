@@ -21,12 +21,15 @@ package entities
 	    vx:Number,
 	    scale:Number;
 
-	public function VisualCloud(x:int=0, y:int=0) {
+	public function VisualCloud(x:int=0, y:int=0, size:int=-1) {
 	    this.x = x;
 	    this.y = y;
 	    this.scale = Math.random()*0.8+0.6;
 
-	    var size:int = Math.random() * 3;
+	    if (size == -1) {
+		size = Math.random() * 3;
+	    }
+
 	    if (size == 0) {
 		sprCloud = new Spritemap(SMALL_CLOUD_SPRITE, 128, 64);
 		this.vx = FP.scale(scale, 0.6, 1.4, -5, -15);

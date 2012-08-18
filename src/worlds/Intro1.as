@@ -18,7 +18,7 @@ package worlds
 
 	private static const
 	    PAN_TIME:Number = 3,
-	    CAMERA_START_Y:Number = -1200,
+	    CAMERA_START_Y:Number = 0,
 	    NUM_TITLE_CLOUDS:Number = 10,
 	    NUM_PLAYING_CLOUDS:Number = 10;
 
@@ -61,7 +61,7 @@ package worlds
 		inMenu = false;
 
 		panToTextTween = new VarTween(function():void { inText = true; });
-		panToTextTween.tween(FP.camera, "y", -FP.height, PAN_TIME);
+		panToTextTween.tween(FP.camera, "y", FP.height, PAN_TIME);
 		addTween(panToTextTween);
 	    }
 	}
@@ -74,7 +74,7 @@ package worlds
 			playing = true;
 			player.setControllable(true);
 		    });
-		panToPlayingTween.tween(FP.camera, "y", 0, PAN_TIME);
+		panToPlayingTween.tween(FP.camera, "y", FP.height*2, PAN_TIME);
 		addTween(panToPlayingTween);
 	    }
 	}
@@ -117,34 +117,21 @@ package worlds
 		add(SO);
 	    }
 
-	    spawnClouds();
-
-	    skyBackground = new SkyBackground(0, FP.height, 1, 3);
-	    add(skyBackground);
-	}
-
-	private function spawnClouds():void {
-	    var i:int, j:int;
-
-	    var numHorizontalCloudSectors:int = 8;
-	    var numVerticalCloudSectors:int = 3;
-	    var sectorWidth:Number = FP.width*2/numHorizontalCloudSectors;
-	    var sectorHeight:Number = FP.height/numVerticalCloudSectors;
-
-	    // title screen
-	    for (i=0; i < numHorizontalCloudSectors; i++) {
-		for (j=0; j < numVerticalCloudSectors; j++) {
-		    // don't spawn clouds where title is
-		    if (j == 1) { continue; }
-
-		    var randCloudX:Number = Math.random()*sectorWidth
-			+ i*sectorWidth;
-		    // subtract 30 since big clouds have their origin high up
-		    var randCloudY:Number = Math.random()*sectorHeight
-			+ j*sectorHeight + FP.camera.y - 100;
-		    add(new VisualCloud(randCloudX, randCloudY));
-		}
+	    dataList = levelData.objects.smallCloud;
+	    for each(dataElement in dataList) {
+		add(new VisualCloud(int(dataElement.@x), int(dataElement.@y), 0));
 	    }
+	    dataList = levelData.objects.mediumCloud;
+	    for each(dataElement in dataList) {
+		add(new VisualCloud(int(dataElement.@x), int(dataElement.@y), 1));
+	    }
+	    dataList = levelData.objects.largeCloud;
+	    for each(dataElement in dataList) {
+		add(new VisualCloud(int(dataElement.@x), int(dataElement.@y), 2));
+	    }
+
+	    skyBackground = new SkyBackground(0, FP.height*3, 1, 3);
+	    add(skyBackground);
 	}
 
     }

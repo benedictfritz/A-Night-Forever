@@ -32,6 +32,9 @@
     <object name="bigRock" image="big_rock.png" width="64" height="64"/>
     <object name="pointyRock" image="pointy_rock.png" width="64" height="32"/>
     <object name="tinyRocks" image="tiny_rocks.png" width="64" height="16"/>
+    <object name="smallCloud" image="cloud_small.png" height="64" width="128"/>
+    <object name="mediumCloud" image="cloud_med.png" height="96" width="192"/>
+    <object name="largeCloud" image="cloud_large.png" height="128" width="256"/>
   </objects>
 
   <layers>
