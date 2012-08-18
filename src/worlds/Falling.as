@@ -3,9 +3,12 @@ package worlds
     import net.flashpunk.FP;
     import net.flashpunk.Sfx;
     import net.flashpunk.World;
+    import net.flashpunk.Entity;
     import net.flashpunk.utils.Draw;
     import net.flashpunk.masks.Grid;
+    import net.flashpunk.graphics.Image;
     import net.flashpunk.graphics.Tilemap;
+    import net.flashpunk.tweens.misc.VarTween;
     import net.flashpunk.tweens.sound.SfxFader;
 
     import flash.geom.Point;
@@ -17,6 +20,9 @@ package worlds
     {
 	[Embed(source = '../../assets/sounds/music.swf', symbol = 'scene_6')]
 	    static public const MUSIC:Class;
+
+	[Embed(source = '../../assets/images/fall_pain.png')]
+	    private const FALL_PAIN_IMG:Class;
 
 	private const
 	    STAR_RANGE:Number = 6,
@@ -41,6 +47,10 @@ package worlds
 	    transitioning:Boolean = false;
 
 	private var
+	    fallPain:Entity,
+	    fallPainAlphaTween:VarTween;
+
+	private var
 	    scrollScale:Number;
 
 	private var
@@ -55,6 +65,13 @@ package worlds
 	    scrollScale = SkyBackground.SCROLL_SCALE;
 
 	    music.loop();
+
+	    fallPain = new Entity(0, 0, new Image(FALL_PAIN_IMG));
+	    fallPain.layer = -500;
+	    Image(fallPain.graphic).alpha = 0;
+	    Image(fallPain.graphic).scrollX = 0;
+	    Image(fallPain.graphic).scrollY = 0;
+	    add(fallPain);
 
 	    couple = new Couple(0, 0);
 	    add(couple);
@@ -82,6 +99,21 @@ package worlds
 	    super.update();
 
 	    updateCamera();
+
+	    if (couple.vy > 100) {
+	    	Image(fallPain.graphic).alpha =
+		    FP.scale(couple.vy, 0, Couple.MIN_SHAKE_VY, 0, 1);
+	    }
+	    else {
+		if (!fallPainAlphaTween) {
+		    fallPainAlphaTween = new VarTween(function():void {
+			    fallPainAlphaTween = null;
+			});
+		    fallPainAlphaTween.tween(Image(fallPain.graphic),
+					     "alpha", 0, 0.3);
+		    addTween(fallPainAlphaTween);
+		}
+	    }
 
 	    if (!currSector.contains(couple.x, couple.y)) {
 		pushNewSector();
