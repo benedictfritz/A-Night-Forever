@@ -22,8 +22,11 @@ package worlds
 	    crowd:Crowd,
 	    skyBackground:SkyBackground,
 	    transitionIn:TransitionIn,
-	    transitionOut:TransitionOut,
-	    playerEntering:Boolean=false;
+	    transitionOut:TransitionOut;
+
+	private var
+	    playerEntering:Boolean=false,
+	    introComplete:Boolean=false;
 
 	override public function begin():void {
 	    super.begin();
@@ -97,7 +100,8 @@ package worlds
 		}
 	    }
 
-	    if (SO.x > 200 && !playerEntering && player.x < CAM_X_OFFSET) {
+	    if (SO.x > 200 && !playerEntering && player.x < CAM_X_OFFSET
+		&& !introComplete) {
 		playerEntering = true;
 	    }
 
@@ -108,7 +112,13 @@ package worlds
 
 	    if (player.x > CAM_X_OFFSET) {
 		playerEntering = false;
+		introComplete = true;
 		player.setControllable(true);
+	    }
+
+	    // stop the player from running off the stage to the left
+	    if (introComplete && (player.x + player.hitboxXBuffer)<CAM_X_OFFSET) {
+		player.x = CAM_X_OFFSET-player.hitboxXBuffer;
 	    }
 
 	    if (player.x > FP.width+CAM_X_OFFSET && !transitionOut) {
