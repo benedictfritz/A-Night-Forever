@@ -28,6 +28,7 @@ package worlds
 	    skyBackground:SkyBackground,
 	    transitionIn:TransitionIn,
 	    runningPlayerEntering:Boolean=false,
+	    introComplete:Boolean=false,
 	    soUpTween:VarTween;
 
 	override public function begin():void {
@@ -84,7 +85,7 @@ package worlds
 	    }
 
 	    if (runningSO.x > 200 && !runningPlayerEntering 
-		&& runningPlayer.x < CAM_X_OFFSET) {
+		&& runningPlayer.x < CAM_X_OFFSET && !introComplete) {
 		runningPlayerEntering = true;
 	    }
 
@@ -95,12 +96,20 @@ package worlds
 
 	    if (runningPlayer.x > CAM_X_OFFSET) {
 		runningPlayerEntering = false;
+		introComplete = true;
 		runningPlayer.setControllable(true);
 	    }
 
 	    if (runningSO.x > 500) {
 		runningSO.running = false;
 		runningSO.playFaceLeft();
+	    }
+
+	    // stop the player from running off the stage to the left
+	    if (introComplete 
+		&& (runningPlayer.x + runningPlayer.hitboxXBuffer)<CAM_X_OFFSET) {
+
+		runningPlayer.x = CAM_X_OFFSET-runningPlayer.hitboxXBuffer;
 	    }
 
 	    // TODO: replace distance with distance where runningSO takes off.
@@ -143,6 +152,14 @@ package worlds
 		    flyingPlayer.yAcceleration = 5;
 		    remove(runningPlayer);
 		}
+	    }
+
+	    // stop player from flying off in the left/right directions
+	    if (flyingPlayer && flyingPlayer.left < CAM_X_OFFSET) {
+		flyingPlayer.x = CAM_X_OFFSET + flyingPlayer.width/2;
+	    }
+	    if (flyingPlayer && flyingPlayer.right > FP.width+CAM_X_OFFSET) {
+		flyingPlayer.x = FP.width+CAM_X_OFFSET - flyingPlayer.width/2;
 	    }
 
 	    if (flyingPlayer != null && flyingPlayer.y < -11) {
