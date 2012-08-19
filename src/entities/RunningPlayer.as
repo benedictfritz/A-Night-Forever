@@ -105,7 +105,6 @@ package entities
 		vy = 0;
 	    }
 
-	    FP.console.log(vy);
 	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
 	}
 
