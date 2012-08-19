@@ -1,58 +1,77 @@
 <level>
-  <width>896</width>
-  <height>600</height>
+  <width>1000</width>
+  <height>800</height>
   <tiles set="tiles">
-    <tile tx="64" ty="64" x="0" y="512"/>
-    <tile tx="64" ty="64" x="128" y="512"/>
-    <tile tx="64" ty="64" x="256" y="512"/>
-    <tile tx="64" ty="64" x="384" y="512"/>
-    <tile tx="64" ty="64" x="640" y="512"/>
-    <tile tx="256" ty="64" x="64" y="512"/>
-    <tile tx="256" ty="64" x="512" y="512"/>
-    <tile tx="256" ty="64" x="576" y="512"/>
-    <tile tx="320" ty="64" x="192" y="512"/>
-    <tile tx="320" ty="64" x="448" y="512"/>
-    <tile tx="448" ty="64" x="704" y="512"/>
-    <tile tx="448" ty="64" x="320" y="512"/>
-    <tile tx="0" ty="64" x="0" y="576"/>
-    <tile tx="0" ty="64" x="64" y="576"/>
-    <tile tx="0" ty="64" x="128" y="576"/>
-    <tile tx="0" ty="64" x="192" y="576"/>
-    <tile tx="0" ty="64" x="256" y="576"/>
-    <tile tx="0" ty="64" x="320" y="576"/>
-    <tile tx="0" ty="64" x="384" y="576"/>
-    <tile tx="0" ty="64" x="448" y="576"/>
-    <tile tx="0" ty="64" x="512" y="576"/>
-    <tile tx="0" ty="64" x="576" y="576"/>
-    <tile tx="0" ty="64" x="640" y="576"/>
-    <tile tx="0" ty="64" x="704" y="576"/>
-    <tile tx="320" ty="64" x="768" y="512"/>
-    <tile tx="0" ty="64" x="768" y="576"/>
-    <tile tx="0" ty="64" x="832" y="576"/>
-    <tile tx="64" ty="64" x="832" y="512"/>
+    <tile tx="0" ty="64" x="320" y="768"/>
+    <tile tx="0" ty="64" x="384" y="768"/>
+    <tile tx="0" ty="64" x="448" y="768"/>
+    <tile tx="0" ty="64" x="512" y="768"/>
+    <tile tx="0" ty="64" x="576" y="768"/>
+    <tile tx="0" ty="64" x="640" y="768"/>
+    <tile tx="0" ty="64" x="704" y="768"/>
+    <tile tx="0" ty="64" x="832" y="768"/>
+    <tile tx="0" ty="64" x="768" y="768"/>
+    <tile tx="0" ty="64" x="0" y="768"/>
+    <tile tx="0" ty="64" x="64" y="768"/>
+    <tile tx="0" ty="64" x="128" y="768"/>
+    <tile tx="0" ty="64" x="192" y="768"/>
+    <tile tx="0" ty="64" x="256" y="768"/>
+    <tile tx="64" ty="64" x="0" y="704"/>
+    <tile tx="64" ty="64" x="128" y="704"/>
+    <tile tx="64" ty="64" x="448" y="704"/>
+    <tile tx="64" ty="64" x="576" y="704"/>
+    <tile tx="64" ty="64" x="320" y="704"/>
+    <tile tx="256" ty="64" x="64" y="704"/>
+    <tile tx="256" ty="64" x="256" y="704"/>
+    <tile tx="256" ty="64" x="512" y="704"/>
+    <tile tx="320" ty="64" x="192" y="704"/>
+    <tile tx="320" ty="64" x="384" y="704"/>
+    <tile tx="320" ty="64" x="704" y="704"/>
+    <tile tx="448" ty="64" x="768" y="704"/>
+    <tile tx="448" ty="64" x="640" y="704"/>
+    <tile tx="448" ty="64" x="832" y="704"/>
   </tiles>
   <solids set="solids">
-    <tile tx="0" ty="0" x="0" y="512"/>
-    <tile tx="0" ty="0" x="64" y="512"/>
-    <tile tx="0" ty="0" x="128" y="512"/>
-    <tile tx="0" ty="0" x="192" y="512"/>
-    <tile tx="0" ty="0" x="256" y="512"/>
-    <tile tx="0" ty="0" x="320" y="512"/>
-    <tile tx="0" ty="0" x="384" y="512"/>
-    <tile tx="0" ty="0" x="448" y="512"/>
-    <tile tx="0" ty="0" x="512" y="512"/>
-    <tile tx="0" ty="0" x="576" y="512"/>
-    <tile tx="0" ty="0" x="640" y="512"/>
-    <tile tx="0" ty="0" x="704" y="512"/>
-    <tile tx="0" ty="0" x="768" y="512"/>
-    <tile tx="0" ty="0" x="832" y="512"/>
+    <tile tx="0" ty="0" x="0" y="704"/>
+    <tile tx="0" ty="0" x="64" y="704"/>
+    <tile tx="0" ty="0" x="128" y="704"/>
+    <tile tx="0" ty="0" x="192" y="704"/>
+    <tile tx="0" ty="0" x="256" y="704"/>
+    <tile tx="0" ty="0" x="320" y="704"/>
+    <tile tx="0" ty="0" x="384" y="704"/>
+    <tile tx="0" ty="0" x="448" y="704"/>
+    <tile tx="0" ty="0" x="512" y="704"/>
+    <tile tx="0" ty="0" x="576" y="704"/>
+    <tile tx="0" ty="0" x="640" y="704"/>
+    <tile tx="0" ty="0" x="704" y="704"/>
+    <tile tx="0" ty="0" x="768" y="704"/>
+    <tile tx="0" ty="0" x="832" y="704"/>
   </solids>
   <objects>
-    <so x="0" y="416"/>
-    <foregroundCrowd x="128" y="416"/>
-    <foregroundCrowd x="320" y="416"/>
-    <backgroundCrowd x="160" y="416"/>
-    <backgroundCrowd x="288" y="416"/>
-    <player x="0" y="416"/>
+    <player x="0" y="608"/>
+    <so x="0" y="608"/>
+    <foregroundCrowd x="120" y="608"/>
+    <foregroundCrowd x="288" y="608"/>
+    <backgroundCrowd x="176" y="608"/>
+    <backgroundCrowd x="248" y="608"/>
+    <largeCloud x="0" y="160"/>
+    <largeCloud x="232" y="168"/>
+    <largeCloud x="408" y="160"/>
+    <largeCloud x="560" y="168"/>
+    <largeCloud x="640" y="160"/>
+    <mediumCloud x="0" y="168"/>
+    <mediumCloud x="160" y="192"/>
+    <mediumCloud x="312" y="168"/>
+    <mediumCloud x="400" y="200"/>
+    <mediumCloud x="528" y="168"/>
+    <mediumCloud x="696" y="176"/>
+    <smallCloud x="8" y="200"/>
+    <smallCloud x="200" y="208"/>
+    <smallCloud x="368" y="192"/>
+    <smallCloud x="568" y="216"/>
+    <smallCloud x="760" y="192"/>
+    <largeCloud x="744" y="176"/>
+    <mediumCloud x="768" y="176"/>
+    <smallCloud x="872" y="208"/>
   </objects>
 </level>

@@ -31,6 +31,7 @@ package worlds
 	    // start off one tile to the right so we can spawn things off 
 	    // the screen and they can run in.
 	    FP.camera.x = CAM_X_OFFSET;
+	    FP.camera.y = 176;
 
 	    level = new Level(MAP_DATA);
 	    add(level);
@@ -65,10 +66,17 @@ package worlds
 		add(crowd);
 	    }
 
-	    for (var i:int = 0; i < NUM_CLOUDS; i++) {
-		var randCloudX:Number = Math.random()*(FP.width+FP.halfWidth);
-		var randCloudY:Number = Math.random()*(FP.halfHeight);
-		add(new VisualCloud(randCloudX, randCloudY));
+	    dataList = levelData.objects.smallCloud;
+	    for each(dataElement in dataList) {
+		add(new VisualCloud(int(dataElement.@x), int(dataElement.@y), 0));
+	    }
+	    dataList = levelData.objects.mediumCloud;
+	    for each(dataElement in dataList) {
+		add(new VisualCloud(int(dataElement.@x), int(dataElement.@y), 1));
+	    }
+	    dataList = levelData.objects.largeCloud;
+	    for each(dataElement in dataList) {
+		add(new VisualCloud(int(dataElement.@x), int(dataElement.@y), 2));
 	    }
 
 	    skyBackground = new SkyBackground(0, FP.height, 2, 2);
