@@ -33,7 +33,12 @@ package worlds
 
 	private var
 	    storyTextArray:Array,
-	    storyText:Text;
+	    storyText:Text,
+	    textAlphaTween:VarTween,
+	    nextText:String;
+
+	private static var
+	    TEXT_FADE_TIME:Number = 1;
 
 	private var
     	    inMenu:Boolean=true,
@@ -77,17 +82,30 @@ package worlds
 		storyText = new Text("", 100, 850, { size:30, align:"center",
 						     width:600, height:100,
 						     color:0x808080, wordWrap:true,
-						     smooth:true });
-		storyText.text = storyTextArray.shift();
+						     smooth:true, alpha:0 });
 		addGraphic(storyText);
+		fadeInNextText();
+		nextText = storyTextArray.shift();
 	    }
 
 	    if (Input.pressed(Key.DOWN)) {
-		var nextText:String = storyTextArray.shift();
-		if (nextText) {
-		    storyText.text = nextText;
+		var potentialNextText:String = storyTextArray.shift();
+		if (potentialNextText) {
+		    if (!textAlphaTween) {
+			nextText = potentialNextText;
+			fadeInNextText();
+		    }
+		    else {
+			// if we aren't going to use the next text, put it back in
+			// the story array
+			storyTextArray.unshift(potentialNextText);
+		    }
 		}
-		else {
+		// check if we still have the tween so the tween finishes
+		else if (!textAlphaTween) {
+		    nextText = "";
+		    fadeInNextText();
+
 		    inText = false;
 
 		    panToPlayingTween = new VarTween(function():void {
@@ -155,6 +173,11 @@ package worlds
 	    add(skyBackground);
 	}
 
+
+	/*
+	 * story text
+	 */
+
 	private function initStoryTextArray():void {
 	    storyTextArray =
 		new Array(
@@ -163,5 +186,25 @@ package worlds
 			  "But I know its warmth is there. It must be there.");
 	}
 
+	private function nullOutAlphaTween():void {
+	    textAlphaTween = null;
+	}
+
+	private function fadeInNextText():void {
+	    textAlphaTween = new VarTween(function():void {
+		    storyText.text = nextText;
+		    textAlphaTween = new VarTween(nullOutAlphaTween);
+		    textAlphaTween.tween(storyText, "alpha", 1, TEXT_FADE_TIME);
+		    addTween(textAlphaTween);
+		});
+	    if (storyText.alpha == 1) {
+		textAlphaTween.tween(storyText, "alpha", 0, TEXT_FADE_TIME);
+	    }
+	    else {
+		// skip the fade out if it's already faded out
+		textAlphaTween.tween(storyText, "alpha", 0, 0.1);
+	    }
+	    addTween(textAlphaTween);	    
+	}
     }
 }
