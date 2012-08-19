@@ -89,6 +89,7 @@ package worlds
                 add(player);
             }
 	    player.setControllable(false);
+	    player.canJump = true;
 
             dataList = levelData.objects.so;
             for each(dataElement in dataList) {	    

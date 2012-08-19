@@ -42,6 +42,8 @@ package entities
 	    goingMedium:Boolean = false,
 	    goingSlow:Boolean = false;
 
+	public var canJump:Boolean = false;
+
 	public function RunningPlayer(x:int=0, y:int=0) {
 	    super(x, y);
 	}
@@ -92,7 +94,7 @@ package entities
 	    }
 	    
 	    // jumping movement
-	    if (Input.pressed(Key.UP) && !jumping) {
+	    if (canJump && Input.pressed(Key.UP) && !jumping) {
 		vy = -JUMP_SPEED;
 		jumping = true;
 	    }
