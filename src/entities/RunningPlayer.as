@@ -92,14 +92,20 @@ package entities
 	    }
 	    
 	    // jumping movement
-	    if (Input.check(Key.UP)) {
-		if (!jumping) { vy = -JUMP_SPEED }
+	    if (Input.pressed(Key.UP) && !jumping) {
+		vy = -JUMP_SPEED;
+		jumping = true;
 	    }
+
 	    if (jumping) {
 		vy > 0 ? sprActor.play("fall") : sprActor.play("jump");
 		vy += gravity * FP.elapsed;
 	    }
+	    else {
+		vy = 0;
+	    }
 
+	    FP.console.log(vy);
 	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
 	}
 
