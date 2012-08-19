@@ -21,7 +21,7 @@ package entities
 
 	private const
 	    FAST_MAX_SPEED:Number = 170,
-	    MEDIUM_MAX_SPEED:Number = 110,
+	    MEDIUM_MAX_SPEED:Number = 130,
 	    SLOW_MAX_SPEED:Number = 60;
 
 	private const
