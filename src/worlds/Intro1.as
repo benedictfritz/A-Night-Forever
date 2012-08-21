@@ -68,7 +68,7 @@ package worlds
 	 * update methods
 	 */
 	private function inMenuUpdate():void {
-	    if (Input.check(Key.DOWN)) {
+	    if (Input.check("down")) {
 		inMenu = false;
 
 		panToTextTween = new VarTween(function():void { inText = true; });
@@ -88,7 +88,7 @@ package worlds
 		nextText = storyTextArray.shift();
 	    }
 
-	    if (Input.pressed(Key.DOWN)) {
+	    if (Input.pressed("down")) {
 		var potentialNextText:String = storyTextArray.shift();
 		if (potentialNextText) {
 		    if (!textAlphaTween) {
@@ -119,7 +119,7 @@ package worlds
 	}
 
 	private function playingUpdate():void {
-	    if (!SO.running && Input.check(Key.RIGHT)) {
+	    if (!SO.running && Input.check("right")) {
 		SO.running = true;
 	    }
 	    if (player.x > FP.width && !transitionOut) {

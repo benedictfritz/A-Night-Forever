@@ -55,13 +55,13 @@ package entities
 	}
 
 	private function checkKeyPresses():void {
-	    if (Input.check(Key.RIGHT)) { vx += xAcceleration; }
-	    else if (Input.check(Key.LEFT)) { vx -= xAcceleration; }
+	    if (Input.check("right")) { vx += xAcceleration; }
+	    else if (Input.check("left")) { vx -= xAcceleration; }
 	    vx -= vx * xFriction;
 	    if(vx != 0) { vx < 0 ? flip(true) : flip(false); }
 
-	    if (Input.check(Key.DOWN)) { vy += yAcceleration; }
-	    else if (Input.check(Key.UP)) { vy -= yAcceleration; }
+	    if (Input.check("down")) { vy += yAcceleration; }
+	    else if (Input.check("up")) { vy -= yAcceleration; }
 	    vy -= vy*yFriction;
 	    if (vy > 0) { vy = 0; }
 	}

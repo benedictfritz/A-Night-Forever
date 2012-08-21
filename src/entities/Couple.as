@@ -78,22 +78,22 @@ package entities
 	    /* move-anywhere test code */
 	    var debugMovement:Boolean = false;
 	    if (debugMovement) {
-		if (Input.check(Key.RIGHT)) { vx += 80; }
-		else if (Input.check(Key.LEFT)) { vx -= 80; }
+		if (Input.check("right")) { vx += 80; }
+		else if (Input.check("left")) { vx -= 80; }
 		vx -= vx*0.1;
-		if (Input.check(Key.DOWN)) { vy += 80; }
-		else if (Input.check(Key.UP)) { vy -= 80; }
+		if (Input.check("down")) { vy += 80; }
+		else if (Input.check("up")) { vy -= 80; }
 		vy -= vy*0.1;
 	    }
 	    else {
 		/* standard left / right movement */
-		var onCloud:Boolean = 
+		var onCloud:Boolean =
 		    collide("landingCloud", x, y+1) as LandingCloud != null;
 
-		if (Input.check(Key.RIGHT)) { 
+		if (Input.check("right")) {
 		    vx += (onCloud) ? X_CLOUD_ACCEL : X_AIR_ACCEL;
 		}
-		else if (Input.check(Key.LEFT)) { 
+		else if (Input.check("left")) {
 		    vx -= (onCloud) ? X_CLOUD_ACCEL : X_AIR_ACCEL;
 		}
 

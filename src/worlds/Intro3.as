@@ -131,7 +131,7 @@ package worlds
 	    }
 
 	    if (flyingSO != null && flyingPlayer == null) {
-		if (Input.check(Key.UP)) {
+		if (Input.check("up")) {
 		    // okay, initializing like this is a disaster. basically, 
 		    // the origin on the flying player is at the feet, so we 
 		    // need to account for that when we init the flying player.

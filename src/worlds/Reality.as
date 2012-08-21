@@ -186,7 +186,7 @@ package worlds
 		    player.playSitRight();
 		    SO.playFaceLeft();
 
-		    if (Input.check(Key.RIGHT)) {
+		    if (Input.check("right")) {
 			sitting = false;
 			player.setControllable(true);
 			SO.playFaceRight();

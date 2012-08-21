@@ -78,7 +78,7 @@ package worlds
 	override public function update():void {
 	    super.update();
 
-	    if (Input.check(Key.RIGHT)) {
+	    if (Input.check("right")) {
 		right_v += FP.elapsed*accel;
 		if (right_v > MAX_ACCEL) { right_v = MAX_ACCEL; }
 	    }
@@ -87,7 +87,7 @@ package worlds
 		if (right_v < MIN_ACCEL) { right_v = MIN_ACCEL; }
 	    }
 
-	    if (Input.check(Key.LEFT)) {
+	    if (Input.check("left")) {
 		left_v += FP.elapsed*accel;
 		if (left_v > MAX_ACCEL) { left_v = MAX_ACCEL; }
 	    }
@@ -96,7 +96,7 @@ package worlds
 		if (left_v < MIN_ACCEL) { left_v = MIN_ACCEL; }
 	    }
 
-	    if (Input.check(Key.UP)) {
+	    if (Input.check("up")) {
 		up_v += FP.elapsed*accel;
 		if (up_v > MAX_ACCEL) { up_v = MAX_ACCEL; }
 	    }
@@ -105,7 +105,7 @@ package worlds
 		if (up_v < MIN_ACCEL) { up_v = MIN_ACCEL; }
 	    }
 
-	    if (Input.check(Key.DOWN)) {
+	    if (Input.check("down")) {
 		down_v += FP.elapsed*accel;
 		if (down_v > MAX_ACCEL) { down_v = MAX_ACCEL; }
 	    }

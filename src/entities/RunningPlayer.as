@@ -78,8 +78,8 @@ package entities
 	    }
 
 	    // left / right movement
-	    if (Input.check(Key.RIGHT)) { vx += xAccel; }
-	    else if (Input.check(Key.LEFT)) { vx -= xAccel; }
+	    if (Input.check("right")) { vx += xAccel; }
+	    else if (Input.check("left")) { vx -= xAccel; }
 	    vx -= vx * xFriction;
 	    if (Math.abs(vx) > maxSpeed) { vx = FP.sign(vx)*maxSpeed; }
 
@@ -94,7 +94,7 @@ package entities
 	    }
 	    
 	    // jumping movement
-	    if (canJump && Input.pressed(Key.UP) && !jumping) {
+	    if (canJump && Input.pressed("up") && !jumping) {
 		vy = -JUMP_SPEED;
 		jumping = true;
 	    }
