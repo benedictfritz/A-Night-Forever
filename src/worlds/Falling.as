@@ -40,7 +40,7 @@ package worlds
 	private var
 	    couple:Couple,
 	    minStars:Number = 8,
-	    chanceOfClouds:Number = 4,
+	    chanceOfClouds:Number = 7,
 	    transitionIn:TransitionIn,
 	    cloudPoints:Array = new Array(),
 	    darkness:Darkness,
