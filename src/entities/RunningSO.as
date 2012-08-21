@@ -194,8 +194,6 @@ package entities
 	    floatUp.tween(this, "y", this.y - distanceToTopOfScreen + 60, 
 			       PLAYER_PICKUP_TIME/2, Ease.sineInOut);
 	    FP.world.addTween(floatUp, true);
-
-
 	}
 
 	private function floatDownAwayFromPlayer():void {
@@ -205,7 +203,15 @@ package entities
 
 	    // adjust where we're checking to return the SO to account for the
 	    // difference between hitbox and position
-	    var endY:Number = Reality(FP.world).firstSolidGroundY(endX+hitboxXBuffer) - this.height;
+	    var endY:Number = Reality(FP.world).firstSolidGroundY(endX+hitboxXBuffer) - this.height - 5;
+
+	    // if the spot we've picked out would result in a collision
+	    // (i.e. the so getting stuck) pick a spot further away
+	    while (collide("level", endX, endY) != null) {
+		endX += 10;
+		endY = Reality(FP.world).firstSolidGroundY(endX+hitboxXBuffer) - 
+		    this.height - 5;
+	    }
 
 	    var floatDown:VarTween = new VarTween();
 	    floatDown.tween(this, "y", endY, PLAYER_PICKUP_TIME/2, Ease.sineInOut);
