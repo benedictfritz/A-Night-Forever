@@ -80,7 +80,7 @@ package worlds
 	private function inTextUpdate():void {
 	    if (!storyText) {
 		storyText = new Text("", 100, 850, { size:30, align:"center",
-						     width:600, height:100,
+						     width:600, height:200,
 						     color:0x808080, wordWrap:true,
 						     smooth:true, alpha:0 });
 		addGraphic(storyText);
@@ -180,10 +180,7 @@ package worlds
 
 	private function initStoryTextArray():void {
 	    storyTextArray =
-		new Array(
-			  "The night numbly prods at my nerve endings.",
-			  "It has always been night; the warmth of the sun firmly tucked beyond the horizon.",
-			  "But I know its warmth is there. It must be there.");
+		new Array("It has been night forever. The sun's warmth firmly tucked beyond the horizon.", "Though it hides from site, desire never falters. To possess and bask in its warmth would mean everything.", "The search defines every action.");
 	}
 
 	private function nullOutAlphaTween():void {
