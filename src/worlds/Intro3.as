@@ -60,10 +60,9 @@ package worlds
 		add(runningSO);
 	    }
 
-	    for (var i:int = 0; i < NUM_CLOUDS; i++) {
-		var randCloudX:Number = Math.random()*(FP.width+FP.halfWidth);
-		var randCloudY:Number = Math.random()*(FP.halfHeight);
-		add(new SlowingCloud(randCloudX, randCloudY));
+	    dataList = levelData.objects.mediumCloud;
+	    for each(dataElement in dataList) {
+		add(new SlowingCloud(int(dataElement.@x), int(dataElement.@y)));
 	    }
 
 	    skyBackground = new SkyBackground(0, FP.height, 2, 2);

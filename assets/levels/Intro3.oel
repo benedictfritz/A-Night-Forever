@@ -1,5 +1,5 @@
 <level>
-  <width>896</width>
+  <width>1500</width>
   <height>600</height>
   <tiles set="tiles">
     <tile tx="64" ty="64" x="128" y="512"/>
@@ -56,5 +56,17 @@
   <objects>
     <so x="0" y="352"/>
     <player x="0" y="352"/>
+    <mediumCloud x="0" y="64"/>
+    <mediumCloud x="240" y="88"/>
+    <mediumCloud x="480" y="56"/>
+    <mediumCloud x="704" y="80"/>
+    <mediumCloud x="920" y="64"/>
+    <mediumCloud x="1152" y="48"/>
+    <mediumCloud x="1304" y="80"/>
+    <mediumCloud x="800" y="40"/>
+    <mediumCloud x="120" y="40"/>
+    <mediumCloud x="568" y="64"/>
+    <mediumCloud x="360" y="64"/>
+    <mediumCloud x="1048" y="80"/>
   </objects>
 </level>
