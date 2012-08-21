@@ -13,7 +13,7 @@ package entities
     public class RunningPlayer extends Player {
 
 	private const 
-	    JUMP_SPEED:Number = 230,
+	    JUMP_SPEED:Number = 240,
 	    MIN_SPEED:Number = 10.0,
 	    COLLISION_TIME:Number = 1,
 	    PICKUP_DISTANCE:Number = 30,
