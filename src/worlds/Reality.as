@@ -222,6 +222,7 @@ package worlds
 
 		    player.fallen = true;
 		    player.setControllable(false);
+		    player.playFaceRight();
 
 		    SO.running = false;
 		    SO.playFaceLeft();
