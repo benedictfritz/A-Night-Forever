@@ -136,5 +136,15 @@
     <smallCloud x="1184" y="448"/>
     <smallCloud x="296" y="448"/>
     <smallCloud x="88" y="448"/>
+    <largeCloud x="296" y="552"/>
+    <largeCloud x="592" y="552"/>
+    <largeCloud x="1088" y="552"/>
+    <mediumCloud x="8" y="576"/>
+    <mediumCloud x="160" y="584"/>
+    <mediumCloud x="464" y="576"/>
+    <mediumCloud x="752" y="576"/>
+    <mediumCloud x="952" y="584"/>
+    <mediumCloud x="1224" y="584"/>
+    <mediumCloud x="1392" y="576"/>
   </objects>
 </level>
