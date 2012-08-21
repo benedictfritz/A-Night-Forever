@@ -74,9 +74,13 @@ package entities
 		if (collide("level", x+JUMP_LOOKAHEAD, y) && !jumping) {
 		    vy = -JUMP_SPEED;
 		}
+
 		if (jumping) {
 		    vy > 0 ? sprActor.play("fall") : sprActor.play("jump");
 		    vy += GRAVITY * FP.elapsed;
+		}
+		else {
+		    vy = 0;
 		}
 
 		moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
