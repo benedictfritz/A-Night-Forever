@@ -15,7 +15,7 @@ package entities
 
     public class RunningSO extends SO {
 	private const 
-	    JUMP_SPEED:Number = 230,
+	    JUMP_SPEED:Number = 250,
 	    GRAVITY:Number = 400,
 	    // how far the SO looks ahead to see whether or not to jump
 	    JUMP_LOOKAHEAD:Number = 64,
@@ -73,6 +73,7 @@ package entities
 
 		if (collide("level", x+JUMP_LOOKAHEAD, y) && !jumping) {
 		    vy = -JUMP_SPEED;
+		    jumping = true;
 		}
 
 		if (jumping) {
