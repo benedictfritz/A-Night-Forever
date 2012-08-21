@@ -82,7 +82,6 @@ package entities
 	    stopped = true;
 	    var moveToCenter:VarTween = new VarTween(stopCompletion);
 	    var centerX:Number = FP.halfWidth-this.width/2-this.hitboxXBuffer/2;
-	    FP.console.log(centerX);
 	    moveToCenter.tween(this, "x", centerX, 1);
 	    FP.world.addTween(moveToCenter);
 	    goingLeft = centerX < x;
@@ -119,7 +118,7 @@ package entities
 	    if (flying) {
 		var range:Number = maxX - minX;
 		var numInRange:Number = FP.random * range;
-		nextX = numInRange + (minX + originX);
+		nextX = numInRange;
 
 		(nextX < x) ? goingLeft = true : goingLeft = false;
 
