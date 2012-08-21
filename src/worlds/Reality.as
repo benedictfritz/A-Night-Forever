@@ -258,5 +258,11 @@ package worlds
 	    }
 	    return solidY;
 	}
+
+	override public function end():void {
+	    super.end();
+	    music.stop();
+	}
+
     }
 }

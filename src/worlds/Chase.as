@@ -207,5 +207,10 @@ package worlds
 	    FP.tweener.addTween(crossfade);
 	}
 
+	override public function end():void {
+	    super.end();
+	    music.stop();
+	}
+
     }
 }
