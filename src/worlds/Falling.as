@@ -336,5 +336,10 @@ package worlds
 		backgroundSectors.push(newCurrBackgroundSector);
 	    }
 	}
+
+	override public function end():void {
+	    super.end();
+	    music.stop();
+	}
     }
 }

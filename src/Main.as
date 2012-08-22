@@ -42,6 +42,11 @@ package
 	    if (Input.pressed(Key.DIGIT_3)) {
 		FP.world.removeAll();
 		FP.world.clearTweens();
+		FP.world = new Falling();
+	    }
+	    if (Input.pressed(Key.DIGIT_4)) {
+		FP.world.removeAll();
+		FP.world.clearTweens();
 		FP.world = new Reality();
 	    }
 	}
