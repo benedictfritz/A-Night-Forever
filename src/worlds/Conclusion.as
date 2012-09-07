@@ -1,6 +1,7 @@
 package worlds
 {
     import net.flashpunk.FP;
+    import net.flashpunk.Sfx;
     import net.flashpunk.World;
     import net.flashpunk.Entity;
     import net.flashpunk.graphics.Image;
@@ -15,13 +16,20 @@ package worlds
 	    private const BACKGROUND_IMAGE:Class;
 	[Embed(source = '../../assets/images/conclusion_text_1.png')]
 	    private const CONCLUSION_TEXT_1:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol = 'high_ring')]
+	    static public const RING:Class;
 
 	private var
 	    whiteBackgroundEntity:Entity,
 	    textEntity:Entity;
 
+	private var
+	    ring:Sfx = new Sfx(RING);
+
 	override public function begin():void {
 	    super.begin();
+
+	    ring.play();
 
 	    whiteBackgroundEntity = new Entity(0, 0, new Image(BACKGROUND_IMAGE));
 	    add(whiteBackgroundEntity);
@@ -43,6 +51,7 @@ package worlds
 	}
 
 	private function goToEmpty():void {
+	    ring.stop();
 	    FP.world = new EmptySpace();
 	}
     }

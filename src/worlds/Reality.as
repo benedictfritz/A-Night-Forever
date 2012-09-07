@@ -168,10 +168,6 @@ package worlds
 		SO.spawningMonsters = false;
 		SO.playFaceLeft();
 
-		var fadeOut:SfxFader = new SfxFader(music);
-		fadeOut.fadeTo(0, 4);
-		FP.tweener.addTween(fadeOut);
-
 		player.goSlow();
 
 		var panToEndSequence:VarTween = new VarTween();
@@ -200,9 +196,12 @@ package worlds
         }
 
 	private function endSequenceUpdate():void {
+	    music.volume = FP.scale(player.x, SO.x-FP.halfWidth, SO.x, 1, 0);
+
 	    if (player.x < FP.camera.x) { player.x = FP.camera.x; }
 
 	    if (player.collide("SO", player.x, player.y) != null) {
+		music.stop();
 		FP.world = new Conclusion();
 	    }
 	}
