@@ -20,6 +20,11 @@ package worlds
     {
 	[Embed(source = '../../assets/sounds/music.swf', symbol = 'scene_6')]
 	    static public const MUSIC:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol = 'wind')]
+	    static public const WIND:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol = 'thump')]
+	    static public const THUMP:Class;
+
 
 	[Embed(source = '../../assets/images/fall_pain.png')]
 	    private const FALL_PAIN_IMG:Class;
@@ -54,7 +59,9 @@ package worlds
 	    scrollScale:Number;
 
 	private var
-	    music:Sfx = new Sfx(MUSIC);
+	    music:Sfx = new Sfx(MUSIC),
+	    wind:Sfx = new Sfx(WIND),
+	    thump:Sfx = new Sfx(THUMP);
 
 	public function Falling():void {
 	}
@@ -120,12 +127,18 @@ package worlds
 		updateSectors();
 
 		if (minStars < -STAR_RANGE - WORLD_CHANGE_BUFFER) {
-		    if (!darkness) { 
+		    if (!darkness) {
 			darkness = new Darkness();
+			add(darkness);
+
 			var fadeOut:SfxFader = new SfxFader(music);
 			fadeOut.fadeTo(0, 9);
 			addTween(fadeOut);
-			add(darkness);
+
+			wind.play(0);
+			var fadeIn:SfxFader = new SfxFader(wind);
+			fadeIn.fadeTo(1, 5);
+			addTween(fadeIn);
 		    }
 		}
 	    }
@@ -140,6 +153,8 @@ package worlds
 	    }
 
 	    if (darkness && darkness.done && !transitioning) {
+		thump.play();
+		wind.stop();
 		transitioning = true;
 		FP.alarm(4, goToReality);
 	    }
