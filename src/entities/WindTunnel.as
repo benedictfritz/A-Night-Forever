@@ -1,15 +1,19 @@
 package entities
 {
     import net.flashpunk.FP;
+    import net.flashpunk.Sfx;
     import net.flashpunk.Entity;
     import net.flashpunk.graphics.Spritemap;
 
     public class WindTunnel extends Entity {
 	[Embed(source="../../assets/images/wind_tunnel.png")]
 	    private const WIND_TUNNEL_SPRITE:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol = 'wind_boost')]
+	    static public const WIND_BOOST:Class;
 
 	private var 
-	    sprWindTunnel:Spritemap;
+	    sprWindTunnel:Spritemap,
+	    sound:Sfx = new Sfx(WIND_BOOST);
 
 	public function WindTunnel(x:int=0, y:int=0) {
 	    this.x = x;
@@ -21,6 +25,12 @@ package entities
 	    this.graphic = sprWindTunnel;
 	    setHitbox(sprWindTunnel.width, sprWindTunnel.height);
 	    type="windTunnel";
+	}
+
+	public function playSound():void {
+	    if (!sound.playing) {
+		sound.play(0.4);
+	    }
 	}
     }
 

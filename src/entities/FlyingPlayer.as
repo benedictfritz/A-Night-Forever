@@ -67,8 +67,9 @@ package entities
 	}
 
 	private function checkWindTunnels():void {
-	    var boost:Boolean = collide("windTunnel", x, y) != null;
-	    if (boost) {
+	    var tunnel:WindTunnel = collide("windTunnel", x, y) as WindTunnel;
+	    if (tunnel) {
+		tunnel.playSound();
 		vy *= 1.1;
 	    }
 	}
