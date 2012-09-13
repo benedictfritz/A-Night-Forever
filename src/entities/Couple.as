@@ -1,6 +1,7 @@
 package entities
 {
     import net.flashpunk.FP;
+    import net.flashpunk.Sfx;
     import net.flashpunk.Entity;
     import net.flashpunk.utils.Key;
     import net.flashpunk.utils.Input;
@@ -10,6 +11,15 @@ package entities
 
     public class Couple extends Entity
     {
+	[Embed(source = '../../assets/sounds/music.swf', symbol = 'star_hit1')]
+	    static public const STAR_HIT1:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol = 'star_hit2')]
+	    static public const STAR_HIT2:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol = 'star_hit3')]
+	    static public const STAR_HIT3:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol = 'star_hit4')]
+	    static public const STAR_HIT4:Class;
+
 	public static const
 	    MIN_SHAKE_VY:Number = 1000;
 	
@@ -31,6 +41,13 @@ package entities
 
 	private var
 	    sprCouple:Spritemap;
+
+	private var
+	    currentStarHit:Number=1,
+	    starHit1:Sfx = new Sfx(STAR_HIT1),
+	    starHit2:Sfx = new Sfx(STAR_HIT2),
+	    starHit3:Sfx = new Sfx(STAR_HIT3),
+	    starHit4:Sfx = new Sfx(STAR_HIT4);
 
 	[Embed(source="../../assets/images/couple.png")]
 	    private const COUPLE_SPRITE:Class;
@@ -110,6 +127,8 @@ package entities
 		    : sprCouple.play("up_right");
 	    }
 	    else {
+		// only escalate star-hit noise when going up
+		currentStarHit = 1;
 		(vx < 0) ? sprCouple.play("down_left")
 		    : sprCouple.play("down_right");
 	    }
@@ -146,6 +165,14 @@ package entities
 	}
 
 	public function starBoost():void {
+	    var hitVolume:Number = 0.15 + FP.random * 0.2;;
+	    if (currentStarHit == 1) { starHit1.play(hitVolume); }
+	    if (currentStarHit == 2) { starHit2.play(hitVolume); }
+	    if (currentStarHit == 3) { starHit3.play(hitVolume); }
+	    if (currentStarHit > 3) { starHit4.play(hitVolume); }
+
+	    currentStarHit++;
+
 	    vy = -400;
 	}
 
