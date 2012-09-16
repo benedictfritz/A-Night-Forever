@@ -1,6 +1,7 @@
 package worlds
 {
     import net.flashpunk.FP;
+    import net.flashpunk.Sfx;
     import net.flashpunk.World;
     import net.flashpunk.Entity;
     import net.flashpunk.utils.Key;
@@ -16,6 +17,8 @@ package worlds
     {
 	[Embed(source="../../assets/images/moving_star_background.png")]
 	    private const SKY:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol = 'wind')]
+	    static public const WIND:Class;
 
 	private var fusedPlayer:FusedPlayer;
 
@@ -31,6 +34,9 @@ package worlds
 	    down_v:Number = 200,
 	    up_v:Number = 200;
 
+	private var
+	    windSound:Sfx = new Sfx(WIND);
+
 	private static const
 	    DECEL:Number = 800,
 	    MAX_ACCEL:Number = 1500,
@@ -43,6 +49,8 @@ package worlds
 
 	override public function begin():void {
 	    super.begin();
+
+	    windSound.play(0.2);
 
 	    var backgroundImage:Image = new Image(SKY);
 	    backgroundImage.alpha = 0.25;
@@ -68,10 +76,11 @@ package worlds
 	    fusedPlayer = new FusedPlayer(FP.halfWidth, FP.halfHeight);
 	    add(fusedPlayer);
 
-	    FP.alarm(35, goToEnd);
+	    FP.alarm(30, goToEnd);
 	}
 
 	private function goToEnd():void {
+	    windSound.stop();
 	    FP.world = new TheEnd();
 	}
 
@@ -113,6 +122,13 @@ package worlds
 		down_v -= FP.elapsed*DECEL;
 		if (down_v < MIN_ACCEL) { down_v = MIN_ACCEL; }
 	    }
+
+	    var maxVel:Number = Math.max.apply(null, new Array(Math.abs(right_v),
+							       Math.abs(left_v),
+							       Math.abs(up_v),
+							       Math.abs(down_v)));
+	    FP.console.log(windSound.volume);
+	    windSound.volume = FP.scale(maxVel, 0, MAX_ACCEL, 0.2, 1);
 
 	    var background_1:Entity;
 	    var background_2:Entity;
