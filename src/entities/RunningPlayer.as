@@ -1,6 +1,7 @@
 package entities
 {
     import net.flashpunk.FP;
+    import net.flashpunk.Sfx;
     import net.flashpunk.Entity;
     import net.flashpunk.utils.Key;
     import net.flashpunk.utils.Input;
@@ -11,6 +12,24 @@ package entities
     import entities.Monster;
 
     public class RunningPlayer extends Player {
+	[Embed(source = '../../assets/sounds/music.swf', symbol='step1')]
+	    static public const STEP_1:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol='step2')]
+	    static public const STEP_2:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol='step3')]
+	    static public const STEP_3:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol='step4')]
+	    static public const STEP_4:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol='step5')]
+	    static public const STEP_5:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol='step6')]
+	    static public const STEP_6:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol='step7')]
+	    static public const STEP_7:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol='step8')]
+	    static public const STEP_8:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol='step9')]
+	    static public const STEP_9:Class;
 
 	private const 
 	    JUMP_SPEED:Number = 240,
@@ -42,10 +61,20 @@ package entities
 	    goingMedium:Boolean = false,
 	    goingSlow:Boolean = false;
 
+	private var
+	    _currentStepSound:Number = 0,
+	    _stepSounds:Array;
+
 	public var canJump:Boolean = false;
 
 	public function RunningPlayer(x:int=0, y:int=0) {
 	    super(x, y);
+
+	    _stepSounds = new Array(new Sfx(STEP_1), new Sfx(STEP_2),
+				   new Sfx(STEP_3), new Sfx(STEP_4),
+				   new Sfx(STEP_5), new Sfx(STEP_6),
+				   new Sfx(STEP_7), new Sfx(STEP_8),
+				   new Sfx(STEP_9));
 	}
 
 	override public function update():void {
@@ -108,6 +137,18 @@ package entities
 	    }
 
 	    moveBy(vx * FP.elapsed, vy * FP.elapsed, "level", true);
+
+	    if (!jumping && (sprActor.frame == 3 || sprActor.frame == 7)) {
+		if (!(_stepSounds[_currentStepSound].playing)) {
+		    _currentStepSound++;
+		    if (_currentStepSound >= _stepSounds.length) {
+			_currentStepSound = 0;
+		    }
+		    FP.console.log(_currentStepSound);
+		    _stepSounds[_currentStepSound].play(0.05);
+		}
+	    }
+
 	}
 
 	private function checkMonsterCollisions():void {
