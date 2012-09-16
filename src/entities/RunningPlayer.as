@@ -145,7 +145,7 @@ package entities
 			_currentStepSound = 0;
 		    }
 		    FP.console.log(_currentStepSound);
-		    _stepSounds[_currentStepSound].play(0.05);
+		    _stepSounds[_currentStepSound].play(0.01);
 		}
 	    }
 
