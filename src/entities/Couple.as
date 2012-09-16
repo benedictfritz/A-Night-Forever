@@ -165,7 +165,7 @@ package entities
 	}
 
 	public function starBoost():void {
-	    var hitVolume:Number = 0.15 + FP.random * 0.1;
+	    var hitVolume:Number = 0.05 + FP.random * 0.1;
 	    if (currentStarHit == 1) { starHit1.play(hitVolume); }
 	    if (currentStarHit == 2) { starHit2.play(hitVolume); }
 	    if (currentStarHit == 3) { starHit3.play(hitVolume); }
