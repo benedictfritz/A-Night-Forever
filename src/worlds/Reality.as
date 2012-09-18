@@ -230,7 +230,7 @@ package worlds
 
 	    if (player.collide("SO", player.x, player.y) != null) {
 		music.stop();
-		ringing.stop();
+		FP.alarm(2, function():void { ringing.stop(); });
 		FP.world = new Conclusion();
 	    }
 	}
