@@ -25,6 +25,11 @@ package worlds
 
 	[Embed(source = '../../assets/sounds/music.swf', symbol = 'scene_7')]
 	    static public const MUSIC:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol = 'high_ring')]
+	    static public const RINGING:Class;
+
+	[Embed(source = '../../assets/images/white_background.png')]
+	    private const WHITE_IMAGE:Class;
 
 	[Embed(source = '../../assets/levels/images/stump.png')] 
 	    private static const STUMP:Class;
@@ -55,6 +60,10 @@ package worlds
 	    level:Level,
 	    skyBackground:SkyBackground,
 	    music:Sfx = new Sfx(MUSIC);
+
+	private var
+	    whiteEntity:Entity,
+	    ringing:Sfx = new Sfx(RINGING);
 
 	private var
 	    cameraMinX:Number = 64,
@@ -168,6 +177,14 @@ package worlds
 		SO.spawningMonsters = false;
 		SO.playFaceLeft();
 
+		whiteEntity =
+		    new Entity(0, 0, new Image(WHITE_IMAGE));
+		whiteEntity.graphic.scrollX = 0;
+		whiteEntity.graphic.scrollY = 0;
+		Image(whiteEntity.graphic).alpha = 0;
+		whiteEntity.layer = -1000;
+		add(whiteEntity);
+
 		player.goSlow();
 
 		var panToEndSequence:VarTween = new VarTween();
@@ -198,10 +215,22 @@ package worlds
 	private function endSequenceUpdate():void {
 	    music.volume = FP.scale(player.x, SO.x-FP.halfWidth, SO.x, 1, 0);
 
+	    var outroScale:Number =
+		FP.scale(player.x, SO.x-100, SO.x-SO.hitboxXBuffer, 0, 1);
+	    Image(whiteEntity.graphic).alpha = outroScale;
+	    if (outroScale > 0) {
+		if (!ringing.playing) { ringing.loop(outroScale); }
+		else { ringing.volume = outroScale; }
+	    }
+	    else {
+		ringing.stop()
+	    }
+
 	    if (player.x < FP.camera.x) { player.x = FP.camera.x; }
 
 	    if (player.collide("SO", player.x, player.y) != null) {
 		music.stop();
+		ringing.stop();
 		FP.world = new Conclusion();
 	    }
 	}
