@@ -40,6 +40,7 @@ package entities
 	}
 
 	override public function despawn():void {
+	    super.despawn();
 	    monsterSprite.play("despawn");
 	    this.setHitbox(0, 0, 0, 0);
 	}
