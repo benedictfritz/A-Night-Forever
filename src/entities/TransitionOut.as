@@ -16,19 +16,22 @@ package entities
 	// alpha is used for the rectangle which is drawn over the screen 
 	// (so that it fades out)
 	private var 
-	    colour:uint = 0x000000,
+	    color:uint,
 	    transitionToWorld:World;
 
 	public var
 	    alpha:Number = 0;
-		
-	public function TransitionOut(worldToTransitionTo:World) {
+
+	public function TransitionOut(worldToTransitionTo:World, 
+				      aColor:uint=0x000000, time:Number=1) {
 	    //set ourselves above everything else
 	    layer = -1000;
 	    transitionToWorld = worldToTransitionTo;
 
+	    color = aColor;
+
 	    var alphaTween:VarTween = new VarTween(transition);
-	    alphaTween.tween(this, "alpha", 1, 1);
+	    alphaTween.tween(this, "alpha", 1, time);
 	    FP.world.addTween(alphaTween);
 	}
 
@@ -37,7 +40,7 @@ package entities
 	}
 
 	override public function render():void {
-	    Draw.rect(FP.camera.x, FP.camera.y, FP.width, FP.height, colour, alpha);
+	    Draw.rect(FP.camera.x, FP.camera.y, FP.width, FP.height, color, alpha);
 	}
 
     }
