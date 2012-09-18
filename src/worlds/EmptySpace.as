@@ -34,6 +34,10 @@ package worlds
 	    down_v:Number = 200,
 	    up_v:Number = 200;
 
+	public var
+	    minVolume:Number = 0.2,
+	    maxVolume:Number = 1;
+
 	private var
 	    windSound:Sfx = new Sfx(WIND);
 
@@ -50,7 +54,7 @@ package worlds
 	override public function begin():void {
 	    super.begin();
 
-	    windSound.play(0.2);
+	    windSound.loop(0.2);
 
 	    var backgroundImage:Image = new Image(SKY);
 	    backgroundImage.alpha = 0.25;
@@ -76,12 +80,22 @@ package worlds
 	    fusedPlayer = new FusedPlayer(FP.halfWidth, FP.halfHeight);
 	    add(fusedPlayer);
 
-	    FP.alarm(30, goToEnd);
+	    FP.alarm(20, goToEnd);
 	}
 
 	private function goToEnd():void {
-	    windSound.stop();
-	    FP.world = new TheEnd();
+	    var minVolTween:VarTween = new VarTween();
+	    minVolTween.tween(this, "minVolume", 0.1, 10);
+	    FP.tweener.addTween(minVolTween);
+
+	    var maxVolTween:VarTween = new VarTween();
+	    maxVolTween.tween(this, "maxVolume", 0.1, 10);
+	    FP.tweener.addTween(maxVolTween);
+
+	    var transitionOut:TransitionOut = new TransitionOut(new TheEnd(),
+								0x000000,
+								10);
+	    add(transitionOut);
 	}
 
 	override public function update():void {
@@ -128,7 +142,8 @@ package worlds
 							       Math.abs(up_v),
 							       Math.abs(down_v)));
 	    FP.console.log(windSound.volume);
-	    windSound.volume = FP.scale(maxVel, 0, MAX_ACCEL, 0.2, 1);
+	    windSound.volume = 
+		FP.scale(maxVel, 0, MAX_ACCEL, minVolume, maxVolume);
 
 	    var background_1:Entity;
 	    var background_2:Entity;
