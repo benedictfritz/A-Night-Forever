@@ -8,20 +8,18 @@ package worlds
 
     public class TheEnd extends World
     {
-	[Embed(source = '../../assets/images/white_background.png')]
-	    private const BACKGROUND_IMAGE:Class;
 	[Embed(source = '../../assets/images/the_end.png')]
 	    private const THE_END_TEXT:Class;
 
 	private var
-	    whiteBackgroundEntity:Entity,
+	    blackBackgroundEntity:Entity,
 	    textEntity:Entity;
 
 	override public function begin():void {
 	    super.begin();
 	    
-	    whiteBackgroundEntity = new Entity(0, 0, new Image(BACKGROUND_IMAGE));
-	    add(whiteBackgroundEntity);
+	    blackBackgroundEntity = new Entity(0, 0, Image.createRect(FP.width, FP.height, 0x000000, 1));
+	    add(blackBackgroundEntity);
 
 	    var textImage:Image = new Image(THE_END_TEXT);
 	    textImage.alpha = 0;
