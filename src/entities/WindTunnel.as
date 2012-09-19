@@ -29,7 +29,7 @@ package entities
 
 	public function playSound():void {
 	    if (!sound.playing) {
-		sound.play(0.2);
+		sound.play(0.15);
 	    }
 	}
     }
