@@ -1,6 +1,7 @@
 package entities
 {
     import net.flashpunk.FP;
+    import net.flashpunk.Sfx;
     import net.flashpunk.Entity;
     import net.flashpunk.graphics.Spritemap;
 
@@ -12,11 +13,21 @@ package entities
 	[Embed(source="../../assets/images/cloud_large.png")]
 	    private const LARGE_CLOUD_SPRITE:Class;
 
+	[Embed(source = '../../assets/sounds/music.swf', symbol='cloud_hit1')]
+	    static public const CLOUD_BURST1:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol='cloud_hit2')]
+	    static public const CLOUD_BURST2:Class;
+
 	private var
 	    sprCloud:Spritemap,
 	    hitboxLeeway:Number = 15,
 	    destructionCountdown:Number = 0.3,
 	    vx:Number = -10 - Math.random()*5;
+
+	private var
+	    cloudBurstSounds:Array = new Array(new Sfx(CLOUD_BURST1),
+					     new Sfx(CLOUD_BURST2)),
+	    playing:Boolean = false;
 
 	public var
 	    doomed:Boolean = false;
@@ -50,10 +61,6 @@ package entities
 	    type="landingCloud";
 	}
 
-	public function poof():void {
-	    sprCloud.play("burst");
-	}
-
 	override public function update():void {
 	    if (doomed) {
 		destructionCountdown -= FP.elapsed
@@ -61,6 +68,10 @@ package entities
 	    
 	    if (doomed && destructionCountdown < 0) {
 		sprCloud.play("burst");
+		if (!playing) {
+		    cloudBurstSounds[int(FP.random*2)].play(0.5);
+		    playing = true;
+		}
 		doomed = false;
 	    }
 
