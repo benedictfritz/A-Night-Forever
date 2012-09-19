@@ -1,6 +1,7 @@
 package entities
 {
     import net.flashpunk.FP;
+    import net.flashpunk.Sfx;
     import net.flashpunk.Entity;
     import net.flashpunk.graphics.Spritemap;
 
@@ -11,11 +12,20 @@ package entities
 	    private const MEDIUM_CLOUD_SPRITE:Class;
 	[Embed(source="../../assets/images/cloud_large.png")]
 	    private const LARGE_CLOUD_SPRITE:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol='cloud_hit1')]
+	    static public const CLOUD_HIT1:Class;
+	[Embed(source = '../../assets/sounds/music.swf', symbol='cloud_hit2')]
+	    static public const CLOUD_HIT2:Class;
 
 	private var
 	    sprCloud:Spritemap,
 	    hitboxLeeway:Number = 15,
 	    vx:Number = -30 - Math.random()*30;
+
+	private var
+	    cloudHitSounds:Array = new Array(new Sfx(CLOUD_HIT1),
+					     new Sfx(CLOUD_HIT2)),
+	    playing:Boolean = false;
 
 	public var
 	    slowingVelocity:Number = 15;
@@ -49,6 +59,10 @@ package entities
 	}
 
 	public function poof():void {
+	    if (!playing) {
+		cloudHitSounds[int(FP.random*2)].play(0.8);
+		playing = true;
+	    }
 	    sprCloud.play("burst");
 	}
 
