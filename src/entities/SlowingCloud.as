@@ -25,7 +25,8 @@ package entities
 	private var
 	    cloudHitSounds:Array = new Array(new Sfx(CLOUD_HIT1),
 					     new Sfx(CLOUD_HIT2)),
-	    playing:Boolean = false;
+	    playing:Boolean = false,
+	    cloudHitVolume:Number;
 
 	public var
 	    slowingVelocity:Number = 15;
@@ -33,6 +34,10 @@ package entities
 	public function SlowingCloud(x:int=0, y:int=0) {
 	    this.x = x;
 	    this.y = y;
+
+	    // the clouds bursting should be a little quieter in intro3
+	    if (FP.world.classCount(WindTunnel) == 0) { cloudHitVolume = 0.4; }
+	    else { cloudHitVolume = 0.8; }
 
 	    var size:int = Math.random() * 3;
 	    FP.console.log(size);
@@ -60,7 +65,7 @@ package entities
 
 	public function poof():void {
 	    if (!playing) {
-		cloudHitSounds[int(FP.random*2)].play(0.8);
+		cloudHitSounds[int(FP.random*2)].play(cloudHitVolume);
 		playing = true;
 	    }
 	    sprCloud.play("burst");
