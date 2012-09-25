@@ -29,26 +29,26 @@ package
 
 	override public function update():void {
 	    super.update();
-	    if (Input.pressed(Key.DIGIT_1)) {
-		FP.world.removeAll();
-		FP.world.clearTweens();
-		FP.world = new Intro1();
-	    }
-	    if (Input.pressed(Key.DIGIT_2)) {
-		FP.world.removeAll();
-		FP.world.clearTweens();
-		FP.world = new Chase(400);
-	    }
-	    if (Input.pressed(Key.DIGIT_3)) {
-		FP.world.removeAll();
-		FP.world.clearTweens();
-		FP.world = new Falling();
-	    }
-	    if (Input.pressed(Key.DIGIT_4)) {
-		FP.world.removeAll();
-		FP.world.clearTweens();
-		FP.world = new Reality();
-	    }
+	    // if (Input.pressed(Key.DIGIT_1)) {
+	    // 	FP.world.removeAll();
+	    // 	FP.world.clearTweens();
+	    // 	FP.world = new Intro1();
+	    // }
+	    // if (Input.pressed(Key.DIGIT_2)) {
+	    // 	FP.world.removeAll();
+	    // 	FP.world.clearTweens();
+	    // 	FP.world = new Chase(400);
+	    // }
+	    // if (Input.pressed(Key.DIGIT_3)) {
+	    // 	FP.world.removeAll();
+	    // 	FP.world.clearTweens();
+	    // 	FP.world = new Falling();
+	    // }
+	    // if (Input.pressed(Key.DIGIT_4)) {
+	    // 	FP.world.removeAll();
+	    // 	FP.world.clearTweens();
+	    // 	FP.world = new Reality();
+	    // }
 	}
     }
 }
