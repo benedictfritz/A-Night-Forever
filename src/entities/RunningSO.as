@@ -93,11 +93,14 @@ package entities
 	    if (spawnTimer > monsterSpawnTime) {
 		var newMonster:Monster;
 
-		if (FP.random < 0.5) {
+		if (FP.random < 0.34) {
 		    newMonster = new MonsterFish(x, y);
 		}
+		else if (FP.random < 0.67) {
+		    newMonster = new MonsterMouth(x, y);
+		}
 		else {
-		    newMonster = new MonsterMouth(x, y);		    
+		    newMonster = new MonsterHand(x, y);
 		}
 		
 		FP.world.add(newMonster);
