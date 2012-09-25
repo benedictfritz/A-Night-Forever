@@ -180,7 +180,7 @@ package worlds
 
 	private function initStoryTextArray():void {
 	    storyTextArray =
-		new Array("It has been night forever. The sun's warmth firmly tucked beyond the horizon.", "Though it hides from site, desire never falters. To possess and bask in its warmth would mean everything.");
+		new Array("It has been night forever. The sun's warmth firmly tucked beyond the horizon.", "Though it hides from sight, desire never falters. To possess and bask in its warmth would mean everything.");
 	}
 
 	private function nullOutAlphaTween():void {
