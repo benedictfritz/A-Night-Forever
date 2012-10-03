@@ -188,10 +188,10 @@ package worlds
 	}
 
 	private function checkCatchingPlayer():void {
-	    // if the sO has stopped, all the player needs to do is go past
-	    // the sO to trigger the next world.
-	    // player's origin is at the feet, so we need to subtract off height
-	    if (sO.stopped && player.y-player.height <= sO.y) {
+	    // it could be that the player beats the SO to the end of the level,
+	    // so if he does just transition regardless
+	    var stoppingPoint:Number = -Math.abs(startingY - levelHeight);
+	    if (player.y-player.height < stoppingPoint) {
 		transitionToInterlude();
 	    }
 	    else if (player.collide("SO", player.x, player.y) != null) {

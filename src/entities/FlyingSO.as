@@ -79,6 +79,7 @@ package entities
 	    // stop anything that could mess with our moveToCenterTween
 	    FP.world.clearTweens();
 
+	    flying = false;
 	    stopped = true;
 	    var moveToCenter:VarTween = new VarTween(stopCompletion);
 	    var centerX:Number = FP.halfWidth-this.width/2-this.hitboxXBuffer/2;
@@ -88,7 +89,6 @@ package entities
 	}
 
 	private function stopCompletion():void {
-	    flying = false;
 	    vy = 0;
 	}
 
