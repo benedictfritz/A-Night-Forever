@@ -158,9 +158,11 @@ package worlds
 	    }
 
 	    var chaseDistance:Number = sO.distanceFrom(player, true);
-	    if (uncatchable && chaseDistance < 100) { sO.goUncatchable(); }
-	    if (chaseDistance < 200) { sO.goFaster(); }
-	    else if (chaseDistance > 700) { sO.goSlow(); }
+	    var ahead:Boolean = (sO.y - player.y) < 0;
+	    if (uncatchable && chaseDistance < 200) { sO.goUncatchable(); }
+	    if (chaseDistance < 300) { sO.goFaster(); }
+	    else if (chaseDistance > 700 && ahead) { sO.goSlow(); }
+	    else if (chaseDistance > 700 && !ahead) { sO.goUncatchable(); }
 	    else { sO.goFast(); }
 
 	    var stoppingPoint:Number = -Math.abs(startingY - levelHeight);
